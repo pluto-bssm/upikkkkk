@@ -11,9 +11,9 @@ const color = {
   gray100: '#F8F8F9',
   gray50: '#F1F1F1',
 
-  upikorange : '#FF9F1C',
-  upikblue : '#58CCFF',
-  upikred : '#E71D36',
+  primary : '#FF9F1C',
+  secondary : '#58CCFF',
+  accent : '#E71D36',
 };
 
 export default color;
