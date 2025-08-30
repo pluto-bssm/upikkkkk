@@ -31,7 +31,6 @@ const Home = () => {
 
         <ContentArea>
         <div>스크롤해서 sticky 테스트</div>
-        {/* 더미 콘텐츠 */}
         {Array.from({ length: 50 }, (_, i) => (
           <div key={i} style={{ padding: '20px', borderBottom: '1px solid #eee' }}>
             콘텐츠 {i + 1}
