@@ -22,13 +22,13 @@ const HeaderInputsPageLayout = styled.div`
 const HeaderInput = styled.input`
   background-color: ${color.gray50}; 
   border: none;
-  padding: 10px 16px;
+  padding: 10px 24px;
   border-radius: 16px;
   outline: none;
-  width: 500px;
   text-align: left; 
   color : ${color.black};
-  
+  width : 80vw;
+  max-width : 500px;
   ::placeholder {
     color: ${color.gray500};
     text-align: left;
