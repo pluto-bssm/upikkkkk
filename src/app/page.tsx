@@ -3,15 +3,9 @@
 import Header from '@/components/common/Header'
 import NavigationBar from '@/components/common/NavigationBar'
 import styled from '@emotion/styled'
-import HeaderItems from './packages/ui/HeaderItem'
-import color from './packages/design-system/src/color'
-
-
-  const iconItems = [
-    <img key="bell" src="svg/Bell.svg" alt="알림" width={24} height={24} />,
-    <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24} />,
-    <img key="user" src="svg/User.svg" alt="사용자" width={24} height={24} />
-  ];
+import HeaderItemsBox from '@/components/Header/HeaderItemBox'
+import color from '@/packages/design-system/src/color'
+import Headerinputs from '@/packages/ui/src/Inputs/Headerinputs'
 
 
 const Home = () => {
@@ -26,7 +20,7 @@ const Home = () => {
         height={50}
          />
       } 
-        RightItem={<HeaderItems ItemsCount={3} Items={iconItems} />}/>
+        RightItem={<HeaderItemsBox type={'main'} />}/>
 
 
         <ContentArea>
@@ -60,6 +54,6 @@ const MainPageLayout = styled.div`
 
 const ContentArea = styled.div`
   width: 100%;
-  flex: 1; /* 남은 공간 채우기 */
+  flex: 1;
   margin-top : 100px;
 `;

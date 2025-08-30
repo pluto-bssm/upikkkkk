@@ -1,7 +1,7 @@
 'use client'
 
 import styled from '@emotion/styled'
-import color from '@/app/packages/design-system/src/color';
+import color from '@/packages/design-system/src/color';
 
 
 
