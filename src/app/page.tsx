@@ -1,6 +1,7 @@
 'use client'
 
 import Header from '@/components/common/Header'
+import NavigationBar from '@/components/common/NavigationBar'
 import styled from '@emotion/styled'
 import HeaderItems from './packages/ui/HeaderItem'
 import color from './packages/design-system/src/color'
@@ -37,6 +38,8 @@ const Home = () => {
           </div>
         ))}
       </ContentArea>
+
+      <NavigationBar />
     </MainPageLayout>
   );
 }
