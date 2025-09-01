@@ -20,7 +20,7 @@ const Home = () => {
          />
       } 
         RightItem={<HeaderItemsBox type={'main'} />}
-        types='main'/>
+        types='None'/>
 
 
         <ContentArea>

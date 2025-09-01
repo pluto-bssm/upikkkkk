@@ -41,15 +41,15 @@ export default Header;
 
 const HeaderBarSection = styled.div`
   width: 100%;
-  padding : 0px 10px;
   display: flex;
   justify-content: center;
 
 `
 
 const NavigationBarSection = styled.div`
-  width: 100%;
-  padding : 0px 36px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
 
 
 `
