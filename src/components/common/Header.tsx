@@ -2,6 +2,7 @@
 
 import styled from '@emotion/styled'
 import color from '@/packages/design-system/src/color';
+import HeaderNavigaionBar from './HeaderNavigationBar';
 
 type Props = {
   LeftItem?: React.ReactNode;
@@ -9,11 +10,13 @@ type Props = {
   CenterItem?: React.ReactNode;
   showInput?: boolean;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  types : string;
 };
 
-const Header = ({ LeftItem, RightItem, CenterItem, showInput = false, inputProps }: Props) => {
+const Header = ({ LeftItem, RightItem, CenterItem, showInput = false,types, inputProps }: Props) => {
   return (
     <HeaderPageLayout>
+    <HeaderBarSection>
       <HeaderItem>
         <LeftSection>
           {LeftItem}
@@ -26,11 +29,30 @@ const Header = ({ LeftItem, RightItem, CenterItem, showInput = false, inputProps
           {RightItem}
         </RightSection>
       </HeaderItem>
+    </HeaderBarSection>
+    <NavigationBarSection>
+      <HeaderNavigaionBar type={types} />
+    </NavigationBarSection>
     </HeaderPageLayout>
   );
 };
 
 export default Header;
+
+const HeaderBarSection = styled.div`
+  width: 100%;
+  padding : 0px 10px;
+  display: flex;
+  justify-content: center;
+
+`
+
+const NavigationBarSection = styled.div`
+  width: 100%;
+  padding : 0px 36px;
+
+
+`
 
 const HeaderPageLayout = styled.div`
   max-width: 600px;
@@ -38,11 +60,10 @@ const HeaderPageLayout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction : column;
   position: fixed;
-  top: 0px;
   z-index: 1000;
   background-color: ${color.white};
-  margin-top: 10px;
   
 `;
 

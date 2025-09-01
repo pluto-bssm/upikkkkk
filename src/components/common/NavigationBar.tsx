@@ -2,20 +2,22 @@
 
 import styled from '@emotion/styled'
 import color from '@/packages/design-system/src/color';
+import { useRouter } from 'next/navigation';
 
 
 
 
 const NavigationBar = () => {
 
+  const router = useRouter();
 
   return (
     <NavigationPageLayout>
       <NavigationItem>
-        <img src='svg/Home.svg' width={40} height={40} />
-        <img src='svg/Vote.svg' width={40} height={40} />
-        <img src='svg/Guide.svg' width={40} height={40} />
-        <img src='svg/Dashboard.svg' width={40} height={40} />
+        <img src='svg/Home.svg' width={40} height={40} onClick={() => {router.push("/")}}/>
+        <img src='svg/Vote.svg' width={40} height={40} onClick={() => {router.push("/Vote")}} />
+        <img src='svg/Guide.svg' width={40} height={40} onClick={() => {router.push("/Guide")}} />
+        <img src='svg/Dashboard.svg' width={40} height={40} onClick={() => {router.push("/Dashboard")}} />
       </NavigationItem>
     </NavigationPageLayout>
   );

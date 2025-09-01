@@ -12,10 +12,11 @@ const votemake = () => {
     return (
     <VoteMakePageLayout>
         <Header LeftItem={<img
-        src="/svg/Logo.svg"
-        width={50}
+        src="/svg/Back.svg"
+        width={20}
         height={50}
-         />} RightItem={<HeaderItemsBox type={'votemake'}/>} />
+         />} RightItem={<HeaderItemsBox type={'votemake'}/>} 
+         types = "votemake"/>
 
         <NavigationBar />
         

@@ -5,7 +5,6 @@ import NavigationBar from '@/components/common/NavigationBar'
 import styled from '@emotion/styled'
 import HeaderItemsBox from '@/components/Header/HeaderItemBox'
 import color from '@/packages/design-system/src/color'
-import Headerinputs from '@/packages/ui/src/Inputs/Headerinputs'
 
 
 const Home = () => {
@@ -20,7 +19,8 @@ const Home = () => {
         height={50}
          />
       } 
-        RightItem={<HeaderItemsBox type={'main'} />}/>
+        RightItem={<HeaderItemsBox type={'main'} />}
+        types='main'/>
 
 
         <ContentArea>

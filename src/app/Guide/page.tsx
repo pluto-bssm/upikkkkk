@@ -15,7 +15,9 @@ const Guide = () => {
         src="/svg/Back.svg"
         width={24}
         height={24}
-         />} CenterItem={<HeaderItemsBox type={'searchguide'}/>} />
+         />} CenterItem={<HeaderItemsBox type={'searchguide'}/>}
+         types = "searchguide" />
+         
 
         <NavigationBar />
         

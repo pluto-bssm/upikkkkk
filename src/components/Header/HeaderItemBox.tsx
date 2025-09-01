@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import font from "@/packages/design-system/src/font"
 import HeaderInputs from "@/packages/ui/src/Inputs/Headerinputs";
 
-type HeaderType = 
+export type HeaderType = 
   | 'main' 
   | 'votemake' 
   | 'guide' 
