@@ -22,7 +22,7 @@ const vote = () => {
             <VoteMakeButton />
             </VoteButton>
 
-          <VoteBlock title="투표제목" catogory="기숙사" views="16" state="2025-08-31에 마감되는 투표" />
+          <VoteBlock title="투표제목" catogory="학교생활" views="16" state="2025-08-31에 마감되는 투표" />
 
 
         <NavigationBar />
