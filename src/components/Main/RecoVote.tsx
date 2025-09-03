@@ -55,7 +55,7 @@ const Ques = styled.div`
   color : ${color.black};
   margin-top : 20px;
   text-align: center;
-  font-family: ${font.H4};
+  font-family: ${font.H16};
 `;
 
 const OptionsContainer = styled.div`

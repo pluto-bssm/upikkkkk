@@ -28,6 +28,13 @@ const font = {
   H11: fontGenerator(700,11),
   H12: fontGenerator(700,10),
 
+  H13: fontGenerator(600, 15),
+  H14: fontGenerator(600, 14),
+  H15: fontGenerator(600, 13),
+  H16: fontGenerator(600, 12),
+  H17: fontGenerator(600, 11),
+  H18: fontGenerator(600, 10),
+
   p1: fontGenerator(500,10),
   p2: fontGenerator(500,8),
   p3: fontGenerator(500,6),
