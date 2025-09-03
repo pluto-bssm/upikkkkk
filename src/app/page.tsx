@@ -5,11 +5,10 @@ import NavigationBar from '@/components/common/NavigationBar'
 import styled from '@emotion/styled'
 import HeaderItemsBox from '@/components/Header/HeaderItemBox'
 import color from '@/packages/design-system/src/color'
+import RecoVote from '@/components/Main/RecoVote'
 
 
-const Home = () => {
-
-
+const Main = () => {
   return (
     <MainPageLayout>
       <Header LeftItem={
@@ -21,24 +20,14 @@ const Home = () => {
       } 
         RightItem={<HeaderItemsBox type={'main'} />}
         types='None'/>
-
-
-        <ContentArea>
-        <div>스크롤해서 sticky 테스트</div>
-        {Array.from({ length: 50 }, (_, i) => (
-          <div key={i} style={{ padding: '20px', borderBottom: '1px solid #eee' }}>
-            콘텐츠 {i + 1}
-          </div>
-        ))}
-      </ContentArea>
-
+        <RecoVote/>
       <NavigationBar />
     </MainPageLayout>
   );
 }
 
 
-export default Home;
+export default Main;
 
 const MainPageLayout = styled.div`
   display :flex;
