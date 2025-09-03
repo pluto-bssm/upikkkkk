@@ -3,7 +3,8 @@ import { useState } from 'react';
 import React from 'react';
 
 
-const navs = ['전체', '학교생활', '기숙사', '유머'];
+const Defaultnavs = ['전체', '학교생활', '기숙사', '유머'];
+const Questionnavs = ['전체','인기'];
 
 type Props = {
   type: string;
@@ -15,10 +16,11 @@ const HeaderNavigaionBar = ({ type }: Props) => {
 
     const renderItems = () => {
         switch(type){
-            case "main":
+            case "default":
                 return (
                     <NavWrapper>
-                        {navs.map((nav, idx) => (
+                        <Navs>
+                        {Defaultnavs.map((nav, idx) => (
                             <React.Fragment key={nav}>
                                 <NavItem
                                     active={activeIdx === idx}
@@ -26,17 +28,39 @@ const HeaderNavigaionBar = ({ type }: Props) => {
                                 >
                                     {nav}
                                 </NavItem>
-                                {idx < navs.length - 1 && (
+                                {idx < Defaultnavs.length - 1 && (
+                                    <img src="svg/Divider.svg" alt="Divider" width={2} height={20} key={`divider-${idx}`} />
+                                )}
+                            </React.Fragment>
+                        ))}
+                        </Navs>
+
+                        <img src="svg/Navoption.svg" />
+                    </NavWrapper>
+                );
+
+            case "Nones" :
+                <>
+                </>
+            
+            case "Question":
+                return (
+                    <NavWrapper>
+                        {Questionnavs.map((nav, idx) => (
+                            <React.Fragment key={nav}>
+                                <NavItem
+                                    active={activeIdx === idx}
+                                    onClick={() => setActiveIdx(idx)}
+                                >
+                                    {nav}
+                                </NavItem>
+                                {idx < Questionnavs.length - 1 && (
                                     <img src="svg/Divider.svg" alt="Divider" width={2} height={20} key={`divider-${idx}`} />
                                 )}
                             </React.Fragment>
                         ))}
                     </NavWrapper>
                 );
-
-            case "votemake" :
-                <>
-                </>
 
 
         }
@@ -53,15 +77,23 @@ const HeaderNavigaionBar = ({ type }: Props) => {
 
 export default HeaderNavigaionBar
 
+
+const Navs = styled.div`
+  display : flex;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+
+
+`
 const NavWrapper = styled.div`
   display: flex;
   align-items: center;
   text-align: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: 40px;
   width: 100%;
-  min-width : 600px;
-  gap: 10px;
+  max-width : 600px;
   
 `
 

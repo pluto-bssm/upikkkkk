@@ -1,38 +1,99 @@
 'use client'
 
-import Header from '@/components/common/Header'
-import NavigationBar from '@/components/common/NavigationBar'
 import styled from '@emotion/styled'
-import HeaderItemsBox from '@/components/Header/HeaderItemBox'
 import color from '@/packages/design-system/src/color'
 import font from '@/packages/design-system/src/font'
 
 const RecoVote = () => {
+  const mockVoteData = {
+    question: "이중에 뭐가 더 싫어?",
+    options: ["새벽 1시 알바", "새벽 1시 과제"]
+  };
+
   return (
-    <RecoVotePageLayout>
-        <Text fontType={font.p1} color={color.primary}>오늘의 추천 투표는?</Text>
-    
-    </RecoVotePageLayout>
+    <RecoVoteBoxLayout>
+        <Text>오늘의 추천 투표는?</Text>
+        <Ques>{mockVoteData.question}</Ques>
+        <OptionsContainer>
+          {mockVoteData.options.map((option, index) => (
+            <Option key={index}>
+              <OptionText>{option}</OptionText>
+
+            </Option>
+          ))}
+        </OptionsContainer>
+    </RecoVoteBoxLayout>
   );
 }
 
 
 export default RecoVote;
 
-const RecoVotePageLayout = styled.div`
+const RecoVoteBoxLayout = styled.div`
   display :flex;
   flex-direction : column;
   align-items : center;
-  max-width : 600px;
-  width : 100%;
-  min-height: 100vh;
+  min-height: 30vh;
+  width: 89.7%;
+  max-width: 350px;
   background-color : ${color.white};
-  
+  border:1px solid ${color.gray50};
+  margin-top:10vh;
 `
 
 
-const ContentArea = styled.div`
+const Text = styled.div`
+  font-family : ${font.p2};
+  font-size : 16px; 
+  font-weight : 500;
+  color : ${color.gray300};
+  margin-top : 20px;
+`;
+
+const Ques = styled.div`
+  font-weight : 600;
+  color : ${color.black};
+  margin-top : 20px;
+  text-align: center;
+  font-family: ${font.H4};
+`;
+
+const OptionsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
   width: 100%;
-  flex: 1;
-  margin-top : 100px;
+  padding: 0 20px;
+`;
+
+const Option = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid ${color.gray100};
+  border-radius: 8px;
+  background-color: ${color.white};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: ${color.primary};
+    background-color: ${color.gray50};
+  }
+`;
+
+const OptionText = styled.div`
+  font-family : ${font.p2};
+  font-size : 14px;
+  font-weight : 500;
+  color : ${color.black};
+`;
+
+const VoteCount = styled.div`
+  font-family : ${font.p2};
+  font-size : 12px;
+  font-weight : 400;
+  color : ${color.gray400};
 `;

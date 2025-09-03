@@ -6,7 +6,10 @@ import styled from '@emotion/styled'
 import HeaderItemsBox from '@/components/Header/HeaderItemBox'
 import color from '@/packages/design-system/src/color'
 
+
 const Home = () => {
+
+
   return (
     <MainPageLayout>
       <Header LeftItem={
@@ -17,12 +20,17 @@ const Home = () => {
          />
       } 
         RightItem={<HeaderItemsBox type={'main'} />}
-        types='votemake'/>
+        types='None'/>
 
 
         <ContentArea>
-          
-        </ContentArea>
+        <div>스크롤해서 sticky 테스트</div>
+        {Array.from({ length: 50 }, (_, i) => (
+          <div key={i} style={{ padding: '20px', borderBottom: '1px solid #eee' }}>
+            콘텐츠 {i + 1}
+          </div>
+        ))}
+      </ContentArea>
 
       <NavigationBar />
     </MainPageLayout>

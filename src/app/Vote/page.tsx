@@ -4,14 +4,11 @@ import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
-
 import NavigationBar from "@/components/common/NavigationBar";
-import { useState } from "react";
-import { HeaderType } from "@/components/Header/HeaderItemBox";
-import VoteMakeButton from "@/components/Vote/VoteMakeButton"
+import VoteMakeButton from "@/components/Vote/VoteMakeButton";
+import VoteBlock from "@/components/Vote/VoteBlock";
 
 const vote = () => {
-    const [types,settype] = useState<HeaderType>("main") ;
 
     return (
     <VotePageLayout>
@@ -19,11 +16,15 @@ const vote = () => {
         src="/svg/Logo.svg"
         width={50}
         height={50}
-         />} RightItem={<HeaderItemsBox type={types}/>}
-         types = {types} />
-        <VoteButton>
-        <VoteMakeButton />
-        </VoteButton>
+         />} RightItem={<HeaderItemsBox type={"main"}/>}
+         types = {"default"} />
+            <VoteButton>
+            <VoteMakeButton />
+            </VoteButton>
+
+          <VoteBlock title="투표제목" catogory="학교생활" views="16" state="2025-08-31에 마감되는 투표" />
+
+
         <NavigationBar />
     </VotePageLayout>
     )
@@ -36,10 +37,11 @@ const VoteButton = styled.div`
     max-width : 600px;
     width : 100%;
     position : fixed;
-    bottom : 100px;
+    bottom : 70px;
     display : flex;
     justify-content : end;
     padding : 0px 24px;
+    z-index : 1000;
 
 `
 
