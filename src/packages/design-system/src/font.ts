@@ -13,6 +13,7 @@ const font = {
   D1: fontGenerator(700, 28),
   D2: fontGenerator(700, 22),
   D3: fontGenerator(700, 20),
+  D4: fontGenerator(600,19),
 
   H1: fontGenerator(500,15),
   H2: fontGenerator(500,14),

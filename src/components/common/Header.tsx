@@ -11,28 +11,29 @@ type Props = {
   showInput?: boolean;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   types : string;
+  onOptionClick?: () => void;
 };
 
-const Header = ({ LeftItem, RightItem, CenterItem, showInput = false,types, inputProps }: Props) => {
+const Header = ({ LeftItem, RightItem, CenterItem, showInput = false, types, inputProps, onOptionClick }: Props) => {
   return (
     <HeaderPageLayout>
-    <HeaderBarSection>
-      <HeaderItem>
-        <LeftSection>
-          {LeftItem}
-        </LeftSection>
-        <CenterSection>
-          {CenterItem}
-          {showInput && <StyledInput {...inputProps} />}
-        </CenterSection>
-        <RightSection>
-          {RightItem}
-        </RightSection>
-      </HeaderItem>
-    </HeaderBarSection>
-    <NavigationBarSection>
-      <HeaderNavigaionBar type={types} />
-    </NavigationBarSection>
+      <HeaderBarSection>
+        <HeaderItem>
+          <LeftSection>
+            {LeftItem}
+          </LeftSection>
+          <CenterSection>
+            {CenterItem}
+            {showInput && <StyledInput {...inputProps} />}
+          </CenterSection>
+          <RightSection>
+            {RightItem}
+          </RightSection>
+        </HeaderItem>
+      </HeaderBarSection>
+      <NavigationBarSection>
+        <HeaderNavigaionBar type={types} onOptionClick={onOptionClick} />
+      </NavigationBarSection>
     </HeaderPageLayout>
   );
 };
@@ -43,15 +44,12 @@ const HeaderBarSection = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-
 `
 
 const NavigationBarSection = styled.div`
   width: 90%;
   display: flex;
   justify-content: center;
-
-
 `
 
 const HeaderPageLayout = styled.div`
@@ -64,7 +62,6 @@ const HeaderPageLayout = styled.div`
   position: fixed;
   z-index: 1000;
   background-color: ${color.white};
-  
 `;
 
 const HeaderItem = styled.div`
