@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import Select from "@/app/Images/Select.svg";
+
 
 
 type Props = {
@@ -45,7 +45,7 @@ export default function CategoryChoseBox({ category, setGuideCategory, isOpen, s
 
                   {cat === category && (
                     <ArrowIcon>
-                      <Image src={Select} alt="arrow" width={25} height={25} />
+                      <img src="svg/Select.svg" alt="arrow" width={25} height={25} />
                     </ArrowIcon>
                   )}
                 </CategoryItem>
@@ -119,7 +119,7 @@ const Background = styled(motion.div)`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 1001;
   display: flex;
   align-items: end;
   justify-content: center;

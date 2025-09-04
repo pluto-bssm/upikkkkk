@@ -39,7 +39,6 @@ const vote = () => {
     const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
 
     const handleOptionClick = () => {
-        console.log('Modal opening...'); // 디버깅용
         setIsModalOpen(true);
     };
 
