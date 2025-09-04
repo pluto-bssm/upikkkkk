@@ -6,6 +6,7 @@ import styled from '@emotion/styled'
 import HeaderItemsBox from '@/components/Header/HeaderItemBox'
 import color from '@/packages/design-system/src/color'
 import RecoVote from '@/components/Main/RecoVote'
+import Frame375 from '@/components/Main/MainComponent'
 
 
 const Main = () => {
@@ -21,6 +22,7 @@ const Main = () => {
         RightItem={<HeaderItemsBox type={'main'} />}
         types='None'/>
         <RecoVote/>
+        <Frame375 />
       <NavigationBar />
     </MainPageLayout>
   );
