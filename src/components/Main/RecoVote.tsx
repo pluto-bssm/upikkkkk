@@ -34,14 +34,15 @@ const RecoVote = () => {
 
 export default RecoVote;
 
+
 const RecoCard = styled.div`
-  width: 350px;
-  border: 1px solid #f0f0f0;
+  width : 90%;
+  border : 1px solid ${color.gray50};
   border-radius: 8px;
-  background: #ffffff;
+  background-color : ${color.white};
   padding: 20px 20px 10px 20px;
   margin-top:10vh;
-
+  gap : 4px;
 `;
 
 const RecoInner = styled.div`
