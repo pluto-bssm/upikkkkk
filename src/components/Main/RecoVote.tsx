@@ -7,93 +7,97 @@ import font from '@/packages/design-system/src/font'
 const RecoVote = () => {
   const mockVoteData = {
     question: "이중에 뭐가 더 싫어?",
-    options: ["새벽 1시 알바", "새벽 1시 과제"]
+    options: ["최병준쌤과 헬스 4시간", "규봉쌤과 수학 4시간"]
   };
 
   return (
-    <RecoVoteBoxLayout>
-        <Text>오늘의 추천 투표는?</Text>
-        <Ques>{mockVoteData.question}</Ques>
-        <OptionsContainer>
-          {mockVoteData.options.map((option, index) => (
-            <Option key={index}>
-              <OptionText>{option}</OptionText>
-
-            </Option>
-          ))}
-        </OptionsContainer>
-    </RecoVoteBoxLayout>
+    <RecoCard>
+        <RecoInner>
+          <RecoHeader>
+            <RecoSubTitle>오늘의 추천 투표는?</RecoSubTitle>
+            <RecoTitleRow>
+              <RecoTitle>이중에 뭐가 더 싫어?</RecoTitle>
+            </RecoTitleRow>
+            <RecoOptionsRow>
+              <RecoOption>최병준쌤과 헬스 3시간</RecoOption>
+              <RecoVS>VS</RecoVS>
+              <RecoOption>규봉쌤과 수학풀이 5시간</RecoOption>
+            </RecoOptionsRow>
+          </RecoHeader>
+        </RecoInner>
+        <GoVoteWrap>
+          <GoVote>투표하러 가기</GoVote>
+        </GoVoteWrap>
+      </RecoCard>
   );
 }
 
-
 export default RecoVote;
 
-const RecoVoteBoxLayout = styled.div`
-  display :flex;
-  flex-direction : column;
-  align-items : center;
-  min-height: 30vh;
-  width: 89.7%;
-  max-width: 350px;
-  background-color : ${color.white};
-  border:1px solid ${color.gray50};
+const RecoCard = styled.div`
+  width: 350px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px 20px 10px 20px;
   margin-top:10vh;
-`
 
-
-const Text = styled.div`
-  font-family : ${font.p2};
-  font-size : 16px; 
-  font-weight : 500;
-  color : ${color.gray300};
-  margin-top : 20px;
 `;
 
-const Ques = styled.div`
-  font-weight : 600;
-  color : ${color.black};
-  margin-top : 20px;
-  text-align: center;
-  font-family: ${font.H16};
-`;
-
-const OptionsContainer = styled.div`
+const RecoInner = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 24px;
-  width: 100%;
-  padding: 0 20px;
+  gap: 6px;
 `;
 
-const Option = styled.div`
+const RecoHeader = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const RecoSubTitle = styled.div`
+  color: #c8c8c8;
+  font-size: 8px;
+  line-height: 9.55px;
+`;
+
+const RecoTitleRow = styled.div`
+  display: flex;
+`;
+
+const RecoTitle = styled.div`
+  color: #000;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 14.32px;
+`;
+
+const RecoOptionsRow = styled.div`
+  display: flex;
   align-items: center;
-  padding: 16px;
-  border: 1px solid ${color.gray100};
-  border-radius: 8px;
-  background-color: ${color.white};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: ${color.primary};
-    background-color: ${color.gray50};
-  }
+  gap: 8px;
 `;
 
-const OptionText = styled.div`
-  font-family : ${font.p2};
-  font-size : 14px;
-  font-weight : 500;
-  color : ${color.black};
+const RecoOption = styled.div`
+  color: #000;
+  font-size: 14px;
+  line-height: 16.7px;
 `;
 
-const VoteCount = styled.div`
-  font-family : ${font.p2};
-  font-size : 12px;
-  font-weight : 400;
-  color : ${color.gray400};
+const RecoVS = styled.div`
+  color: #ff9f1c;
+  font-size: 14px;
+  font-weight: 600;
 `;
+
+const GoVoteWrap = styled.div`
+  margin-top: 10px;
+`;
+
+const GoVote = styled.div`
+  color: #ff9f1c;
+  font-size: 8px;
+`;
+
+
