@@ -4,21 +4,25 @@ import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
-
+import font from "@/packages/design-system/src/font";
+import MainComponent from "@/components/Main/GuideComponent";
 import NavigationBar from "@/components/common/NavigationBar";
 
 const Guide = () => {
 
     return (
     <GuidePageLayout>
-        <Header LeftItem={<img
-        src="/svg/Back.svg"
-        width={24}
-        height={24}
-         />} CenterItem={<HeaderItemsBox type={'searchguide'}/>}
-         types = "searchguide" />
-         
-
+       <Header LeftItem={
+        <img
+        src="/svg/Logo.svg"
+        width={50}
+        height={50}
+         />
+      } 
+        RightItem={<HeaderItemsBox type={'main'} />}
+        types='None'/>
+        
+        <MainComponent/>        
         <NavigationBar />
         
     </GuidePageLayout>
@@ -36,5 +40,5 @@ const GuidePageLayout = styled.div`
   width : 100%;
   min-height: 100vh;
   background-color : ${color.white};
-  
-`
+`;
+

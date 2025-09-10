@@ -33,6 +33,11 @@ const Main = () => {
           <SectionTitle>인기 투표</SectionTitle>
         </SectionHeader>
         <PopularVote />
+        <SectionHeader>
+          <Book />
+          <SectionTitle>오늘의 가이드</SectionTitle>
+        </SectionHeader>
+        <MainComponent/>
       <NavigationBar />
     </MainPageLayout>
   );
@@ -49,8 +54,8 @@ const MainPageLayout = styled.div`
   width : 100%;
   min-height: 100vh;
   background-color : ${color.white};
-  
-`
+  padding-bottom: 70px;
+`;
 
 const SectionHeader = styled.div`
   display: flex;
