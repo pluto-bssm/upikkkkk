@@ -2,7 +2,7 @@ const color = {
   white: '#FDFFFC',
   black: '#011627',
 
-
+  gray700: '#616161',
   gray600: '#616161',
   gray500: '#777777',
   gray400: '#B3B3B3',

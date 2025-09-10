@@ -18,11 +18,11 @@ const PopularVote = () => {
               <Texts>
                 <Title>{item.title}</Title>
                 <Meta>
+                <LookWrap>
                   <Tag>{item.category}</Tag>
-                  <CountWrap>
-                    <CountIcon />
-                    <Count>{item.markcount}</Count>
-                  </CountWrap>
+                    <LookIcon />
+                    <Look>{item.markcount}</Look>
+                  </LookWrap>
                 </Meta>
               </Texts>
             </Card>
@@ -46,8 +46,9 @@ const Track = styled.div`
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  padding: 4px 4px 8px;
-
+  padding: 4px 4px 8px 0;
+  margin-left: 6%; 
+  
   &::-webkit-scrollbar {
     height: 0px;
   }
@@ -56,6 +57,7 @@ const Track = styled.div`
 const Slide = styled.div`
   flex: 0 0 85%;
   scroll-snap-align: start;
+  }
 `;
 
 const Card = styled.div`
@@ -67,6 +69,9 @@ const Card = styled.div`
   border-radius: 8px;
   background: ${color.white};
   padding: 0 16px;
+   box-shadow: 
+    -4px -4px 10px 0 rgba(0,0,0,0.03),
+     4px  4px 10px 0 rgba(0,0,0,0.03);
 `;
 
 const Thumb = styled.img`
@@ -98,24 +103,25 @@ const Tag = styled.div`
   font-family: ${font.P6};
 `;
 
-const CountWrap = styled.div`
+const LookWrap = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
 `;
 
-const CountIcon = styled.span`
+const LookIcon = styled.span`
   width: 10px;
   height: 10px;
   background-color: ${color.gray500};
-  -webkit-mask: url('/svg/Bookmark.svg') no-repeat center / contain;
-  mask: url('/svg/Bookmark.svg') no-repeat center / contain;
+  -webkit-mask: url('/svg/Views.svg') no-repeat center / contain;
+  mask: url('/svg/Views.svg') no-repeat center / contain;
   display: inline-block;
+  margin-left:8px;
 `;
 
-const Count = styled.div`
+const Look = styled.div`
   color: ${color.gray600};
   font-family: ${font.p2};
+  margin-left:2px;
 `;
 
 

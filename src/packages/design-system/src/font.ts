@@ -14,12 +14,12 @@ const font = {
   D2: fontGenerator(700, 22),
   D3: fontGenerator(700, 20),
 
-  P1: fontGenerator(500,15),
-  P2: fontGenerator(500,14),
-  P3: fontGenerator(500,13),
-  P4: fontGenerator(500,12),
-  P5: fontGenerator(500,11),
-  P6: fontGenerator(500,10),
+  P1: fontGenerator(400,15),
+  P2: fontGenerator(400,14),
+  P3: fontGenerator(400,13),
+  P4: fontGenerator(400,12),
+  P5: fontGenerator(400,11),
+  P6: fontGenerator(400,10),
 
   P7: fontGenerator(700,15),
   P8: fontGenerator(700,14),
@@ -34,6 +34,13 @@ const font = {
   P16: fontGenerator(600, 12),
   P17: fontGenerator(600, 11),
   P18: fontGenerator(600, 10),
+
+  P19: fontGenerator(400, 15),
+  P20: fontGenerator(400, 14),
+  P21: fontGenerator(400, 13),
+  P22: fontGenerator(400, 12),
+  P23: fontGenerator(400, 11),
+  P24: fontGenerator(400, 10),
 
   p1: fontGenerator(500,10),
   p2: fontGenerator(500,8),

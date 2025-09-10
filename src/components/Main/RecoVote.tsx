@@ -16,12 +16,12 @@ const RecoVote = () => {
           <RecoHeader>
             <RecoSubTitle>오늘의 추천 투표는?</RecoSubTitle>
             <RecoTitleRow>
-              <RecoTitle>이중에 뭐가 더 싫어?</RecoTitle>
+              <RecoTitle>{mockVoteData.question}</RecoTitle>
             </RecoTitleRow>
             <RecoOptionsRow>
-              <RecoOption>최병준쌤과 헬스 3시간</RecoOption>
+              <RecoOption>{mockVoteData.options[0]}</RecoOption>
               <RecoVS>VS</RecoVS>
-              <RecoOption>규봉쌤과 수학풀이 5시간</RecoOption>
+              <RecoOption>{mockVoteData.options[1]}</RecoOption>
             </RecoOptionsRow>
           </RecoHeader>
         </RecoInner>
@@ -58,8 +58,8 @@ const RecoHeader = styled.div`
 `;
 
 const RecoSubTitle = styled.div`
-  color: #c8c8c8;
-  font-size: 8px;
+  color: ${color.gray300};
+  font-family:${font.btn3};
   line-height: 9.55px;
 `;
 
@@ -68,8 +68,8 @@ const RecoTitleRow = styled.div`
 `;
 
 const RecoTitle = styled.div`
-  color: #000;
-  font-size: 12px;
+  color: ${color.black};
+  font-family:${font.P16};
   font-weight: 600;
   line-height: 14.32px;
 `;
@@ -81,15 +81,14 @@ const RecoOptionsRow = styled.div`
 `;
 
 const RecoOption = styled.div`
-  color: #000;
-  font-size: 14px;
+  color: ${color.black};
+  font-family:${font.P2};
   line-height: 16.7px;
 `;
 
 const RecoVS = styled.div`
-  color: #ff9f1c;
-  font-size: 14px;
-  font-weight: 600;
+  color: ${color.primary};
+  font-family:${font.P14};
 `;
 
 const GoVoteWrap = styled.div`
@@ -97,8 +96,8 @@ const GoVoteWrap = styled.div`
 `;
 
 const GoVote = styled.div`
-  color: #ff9f1c;
-  font-size: 8px;
+  color: ${color.primary};
+  font-family:${font.btn3};
 `;
 
 
