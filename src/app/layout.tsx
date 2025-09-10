@@ -1,21 +1,26 @@
 import type { Metadata } from "next";
 import Providers from "./providers";
 
+import "./globals.css";
+
 export const metadata: Metadata = {
     title: "My App",
     description: "Next.js + Emotion + React Query",
 };
 
-export default function RootLayout({
+const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
   return (
     <html lang="ko">
-      <body>
+
+      <body style={{ backgroundColor: "#fafafaff", margin: 0, padding: 0 }}>
         <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+
+export default RootLayout;
