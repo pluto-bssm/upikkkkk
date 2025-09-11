@@ -17,10 +17,8 @@ const MainComponent = () => {
                 <GuideTitle>{item.title}</GuideTitle>
                 <GuideMeta>
                   <GuideTag>{item.category}</GuideTag>
-                  <GuideCountWrap>
                     <GuideCountIcon />
                     <GuideCount>{item.markcount}</GuideCount>
-                  </GuideCountWrap>
                 </GuideMeta>
               </GuideTextWrap>
             </GuideCard>
@@ -86,18 +84,11 @@ const GuideTitle = styled.div`
 const GuideMeta = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
 `;
 
 const GuideTag = styled.div`
   color: ${color.gray600};
   font-family: ${font.P6};
-`;
-
-const GuideCountWrap = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
 `;
 
 const GuideCountIcon = styled.span`
@@ -107,11 +98,13 @@ const GuideCountIcon = styled.span`
   -webkit-mask: url('/svg/Bookmark.svg') no-repeat center / contain;
   mask: url('/svg/Bookmark.svg') no-repeat center / contain;
   display: inline-block;
+  margin-left:8px;
 `;
 
 const GuideCount = styled.div`
   color: ${color.gray600};
   font-family:${font.p2};
+  margin-left:2px;
 `;
 
 

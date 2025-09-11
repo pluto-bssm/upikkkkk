@@ -49,7 +49,6 @@ const vote = () => {
                 LeftItem={<img src="/svg/Logo.svg" width={50} height={50}/>} 
                 RightItem={<HeaderItemsBox type={"main"}/>}
                 types={"default"} 
-                
             />
             <VoteButton>
                 <VoteMakeButton />

@@ -8,7 +8,7 @@ import color from '@/packages/design-system/src/color'
 import font from '@/packages/design-system/src/font'
 import RecoVote from '@/components/Main/RecoVote'
 import MainComponent from '@/components/Main/GuideComponent'
-import PopularVote from '@/components/Main/PopularVote';
+import PopularVote from '@/components/Main/PopularVote'
 
 const Main = () => {
   return (
@@ -86,4 +86,13 @@ const VoteMain = styled.div`
   background-color:${color.gray700};
   -webkit-mask: url('/svg/VoteMain.svg') no-repeat center / contain;
   mask: url('/svg/VoteMain.svg') no-repeat center / contain;
+hite};
+  
+`
+
+
+const ContentArea = styled.div`
+  width: 100%;
+  flex: 1;
+  margin-top : 100px;
 `;
