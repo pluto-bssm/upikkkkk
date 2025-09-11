@@ -19,7 +19,7 @@ const votemake = () => {
 
     const [GuideCategory, setGuideCategory] = useState('학교생활');
     const [isOpen , setIsOpen] = useState(false);
-      const [isOpenMakemodal , setIsOpenMakemodal] = useState(false);
+    const [isOpenMakemodal , setIsOpenMakemodal] = useState(false);
 
     return (
     <VoteMakePageLayout>
@@ -75,6 +75,6 @@ const Appdiv = styled.div`
   width : 100%;
 
   gap: 36px;
-  margin-top: 200px;
+  margin-top: 140px;
 
 `

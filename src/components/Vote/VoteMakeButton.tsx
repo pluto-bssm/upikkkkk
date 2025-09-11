@@ -8,7 +8,7 @@ const VoteMakeButton = () => {
 
     return(
         <VoteMakeButtonLayout onClick={() => {router.push("/VoteMake")}}>
-            <img src="svg/VotemakeButton.svg"  height={30} width={30}/>        
+            <img src="/svg/VotemakeButton.svg"  height={30} width={30}/>        
         </VoteMakeButtonLayout>
     )
 

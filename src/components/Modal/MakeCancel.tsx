@@ -47,11 +47,13 @@ const ModalBackground = styled(motion.div)`
     justify-content: center;
     align-items: center;
     z-index: 1000;
+
+    top : 0px;
 `
 
 const ModalContent = styled.div`
     background-color: #fff;
-    padding: 50px 24px;
+    padding: 40px 24px;
     border-radius: 24px;
     width: 80%;
     text-align: center;

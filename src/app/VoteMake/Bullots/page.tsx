@@ -4,12 +4,18 @@ import EditInfo from "@/components/ChoseEdits/EditInfo";
 import Ballot from "@/components/ChoseEdits/Ballot";
 import ChoseButton from "@/components/ChoseEdits/ChoseButton";
 import styled from "@emotion/styled";
-import color from "@/packages/design-system/src/color";
+import Header from "@/components/common/Header";
+import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import { useVoteStore } from "@/app/stores/useVoteStore";
+import color from "@/packages/design-system/src/color";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import MakeCancel from "@/components/Modal/MakeCancel";
 
 export default function ChoseEdit() {  
   const lis = ["A", "B", "C", "D", "E"];
   const maxPossibleBallots = lis.length;
+  const router = useRouter();
 
   const { title, setTitle, ballots, setBallots } = useVoteStore();
 
@@ -27,10 +33,22 @@ export default function ChoseEdit() {
     }
   };
 
-  return (
-    <Container>
-      <EditInfo title={title} setTitle={setTitle} />
+  const [isOpenMakemodal , setIsOpenMakemodal] = useState(false);
 
+  return (
+
+    
+      <BullotsLayout>
+      <Header LeftItem={<img
+        src="/svg/Back.svg"
+        width={20}
+        height={50}
+        onClick={() => {router.back()}}
+         />} RightItem={<HeaderItemsBox type={'bollot'} isopen={isOpenMakemodal} setIsOpen={setIsOpenMakemodal}/>} 
+         types = "votemake"/>
+        <Container>
+      <EditInfo title={title} setTitle={setTitle} />
+      
       <BallotForm>
         {ballots.map((b, idx) => (
           <Ballot
@@ -57,8 +75,20 @@ export default function ChoseEdit() {
         <ChoseButton />
       </Buttons>
     </Container>
+
+    {isOpenMakemodal ?  <MakeCancel setIsOpen={setIsOpenMakemodal} isOpen={isOpenMakemodal}/> : null}
+
+    </BullotsLayout>
   );
 }
+
+const BullotsLayout = styled.div`
+
+  max-width: 600px;
+  width : 100%;
+  background-color : ${color.white};
+  height : 100vh;
+`
 
 
 const Buttons = styled.div`

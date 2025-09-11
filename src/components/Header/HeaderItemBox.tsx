@@ -1,6 +1,12 @@
+'use client'
+
 import styled from "@emotion/styled";
 import font from "@/packages/design-system/src/font"
 import HeaderInputs from "@/packages/ui/src/Inputs/Headerinputs";
+
+
+import { usePathname } from "next/navigation"
+import { useRouter } from "next/navigation";
 
 export type HeaderType = 
   | 'main' 
@@ -23,9 +29,18 @@ export type HeaderType =
 
 type Props = {
   type: HeaderType;
+  isopen?: boolean;
+  setIsOpen?: (isopen: boolean) => void;
+  
 };
 
-const HeaderItemsBox = ({ type }: Props) => {
+
+
+const HeaderItemsBox = ({ type ,setIsOpen,isopen}: Props) => {
+  const path = usePathname();
+
+  console.log(path);
+  const router = useRouter();
   const renderItems = () => {
     switch (type) {
       case 'main':
@@ -44,7 +59,7 @@ const HeaderItemsBox = ({ type }: Props) => {
 
       case 'votemake':
         return (
-          <img key="close" src="svg/Close.svg" alt="닫기" width={24} height={24} />
+          <img key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} />
         );
       
       case 'searchguide':
@@ -78,8 +93,8 @@ const HeaderItemsBox = ({ type }: Props) => {
       case 'bollot':
         return (
           <>
-           <img key="close" src="svg/Close.svg" alt="닫기" width={24} height={24} />
-           <img key="options" src="svg/Options.svg" alt="설정" width={24} height={24} />
+           <img key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} onClick={() =>setIsOpen?.(true)}/>
+           <img key="options" src="/svg/Options.svg" alt="설정" width={24} height={24} onClick={() => {router.push(`${path}/Voteoptions`)}} />
           </>
         ); 
 
