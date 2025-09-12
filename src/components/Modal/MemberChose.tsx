@@ -1,17 +1,13 @@
 import styled from "@emotion/styled";
-
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-
 
 type Props = {
   isOpen?: boolean;
   setIsOpen?: (isOpen: boolean) => void;
 };
 
-
-
-export default function MemberChose({ isOpen, setIsOpen }: Props) {
+export default function VoteEndConditionModal({ isOpen, setIsOpen }: Props) {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
   const options = [
@@ -36,7 +32,7 @@ export default function MemberChose({ isOpen, setIsOpen }: Props) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <Background
+        <ModalBackground
           key="bg1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -44,7 +40,7 @@ export default function MemberChose({ isOpen, setIsOpen }: Props) {
           transition={{ duration: 0.3 }}
           onClick={() => setIsOpen && setIsOpen(false)}
         >
-          <MotionBox
+          <ModalContentBox
             key="category-box1"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
@@ -52,57 +48,56 @@ export default function MemberChose({ isOpen, setIsOpen }: Props) {
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             onClick={e => e.stopPropagation()}
           >
-            <Title>투표 종료 조건 선택하기</Title>
+            <ModalTitle>투표 종료 조건 선택하기</ModalTitle>
             
-            <ChoseOptions>
+            <OptionList>
               {options.map((option, index) => (
-                <DesOptions key={index}>
+                <OptionItem key={index}>
                   <div>
-                    <Labels 
+                    <RadioButton 
                       isSelected={selectedOption === index}
                       onClick={() => handleOptionSelect(index)}
                     >
-                      {selectedOption === index && <InnerCircle />}
-                    </Labels>
+                      {selectedOption === index && <RadioInnerDot />}
+                    </RadioButton>
                   </div>
-                  <DesOption onClick={() => handleOptionSelect(index)}>
-                    <SubP>{option.description}</SubP>
-                    <TiltP isSelected={selectedOption === index}>{option.title}</TiltP>
-                  </DesOption>
-                </DesOptions>
+                  <OptionContent onClick={() => handleOptionSelect(index)}>
+                    <OptionDescription>{option.description}</OptionDescription>
+                    <OptionTitle isSelected={selectedOption === index}>{option.title}</OptionTitle>
+                  </OptionContent>
+                </OptionItem>
               ))}
-            </ChoseOptions>
-          </MotionBox>
-        </Background>
+            </OptionList>
+          </ModalContentBox>
+        </ModalBackground>
       )}
     </AnimatePresence>
   );
 }
 
-const TiltP = styled.p<{ isSelected?: boolean }>`
+const OptionTitle = styled.p<{ isSelected?: boolean }>`
   font-size: 18px;
   font-weight: 600;
   color: ${props => props.isSelected ? '#011627' : '#B3B3B3'};
   transition: color 0.2s ease;
 `;
 
-const SubP = styled.p`
+const OptionDescription = styled.p`
   font-size: 12px;
   font-weight: 400;
   color: #DADADA;
 `;
 
-const InnerCircle = styled.div`
+const RadioInnerDot = styled.div`
   width: 8px;
   height: 8px;
   background: #FF9F1C;
   border-radius: 50%;
   margin: auto;
-
   aspect-ratio: 1;
 `;
 
-const Labels = styled.label<{ isSelected?: boolean }>`
+const RadioButton = styled.label<{ isSelected?: boolean }>`
   width: 20px;
   height: 20px;
   display: flex;
@@ -120,7 +115,7 @@ const Labels = styled.label<{ isSelected?: boolean }>`
   }
 `;
 
-const DesOptions = styled.div`
+const OptionItem = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -134,13 +129,13 @@ const DesOptions = styled.div`
   }
 `;
 
-const DesOption = styled.div`
+const OptionContent = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
 `;
 
-const ChoseOptions = styled.div`
+const OptionList = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 600px;
@@ -149,7 +144,7 @@ const ChoseOptions = styled.div`
   align-items: start;
 `;
 
-const MotionBox = styled(motion.div)`
+const ModalContentBox = styled(motion.div)`
   width: 100%;
   max-width: 600px;
   background: #fdfffc;
@@ -163,7 +158,7 @@ const MotionBox = styled(motion.div)`
   z-index: 1000;
 `;
 
-const Title = styled.div`
+const ModalTitle = styled.div`
   text-align: center;
   font-size: 18px;
   font-weight: 700;
@@ -180,7 +175,7 @@ const Title = styled.div`
   }
 `;
 
-const Background = styled(motion.div)`
+const ModalBackground = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
