@@ -13,11 +13,11 @@ const VoteBlock = ({ title, catogory, views, state } : Props) => {
   const renderImage = () => {
     switch (catogory) {
       case "학교생활":
-        return <img src="svg/School.svg" alt="food" width={30} height={30} />;
+        return <img src="/svg/School.svg" alt="food" width={30} height={30} />;
       case "유머":
-        return <img src="svg/Humors.svg" alt="travel" width={30} height={30} />;
+        return <img src="/svg/Humors.svg" alt="travel" width={30} height={30} />;
       case "기숙사":
-        return <img src="svg/Domitorys.svg" alt="tech" width={30} height={30} />;
+        return <img src="/svg/Domitorys.svg" alt="tech" width={30} height={30} />;
       default:
         return null;
     }
@@ -34,7 +34,7 @@ const VoteBlock = ({ title, catogory, views, state } : Props) => {
               <Infomations>
               <Catogorys>{catogory}</Catogorys>
                 <ViewBlock>
-                  <img src="svg/Views.svg" height={14} width={14}/>
+                  <img src="/svg/Views.svg" height={14} width={14}/>
                   <Views> {views}</Views>
                 </ViewBlock>
               
