@@ -19,85 +19,79 @@ function OptionsPage() {
   const [isOpen,setIsOpen] = useState(false);
 
   return (
-    <VoteptionsLayout>
+    <OptionsLayout>
 
-      <Header LeftItem={<img
-        src="/svg/Back.svg"
-        width={20}
-        height={50}
-        onClick={() => {router.back()}}
-         />} CenterItem={<HeaderItemsBox type={'votesetting'}/>} 
-         types = "votemake"/>
+      <Header 
+        LeftItem={
+          <img
+            src="/svg/Back.svg"
+            width={20}
+            height={50}
+            onClick={() => {router.back()}}
+          />
+        } 
+        CenterItem={<HeaderItemsBox type={'votesetting'}/>} 
+        types="votemake"
+      />
 
+      <OptionsSection>
+        <OptionItemWrapper onClick={() => setIsOpen(true)}>
+          <OptionContent>
+            <OptionHeaderRow>
+              <OptionTitleText>투표 종료 조건</OptionTitleText>
+            </OptionHeaderRow>
 
+            <OptionActionRow>
+              <OptionSubtitleText>투표 종료 조건 설정하기</OptionSubtitleText>
+              <img src="/svg/Nexts.svg" alt="next" width={20} height={20}/>
+            </OptionActionRow>
+          </OptionContent>
+        </OptionItemWrapper>
 
-    <Option>
-    <OptionsDiv onClick={() => {
-      setIsOpen(true)}
-      }>
-      <Options>
-        <OptionsP>
-        <TilteP>투표 종료 조건</TilteP>
-        </OptionsP>
+        <OptionItemWrapper>
+          <OptionContent>
+            <OptionHeaderRow>
+              <OptionTitleText>선지 작성하기</OptionTitleText>
+            </OptionHeaderRow>
 
-        <OptionButton>
-          <SubP>투표 종료 조건 설정하기</SubP>
-          <img src="/svg/Nexts.svg" alt="next" width={20} height={20}/>
-        </OptionButton>
-      </Options>
-    </OptionsDiv>
+            <OptionActionRow>
+              <OptionSubtitleText>AI 자동 선지 추천 기능 사용하기</OptionSubtitleText>
+              <img src="/svg/Nexts.svg" alt="next" width={20} height={20}/>
+            </OptionActionRow>
+          </OptionContent>
+        </OptionItemWrapper>
 
-        <OptionsDiv>
-      <Options>
-        <OptionsP>
-        <TilteP>선지 작성하기</TilteP>
-        </OptionsP>
-        <OptionButton>
-          <SubP>AI 자동 선지 추천 기능 사용하기</SubP>
-          <img src="/svg/Nexts.svg" alt="next" width={20} height={20}/>
-        </OptionButton>
-      </Options>
-    </OptionsDiv>
+        <MemberChose isOpen={isOpen} setIsOpen={setIsOpen} />
+      </OptionsSection>
 
-
-    <MemberChose isOpen = {isOpen} setIsOpen ={setIsOpen} />
-
-
-    </Option>
-
-    </VoteptionsLayout>
-
+    </OptionsLayout>
   );
 }
 
-const VoteptionsLayout = styled.div`
-
+const OptionsLayout = styled.div`
   max-width: 600px;
   width : 100%;
   background-color : ${color.white};
   height : 100vh;
 `
 
-const Option =  styled.div`
+const OptionsSection = styled.div`
   display :flex;
   flex-direction : column;
   margin-top : 100px;
-
 `
 
-const OptionsDiv = styled.div`
+const OptionItemWrapper = styled.div`
   max-width : 600px;
   width : 100%;
   display : flex;
   justify-content: center;   
   align-items: center;
-  
   padding : 20px 0px;
   border-bottom : 1px solid #F0F0F0;
 `
 
-
-const Options = styled.div`
+const OptionContent = styled.div`
   width : 90%;
   display : flex;
   flex-direction : column;
@@ -106,29 +100,27 @@ const Options = styled.div`
   gap : 20px;
 `
 
-const OptionButton = styled.div`
+const OptionActionRow = styled.div`
   display : flex;
   flex-direction : row;
   width : 100%;
   justify-content: space-between;
-  
 `
 
-const OptionsP = styled.div`
+const OptionHeaderRow = styled.div`
   display : flex;
   flex-direction : row;
   width : 100%;
   justify-content: space-between;
-
 `
 
-const TilteP = styled.p`
+const OptionTitleText = styled.p`
   font-size : 12px;
   color : #B3B3B3;
   font-weight : 600;
 `
 
-const SubP = styled.p`
+const OptionSubtitleText = styled.p`
   font-size : 16px;
   color : #011627;
   font-weight : 600;

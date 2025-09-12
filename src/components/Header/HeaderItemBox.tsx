@@ -47,7 +47,7 @@ const HeaderItemsBox = ({ type ,setIsOpen,isopen}: Props) => {
         return (
           <>
             <img key="bell" src="svg/Bell.svg" alt="알림" width={24} height={24} />
-            <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24} />
+            <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24} onClick={() => {router.push(`/Vote/search`)}}/>
             <img key="user" src="svg/User.svg" alt="사용자" width={24} height={24} />
           </>
         );
