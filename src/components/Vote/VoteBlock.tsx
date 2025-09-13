@@ -1,15 +1,17 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 type Props = {
     title : string,
     catogory : string,
     views : string,
-    state : string
+    state : string,
+    id : number
 }
 
-const VoteBlock = ({ title, catogory, views, state } : Props) => {
+const VoteBlock = ({ title, catogory, views, state ,id } : Props) => {
   const renderImage = () => {
     switch (catogory) {
       case "학교생활":
@@ -23,8 +25,10 @@ const VoteBlock = ({ title, catogory, views, state } : Props) => {
     }
   }
 
+  const Router = useRouter();
+  const path = usePathname();
   return (
-    <VoteBlockLayout>
+    <VoteBlockLayout onClick={() =>{Router.push(`${path}/${id}`)}}>
       <VoteBlocks>
         {renderImage()}
           <InfomationsBlocks>

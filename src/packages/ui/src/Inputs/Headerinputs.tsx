@@ -4,14 +4,16 @@ import { ChangeEvent } from 'react';
 
 type Props = {
   placeholders: string;
-  value: string;
-  onChange: (value: string) => void;
+  value?: string;
+  onChange?: (value: string) => void;
 };
 
 const HeaderInputs = ({ placeholders, value, onChange }: Props) => {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value);
+    if (onChange) {
+      onChange(event.target.value);
+    }
     console.log(event.target.value);
   };
 

@@ -26,6 +26,7 @@ export type HeaderType =
   | 'writeQuestion'
   | 'responseVote'
   | 'reports'
+  | 'reportguide'
 
 type Props = {
   type: HeaderType;
@@ -81,15 +82,22 @@ const HeaderItemsBox = ({ type ,setIsOpen,isopen}: Props) => {
           <HeaderInputs placeholders="원하는 투표 검색하기"/>
         );
       
-      case 'reportvote':
+      case 'reportguide':
         return (
           <>
-            <img key="report" src="svg/Report.svg" alt="리포트" width={24} height={24} />
-            <img key="bookmark" src="svg/Bookmark.svg" alt="북마크" width={24} height={24} />
+            <img key="report" src="/svg/Report.svg" alt="리포트" width={24} height={24} />
+            <img key="bookmark" src="/svg/Bookmark.svg" alt="북마크" width={24} height={24} />
           </>
         );
       
-      
+      case 'reportvote':
+        return (
+          <>
+            <img key="report" src="/svg/Report.svg" alt="리포트" width={24} height={24} />
+            <img key="close" src="/svg/Close.svg" alt="북마크" width={24} height={24} />
+          </>
+        );
+
       case 'bollot':
         return (
           <>

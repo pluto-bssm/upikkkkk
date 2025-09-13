@@ -9,6 +9,7 @@ import VoteMakeButton from "@/components/Vote/VoteMakeButton";
 import NavigationBar from "@/components/common/NavigationBar";
 import React,{useState} from "react";
 import VoteBlock from "@/components/Vote/VoteBlock";
+import { useRouter } from "next/navigation";
 
 const voteData = [
     {
@@ -47,10 +48,11 @@ const Search = () => {
 
     const showResults = searchitem.trim() !== "";
 
+    const router = useRouter();
     return(
         <SearchLayout>
             <Header 
-                LeftItem={<img src="/svg/Back2.svg" width={20} height={50} />}
+                LeftItem={<img src="/svg/Back2.svg" width={20} height={50} onClick={() => {router.back()}} />}
                 CenterItem={<HeaderInputs placeholders="원하는 투표 검색하기" value={searchitem} onChange={handleSearchChange}/>}
                 RightItem={<></>}
                 types=""
@@ -67,6 +69,7 @@ const Search = () => {
                         {filteredVotes.map(vote => (
                             <VoteBlock 
                             key={vote.id}
+                            id={vote.id}
                             title={vote.title} 
                             catogory={vote.category} 
                             views={vote.views} 

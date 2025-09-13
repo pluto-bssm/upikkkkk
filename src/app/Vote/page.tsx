@@ -59,6 +59,7 @@ const VotePage = () => {
                 {voteData.map((vote) => (
                     <VoteBlock 
                         key={vote.id}
+                        id={vote.id}
                         title={vote.title} 
                         catogory={vote.category} 
                         views={vote.views} 
