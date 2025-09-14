@@ -5,7 +5,7 @@ import { mockMainGuideData } from "@/mock/GuideComponent";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
-const MainComponent = () => {
+const GuideComponent = () => {
   return (
     <Root>
       <Section>
@@ -31,7 +31,7 @@ const MainComponent = () => {
   );
 };
 
-export default MainComponent;
+export default GuideComponent;
 
 const Root = styled.div`
   display: flex;

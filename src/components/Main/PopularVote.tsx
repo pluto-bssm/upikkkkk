@@ -9,7 +9,7 @@ const PopularVote = () => {
   const items = mockMainGuideData.slice(0, 3);
 
   return (
-    <CarouselRoot>
+    <Layout>
       <Track>
         {items.map((item) => (
           <Slide key={item.id}>
@@ -29,13 +29,13 @@ const PopularVote = () => {
           </Slide>
         ))}
       </Track>
-    </CarouselRoot>
+    </Layout>
   );
 };
 
 export default PopularVote;
 
-const CarouselRoot = styled.div`
+const Layout = styled.div`
   width: 100%;
   overflow: hidden;
 `;

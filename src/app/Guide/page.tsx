@@ -4,7 +4,7 @@ import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
-import MainComponent from "@/components/Main/GuideComponent";
+import GuideComponent from "@/components/Main/GuideComponent";
 import NavigationBar from "@/components/common/NavigationBar";
 
 const Guide = () => {
@@ -21,7 +21,7 @@ const Guide = () => {
         RightItem={<HeaderItemsBox type={'main'} />}
         types='None'/>
         
-        <MainComponent/>        
+        <GuideComponent/>        
         <NavigationBar />
         
     </GuidePageLayout>
