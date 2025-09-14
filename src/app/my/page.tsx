@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ProfileBox from "@/components/my/ProfileBox";
-import ProfileInfo from '@/components/my/ProfileInfo/ProfileInfo';
+import Profile from '@/components/my/Profile/Profile';
 
 type P = {
     auth?: 'STUDENT' | 'VISITOR';
@@ -13,7 +13,7 @@ type P = {
 const MyPage = ({ auth, className, children }: P) => {
     return (
         <>
-            <ProfileInfo/>
+            <Profile/>
         </>
     );
 };

@@ -13,7 +13,7 @@ const imgFrame2 = "http://localhost:3845/assets/82a67a15b272414210f229b2722f1545
 
 const ProfileInfo = () => {
     const u = {
-        auth: "STUDENT" as const,
+        auth: "STUDENT" ,
         name: "박댁댁",
         email: "fake_bsm_email@bssm.hs.kr",
     };
@@ -55,10 +55,24 @@ const ProfileInfo = () => {
       <ProfileInfoList>
         <ProfileInfoListSection title="기록">
           <ProfileInfoListItem>내가 만든 투표</ProfileInfoListItem>
-          <ProfileInfoDivider />
-          <ProfileInfoListItem>투표 응답 내역</ProfileInfoListItem>
+          {u.auth === "STUDENT" ? (
+            <>
+              <ProfileInfoDivider />
+              <ProfileInfoListItem>투표 응답 내역</ProfileInfoListItem>
+            </>
+          ) : null}
           <ProfileInfoDivider />
           <ProfileInfoListItem>내가 만든 투표</ProfileInfoListItem>
+        </ProfileInfoListSection>
+        <ProfileInfoListSection title="설정">
+          <ProfileInfoListItem>계정정보</ProfileInfoListItem>
+          <ProfileInfoDivider />
+        </ProfileInfoListSection>
+        <ProfileInfoListSection title="도움말&지원">
+          <ProfileInfoListItem>서비스 소개</ProfileInfoListItem>
+          <ProfileInfoDivider />
+          <ProfileInfoListItem>문의하기</ProfileInfoListItem>
+          <ProfileInfoDivider />
         </ProfileInfoListSection>
       </ProfileInfoList>
   </StyledProfileInfo>
