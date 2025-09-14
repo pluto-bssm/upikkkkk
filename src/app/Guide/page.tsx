@@ -8,7 +8,6 @@ import GuideComponent from "@/components/Main/GuideComponent";
 import NavigationBar from "@/components/common/NavigationBar";
 
 const Guide = () => {
-
     return (
     <GuidePageLayout>
        <Header LeftItem={
@@ -19,9 +18,11 @@ const Guide = () => {
          />
       } 
         RightItem={<HeaderItemsBox type={'main'} />}
-        types='None'/>
+         types={"default"} />
         
-        <GuideComponent/>        
+        <MainLayout>
+        <GuideComponent gap="16px" />   
+        </MainLayout>     
         <NavigationBar />
         
     </GuidePageLayout>
@@ -48,6 +49,6 @@ const MainLayout = styled.div`
   max-width : 600px;
   width : 100%;
   min-height: 100vh;
-  margin-top:20%;
+  margin-top:15vh;
   background-color : ${color.white};
 `;  

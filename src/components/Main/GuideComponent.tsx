@@ -5,11 +5,15 @@ import { mockMainGuideData } from "@/mock/GuideComponent";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
-const GuideComponent = () => {
+type GuideComponentProps = {
+  gap?: string;
+};
+
+const GuideComponent = ({ gap = "10px" }: GuideComponentProps) => {
   return (
     <Root>
       <Section>
-        <SectionBody>
+        <SectionBody gap={gap}>
           {mockMainGuideData.map((item) => (
             <GuideCard key={item.id}>
               <GuideEmoji src={item.thumnail} alt="thumbnail" />
@@ -44,10 +48,10 @@ const Section = styled.section`
   gap: 12px;
 `;
 
-const SectionBody = styled.div`
+const SectionBody = styled.div<{ gap: string }>`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: ${props => props.gap};
 `;
 
 const GuideCard = styled.div`

@@ -8,7 +8,7 @@ import NavigationBar from "@/components/common/NavigationBar";
 import { mockMainGuideData } from "@/mock/MoreGuide";
 import font from "@/packages/design-system/src/font";
 import { useRouter } from "next/navigation";
-import TableComponents from "@/components/Guide/TableComponents";
+import ChartComponent from "@/components/Guide/ChartComponent";
 
 const MoreGuide = () => {
   const router = useRouter();
@@ -37,16 +37,11 @@ const MoreGuide = () => {
             <Title>{guide.title}</Title>
             <Date>{guide.date}</Date>
           </TitleTexts>
-          <Divider />
+          <Line />
         </TitleColumn>
 
         <VoteSection>
-          <VoteHeader>
-            <VoteTitle>{guide.votetitle}</VoteTitle>
-            <Participate>참여 {guide.participate}명</Participate>
-          </VoteHeader>
-
-          <TableComponents />
+          <ChartComponent />
         </VoteSection>
         </Layout>
       </MainLayout>
@@ -84,6 +79,7 @@ const Layout = styled.div`
   flex-direction: column;
   gap: 24px;
   width : 90%;
+  align-items: center;
 `;
 const TitleColumn = styled.div`
   display: flex;
@@ -115,15 +111,7 @@ const Date = styled.span`
   font-family: ${font.p1};
 `;
 
-const Content = styled.p`
-  margin: 16px 0 0;
-  white-space: pre-line;
-  color: ${color.gray700};
-  font-family: ${font.P5};
-  line-height: 1.6;
-`;
-
-const Divider = styled.hr`
+const Line = styled.hr`
   width: 100%;
   border: none;
   height: 1px;
@@ -132,25 +120,10 @@ const Divider = styled.hr`
 `;
 
 const VoteSection = styled.section`
-  width: 100%;
+  width: 30vh;
+  height:30vh;
+  display:flex;
+  align-items : center;
+  flex-direction : column;
   margin-top: 16px;
 `;
-
-const VoteHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const VoteTitle = styled.h2`
-  margin: 0;
-  color: ${color.black};
-  ${font.D3};
-`;
-
-const Participate = styled.span`
-  color: ${color.gray600};
-  font-family: ${font.P6};
-`;
-
-// Table UI is now provided by TableComponents
