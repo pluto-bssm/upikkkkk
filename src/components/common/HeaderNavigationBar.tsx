@@ -8,10 +8,11 @@ const Questionnavs = ['전체','인기'];
 
 type Props = {
   type: string;
+  onOptionClick?: () => void;
 };
 
 
-const HeaderNavigaionBar = ({ type }: Props) => {
+const HeaderNavigaionBar = ({ type, onOptionClick }: Props) => {
     const [activeIdx, setActiveIdx] = useState(0);
 
     const renderItems = () => {
@@ -35,7 +36,7 @@ const HeaderNavigaionBar = ({ type }: Props) => {
                         ))}
                         </Navs>
 
-                        <img src="svg/Navoption.svg" />
+                        <img src="svg/Navoption.svg" onClick={onOptionClick} style={{ cursor: 'pointer' }} />
                     </NavWrapper>
                 );
 

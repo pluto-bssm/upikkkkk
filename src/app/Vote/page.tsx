@@ -7,7 +7,6 @@ import color from "@/packages/design-system/src/color";
 import NavigationBar from "@/components/common/NavigationBar";
 import VoteMakeButton from "@/components/Vote/VoteMakeButton";
 import VoteBlock from "@/components/Vote/VoteBlock";
-import { useState } from "react";
 
 const voteData = [
     {
@@ -33,15 +32,10 @@ const voteData = [
     }
 ];
 
-const vote = () => {
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
-
+const Vote = () => {
     const handleOptionClick = () => {
-        setIsModalOpen(true);
+        // TODO: Implement modal functionality
     };
-
 
     return (
         <VotePageLayout>
@@ -49,6 +43,7 @@ const vote = () => {
                 LeftItem={<img src="/svg/Logo.svg" width={50} height={50}/>} 
                 RightItem={<HeaderItemsBox type={"main"}/>}
                 types={"default"} 
+                onOptionClick={handleOptionClick}
             />
             <VoteButton>
                 <VoteMakeButton />
@@ -71,7 +66,7 @@ const vote = () => {
     )
 }
 
-export default vote;
+export default Vote;
 
 const VoteButton = styled.div`
     max-width : 600px;
