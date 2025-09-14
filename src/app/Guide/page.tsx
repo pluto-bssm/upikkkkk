@@ -4,7 +4,6 @@ import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
-import font from "@/packages/design-system/src/font";
 import MainComponent from "@/components/Main/GuideComponent";
 import NavigationBar from "@/components/common/NavigationBar";
 

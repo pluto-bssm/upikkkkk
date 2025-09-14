@@ -8,7 +8,7 @@ import color from '@/packages/design-system/src/color'
 import font from '@/packages/design-system/src/font'
 import RecoVote from '@/components/Main/RecoVote'
 import MainComponent from '@/components/Main/GuideComponent'
-import PopularVote from '@/components/Main/PopularVote';
+import PopularVote from '@/components/Main/PopularVote'
 
 const Main = () => {
   return (
@@ -33,12 +33,12 @@ const Main = () => {
           <SectionTitle>인기 투표</SectionTitle>
         </SectionHeader>
         <PopularVote />
-        <PopularVote />
         <SectionHeader>
           <Book />
           <SectionTitle>오늘의 가이드</SectionTitle>
         </SectionHeader>
-        <MainComponent/>      <NavigationBar />
+        <MainComponent/>
+      <NavigationBar />
     </MainPageLayout>
   );
 }

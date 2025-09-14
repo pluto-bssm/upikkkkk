@@ -11,9 +11,10 @@ type Props = {
   showInput?: boolean;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   types : string;
+  onOptionClick?: () => void;
 };
 
-const Header = ({ LeftItem, RightItem, CenterItem, showInput = false,types, inputProps }: Props) => {
+const Header = ({ LeftItem, RightItem, CenterItem, showInput = false,types, inputProps, onOptionClick }: Props) => {
   return (
     <HeaderPageLayout>
     <HeaderBarSection>
@@ -31,7 +32,7 @@ const Header = ({ LeftItem, RightItem, CenterItem, showInput = false,types, inpu
       </HeaderItem>
     </HeaderBarSection>
     <NavigationBarSection>
-      <HeaderNavigaionBar type={types} />
+      <HeaderNavigaionBar type={types} onOptionClick={onOptionClick} />
     </NavigationBarSection>
     </HeaderPageLayout>
   );
