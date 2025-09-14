@@ -34,7 +34,6 @@ const voteData = [
 ];
 
 const vote = () => {
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
 
@@ -42,14 +41,13 @@ const vote = () => {
         setIsModalOpen(true);
     };
 
-
     return (
         <VotePageLayout>
             <Header 
                 LeftItem={<img src="/svg/Logo.svg" width={50} height={50}/>} 
                 RightItem={<HeaderItemsBox type={"main"}/>}
                 types={"default"} 
-                
+                onOptionClick={handleOptionClick}
             />
             <VoteButton>
                 <VoteMakeButton />

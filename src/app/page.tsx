@@ -33,12 +33,12 @@ const Main = () => {
           <SectionTitle>인기 투표</SectionTitle>
         </SectionHeader>
         <PopularVote />
+        <PopularVote />
         <SectionHeader>
           <Book />
           <SectionTitle>오늘의 가이드</SectionTitle>
         </SectionHeader>
-        <MainComponent/>
-      <NavigationBar />
+        <MainComponent/>      <NavigationBar />
     </MainPageLayout>
   );
 }
