@@ -95,7 +95,7 @@ const VoteMakeButtonWrapper = styled.div`
 
 const VoteListSection = styled.div`
     margin-top : 100px;
-    width : 100%;
+    width : 90%;
     display : flex;
     flex-direction : column;
     gap : 16px;

@@ -5,6 +5,12 @@ import styled from "@emotion/styled";
 import Header from "@/components/common/Header";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import HeaderItemsBox from "@/components/Header/HeaderItemBox";
+import MakeCancel from "@/components/Modal/MakeCancel"
+import { useRouter } from "next/navigation";
+import GuideBlock from "@/components/VoteMakes/GuideBlock";
+import LoadingModal from "@/components/Modal/LoadingModal";
+import Complete from "@/components/Modal/Complete"
 
 const SimilarGuide = () => {
   const guideData = [
@@ -14,20 +20,25 @@ const SimilarGuide = () => {
     { id: 4, title: '가이드 제목', category: '학교생활', count: 16 },
   ];
 
-  const handleGuideClick = (guideId: number) => {
-    console.log('가이드 클릭:', guideId);
-    
-  };
+  const router = useRouter();
+  const [isOpenMakeModal, setIsOpenMakeModal] = useState(false);
+  const [LodingModal,setLodingModal] = useState(false);
+  const [CompleteModal,setCompleteModal] = useState(false);
+
 
   const handleContinue = () => {
-    console.log('계속 진행하기');
+    setLodingModal(true);
+
+    setTimeout(() => {
+        setLodingModal(false);
+        setCompleteModal(true);
+    }, 1000);
 
   };
 
-  const handleClose = () => {
-    console.log('닫기');
-
-  };
+  const CompleteVotemake = () =>{
+    router.push("/");
+  }
 
   return (
     <SimilarGuideLayout>
@@ -37,16 +48,13 @@ const SimilarGuide = () => {
             src="/svg/Back.svg"
             width={20}
             height={50}
+            onClick={() => router.back()}
           />
         } 
         RightItem={
-          <img
-            src="/svg/Close.svg"
-            width={20}
-            height={20}
-            onClick={handleClose}
-            style={{ cursor: 'pointer' }}
-          />
+          <div onClick={() => setIsOpenMakeModal(true)}>
+            <HeaderItemsBox type="votemake" />
+          </div>
         } 
         types="Nones"
       />
@@ -60,26 +68,32 @@ const SimilarGuide = () => {
 
           <GuideListWrapper>
             {guideData.map((guide) => (
-              <GuideItem key={guide.id} onClick={() => handleGuideClick(guide.id)}>
-                <GuideIcon>
-                  <img src="/svg/Guide.svg" alt="guide" width={40} height={40} />
-                </GuideIcon>
-                <GuideInfo>
-                  <GuideTitle>{guide.title}</GuideTitle>
-                  <GuideDetails>
-                    <Category>{guide.category}</Category>
-                    <Count>{guide.count}</Count>
-                  </GuideDetails>
-                </GuideInfo>
-              </GuideItem>
+              
+                <GuideBlock 
+                        key={guide.id}
+                        id={guide.id}
+                        title={guide.title} 
+                        catogory={guide.category} 
+                        count={guide.count}
+                    />
+ 
             ))}
           </GuideListWrapper>
 
           <ContinueButton onClick={handleContinue}>
-            + 계속 진행하기
+            <img src="/svg/Plus.svg" width={24} height={24} /> 계속 진행하기
           </ContinueButton>
         </ContentWrapper>
       </SimilarGuideContainer>
+
+      {isOpenMakeModal ? (
+              <MakeCancel setIsOpen={setIsOpenMakeModal} isOpen={isOpenMakeModal} />
+            ) : null}
+
+        {LodingModal && <LoadingModal title="투표를 제작하고 있어요." des="유픽에서는 재학생들로부터 더 정확한 정보를 제공받을 수 있어요." />}
+
+      {CompleteModal && <Complete text1="투표 제작을" text2="했어요!" text3="완료" subtext="투표 제작 이후 투표 내용은 변경될 수 없어요." img="/svg/Completevote.svg" onfunciton={CompleteVotemake}/>}
+
     </SimilarGuideLayout>
   );
 }
@@ -199,8 +213,11 @@ const ContinueButton = styled.button`
   border: none;
   background-color: ${color.primary};
   color: ${color.white};
-  font-size: 20px;
+  font-family: 'Pretendard';
+  font-style: normal;
   font-weight: 600;
+  font-size: 20px;
+  line-height: 24px;
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-top: 60px;
@@ -209,4 +226,8 @@ const ContinueButton = styled.button`
     background-color: ${color.primary};
     opacity: 0.9;
   }
+
+  display : flex;
+  align-items : center;
+  justify-content : center;
 `;
