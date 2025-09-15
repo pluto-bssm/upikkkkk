@@ -13,15 +13,12 @@ type CompleteVoteProps = React.ComponentProps<typeof motion.div> & {
   text3 ?: string;
   subtext ?: string;
   img ?: string;
+  onfunciton?: () => void;
 };
 
-export default function CompleteVote({ setIsOpen , text1,text2,text3,subtext,img ,...motionProps}: CompleteVoteProps) {
+export default function CompleteVote({ setIsOpen , text1,text2,text3,subtext,img ,onfunciton,...motionProps}: CompleteVoteProps) {
   const router = useRouter();
 
-  function handleComplete() {
-    setIsOpen?.(false);
-    router.replace("/")
-  }
 
   return (
     <ModalBackground {...motionProps}>
@@ -42,7 +39,7 @@ export default function CompleteVote({ setIsOpen , text1,text2,text3,subtext,img
           <SubP>{subtext}</SubP>
         </Text>
 
-        <ConfirmButton onClick={handleComplete}>
+        <ConfirmButton onClick={onfunciton}>
           확인
         </ConfirmButton>
       </ModalContent>
@@ -93,6 +90,7 @@ const Title = styled.h2`
   font-size: 22px;
   font-weight: 600;
   color: #011627;
+  white-space: pre-line;
 
 `;
 
@@ -103,18 +101,17 @@ const OrangeText = styled.span`
 const SubP = styled.p`
   ${font.H6};
   color: #9CA3AF;
-
+  white-space: pre-line;
 `;
 
 const ConfirmButton = styled.button`
   width: 100%;
-  padding: 14px 10px;
+  padding: 16px 10px;
   border: none;
   border-radius: 16px;
   background-color: ${color.primary};
   color: white;
-  font-size: 12px;
-  font-weight: 600;
+  ${font.btn1};
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-top: 16px;

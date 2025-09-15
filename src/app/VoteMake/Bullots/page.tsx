@@ -11,13 +11,37 @@ import color from "@/packages/design-system/src/color";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MakeCancel from "@/components/Modal/MakeCancel";
+import LoadingModal from "@/components/Modal/LoadingModal";
 
 export default function BallotEditPage() {  
   const lis = ["A", "B", "C", "D", "E"];
   const maxPossibleBallots = lis.length;
   const router = useRouter();
 
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenSubmitModal, setIsOpenSubmitModal] = useState(false); 
+  const [LikeguideModal, setLikeguideModal] = useState(false); 
+
   const { title, setTitle, ballots, setBallots } = useVoteStore();
+
+const handleSubmit = () => {
+    console.log('투표 제출:', { title, ballots });
+
+
+    setIsOpenSubmitModal(true);
+    
+
+    setTimeout(() => {
+      setIsOpenSubmitModal(false);
+      setLikeguideModal(true);
+    }, 1000);
+
+
+    setTimeout(() => {
+        setLikeguideModal(false);
+    }, 4000);
+};
+
 
   const handleAddBallot = () => {
     if (ballots.length < maxPossibleBallots) {
@@ -80,13 +104,33 @@ export default function BallotEditPage() {
         )}
 
         <ActionButtonWrapper>
-          <ChoseButton />
+          <ChoseButton 
+            onSubmitClick={() => setIsOpenModal(true)}
+            onSubmitConfirm={handleSubmit}
+            isSubmitModalOpen={isOpenModal}
+            setIsSubmitModalOpen={setIsOpenModal}
+            onSubModalOpen={setIsOpenSubmitModal}
+          />
         </ActionButtonWrapper>
       </BallotEditContainer>
 
       {isOpenMakemodal ? (
         <MakeCancel setIsOpen={setIsOpenMakemodal} isOpen={isOpenMakemodal}/> 
       ) : null}
+
+      {isOpenSubmitModal && (
+        <LoadingModal 
+          title="욕설이 있는지 확인하고 있어요" 
+          des="욕설이 포함된 투표는 제작될 수 없어요."
+        />
+      )}
+
+      {LikeguideModal && (
+        <LoadingModal 
+          title={`유사한 내용의 가이드가 있는지\n확인하고 있어요`}
+          des="유사한 내용의 가이드가 있다면, 기다리지 않아도 돼요."
+        />
+      )}
     </BallotEditLayout>
   );
 }

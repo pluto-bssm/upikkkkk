@@ -1,31 +1,67 @@
 'use client'
 
 import styled from "@emotion/styled";
-import { useRouter,usePathname } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState , useEffect } from "react";
 import color from "@/packages/design-system/src/color";
 import MemberChose from "@/components/Modal/MemberChose";
 import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import TwoOptionsModal from "@/components/Modal/TwoOptionsModal";
 import AILoadingModal from "@/components/Modal/LoadingModal";
+import CompleteVote from "@/components/Modal/Complete";
 
 export default
 function OptionsPage() {   
   
-  const router = useRouter()
+  const router = useRouter();
   
 
   const [isOpen,setIsOpen] = useState(false);
   const [isOpenModal,setIsOpenModal] = useState(false);
   const [isAiOpen,setIsAiOpen] = useState(false);
+  const [isWarnOpen,setWarnOpen] = useState(false);
+  const [isCompleteOpen,setIsCompleteOpen] = useState(false);
+  const [aiUsageCount, setAiUsageCount] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+      setIsClient(true);
+    const savedCount = sessionStorage.getItem('aiUsageCount');
+      if (savedCount) {
+        setAiUsageCount(parseInt(savedCount));
+        console.log(savedCount)
+      }
+  }, []);
+
+    useEffect(() => {
+      if (isClient){
+    sessionStorage.setItem('aiUsageCount', aiUsageCount.toString());
+      }
+  }, [aiUsageCount]);
+
+  const CompleteAi = () =>{
+    router.back();
+  }
+
+  const MaxAi = () =>{
+    setWarnOpen(false);
+  }
 
   const handleUseAI = () => {
-    setIsAiOpen(true);
+    if(aiUsageCount >= 3){
+      setWarnOpen(true);
 
-    setTimeout(() => {
-      setIsAiOpen(false);
-    }, 5000);
+    }
+    else {
+      setIsAiOpen(true);
+          setTimeout(() => {
+            setIsAiOpen(false);
+            setIsCompleteOpen(true);
+            setAiUsageCount(prev => prev + 1);
+          }, 5000);
+    }
+
   }
   return (
     <OptionsLayout>
@@ -77,14 +113,18 @@ function OptionsPage() {
           icon="exclamation"
           title="AI 선지 추천 기능 사용하기"
           subtitle={`투포를 제작할 때 선지 작성에 어려움을 겪는 경우\n이 기능을 사용하여 AI가 선지를 작성하도록 할 수 있습니다.`}
-          primaryButtonText="사용하기 0/3"
+          primaryButtonText={`사용하기 ${aiUsageCount}/3`}
           secondaryButtonText="뒤로가기"
           onPrimaryClick={() => handleUseAI()}
-          onSecondaryClick={() => console.log('뒤로가기')}
+          onSecondaryClick={() => setIsOpenModal(false)}
         />
 
         
         {isAiOpen &&<AILoadingModal title="AI가 선지를 작성하는 중..." des="AI가 선지를 작성하는데 약 1분정도의 시간이 소요됩니다."/>}
+        {isCompleteOpen&&<CompleteVote isOpen={isCompleteOpen} setIsOpen={setIsCompleteOpen} text1="AI가 선지 작성을" text2="했어요!" text3="완료" subtext="선지가 마음에 들지 않는다면 
+          최대 2회까지 선지를 재생성을 할 수 있습니다." img="/svg/Completevote.svg" onfunciton={CompleteAi}/>}
+        {isWarnOpen&&<CompleteVote isOpen={isWarnOpen} setIsOpen={setWarnOpen} text1={`오늘은 더 이상 AI 선지추천\n기능을`} text2="할 수 없어요" text3="이용" subtext={`AI 선지 추천 기능은 하루에 3번만 사용할 수 있고,\n사용 기능 횟수는 매일밤 12시에 초기화 돼요.`}
+        img="/svg/Bad.svg" onfunciton={MaxAi}/>}
       </OptionsSection>
 
     </OptionsLayout>
@@ -141,10 +181,13 @@ const OptionTitleText = styled.p`
   font-size : 12px;
   color : #B3B3B3;
   font-weight : 600;
+  cursor : pointer;
 `
 
 const OptionSubtitleText = styled.p`
   font-size : 16px;
   color : #011627;
   font-weight : 600;
+  cursor : pointer;
 `
+

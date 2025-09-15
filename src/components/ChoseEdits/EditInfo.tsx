@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 
 
 
-// EditInfo.tsx
 export default function EditInfo({
   title,
   setTitle,

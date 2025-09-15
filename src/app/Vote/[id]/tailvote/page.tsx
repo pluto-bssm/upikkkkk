@@ -8,12 +8,23 @@ import { AnimatePresence } from 'framer-motion';
 import CompleteVote from '@/components/Modal/Complete';
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import { useRouter } from "next/navigation";
 
 const Tailvote = () => {
+  const router = useRouter();
   const [isCompleteOpen, setIsCompleteOpen] = useState(false);
+
+
+
   const handleVoteSubmit = () => {
     setIsCompleteOpen(true);
   };
+
+  function handleComplete() {
+    setIsCompleteOpen?.(false);
+    router.push("/");
+  }
+
 
   return (
     <TailvoteLayout>
@@ -66,6 +77,8 @@ const Tailvote = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          onfunciton={handleComplete}
+          
         />
       )}
     </AnimatePresence>
