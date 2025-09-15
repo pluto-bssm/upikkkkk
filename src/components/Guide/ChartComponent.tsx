@@ -26,8 +26,6 @@ useEffect(() => {
     chartRef.current.destroy();
   }
 
-  const total = chartData.reduce((sum, item) => sum + item.value, 0);
-
   chartRef.current = new Chart(ctx, {
     type: 'pie',
     data: {
@@ -52,67 +50,9 @@ useEffect(() => {
           titleColor: '#fff',
           bodyColor: '#fff',
           cornerRadius: 8,
-          callbacks: {
-            label: function(context: any) {
-              const percentage = ((context.parsed / total) * 100).toFixed(0);
-              return `${context.label}: ${percentage}% (${context.parsed}명)`;
-            }
-          }
         }
       }
-    },
-    // 🎯 커스텀 플러그인으로 퍼센티지 표시
-    plugins: [{
-      id: 'centerText',
-      afterDatasetsDraw: function(chart: any) {
-        const ctx = chart.ctx;
-        const chartArea = chart.chartArea;
-        
-        chart.data.datasets.forEach((dataset: any, i: number) => {
-          const meta = chart.getDatasetMeta(i);
-          
-          meta.data.forEach((element: any, index: number) => {
-            const value = dataset.data[index];
-            const percentage = ((value / total) * 100).toFixed(0);
-            
-            // 각 섹션의 중심점 계산
-            const model = element;
-            const startAngle = model.startAngle;
-            const endAngle = model.endAngle;
-            const midAngle = startAngle + (endAngle - startAngle) / 2;
-            
-            // 반지름 계산 (차트 중심에서 70% 지점)
-            const radius = (model.outerRadius - model.innerRadius) * 0.7 + model.innerRadius;
-            
-            // 텍스트 위치 계산
-            const x = model.x + Math.cos(midAngle) * radius;
-            const y = model.y + Math.sin(midAngle) * radius;
-            
-            // 텍스트 스타일 설정
-            ctx.save();
-            ctx.fillStyle = 'white';
-            ctx.font = 'bold 18px Arial, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            
-            // 텍스트에 그림자 효과 추가 (가독성 향상)
-            ctx.shadowColor = 'rgba(0,0,0,0.7)';
-            ctx.shadowBlur = 3;
-            ctx.shadowOffsetX = 1;
-            ctx.shadowOffsetY = 1;
-            
-            // 퍼센티지 표시
-            ctx.fillText(`${percentage}%`, x, y - 10);
-            
-            // 인원수 표시
-            ctx.font = 'bold 14px Arial, sans-serif';
-            ctx.fillText(`(${value}명)`, x, y + 10);
-            
-            ctx.restore();
-          });
-        });
-      }
-    }]
+    }
   });
 
   // 컴포넌트 언마운트 시 차트 정리
@@ -123,17 +63,19 @@ useEffect(() => {
   };
 }, []);
 
-// 🎨 커스텀 선지 컴포넌트 (이미지와 동일)
+// 🎨 커스텀 선지 컴포넌트 (useEffect 밖으로!)
 const CustomLegend = () => {
   return (
     <div 
-      className="rounded-lg p-4"
       style={{ 
-        backgroundColor: '#e6e6e6',
+        backgroundColor: '#E6E6E6',
         width: '318px',
-        height: '94px'
-      }}
-    >
+        height: '94px',
+        borderRadius: '8px',
+        padding: '16px'
+  }}
+>
+
       {/* 첫 번째 행: 선지1, 선지2 */}
       <div className="flex justify-between mb-3">
         <div className="flex items-center">
@@ -196,19 +138,19 @@ const CustomLegend = () => {
 };
 
 return (
-  <div className="flex flex-col items-center gap-8 p-8">
-    {/* 🎯 차트 영역 */}
-    <div className="flex justify-center items-start">
-      <div className="w-80 h-80 bg-white rounded-xl shadow-lg p-6">
-        <canvas ref={canvasRef} id="myChart" />
+    <div className="flex flex-col items-center gap-8">
+      {/* 🎯 차트 영역 */}
+      <div className="flex justify-center items-start">
+        <div className="w-80 h-80 bg-white rounded-xl shadow-lg p-6">
+          <canvas ref={canvasRef} id="myChart" />
+        </div>
+      </div>
+
+      {/* 📊 커스텀 선지 영역 */}
+      <div className="flex justify-center">
+        <CustomLegend />
       </div>
     </div>
-
-    {/* 📊 커스텀 선지 영역 */}
-    <div className="flex justify-center">
-      <CustomLegend />
-    </div>
-  </div>
 );
 };
 

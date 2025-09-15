@@ -40,9 +40,12 @@ const MoreGuide = () => {
           <Line />
         </TitleColumn>
 
+    <VoteCheck>투표 결과 확인하기</VoteCheck>
+      <VoteResult>
         <VoteSection>
           <ChartComponent />
         </VoteSection>
+      </VoteResult>
         </Layout>
       </MainLayout>
 
@@ -117,6 +120,27 @@ const Line = styled.hr`
   height: 1px;
   background: ${color.gray300};
   margin: 0;
+`;
+
+const VoteResult = styled.div`
+  width: 100%;
+  height:80vh;
+  border-radius:8px;
+  border:1px solid ${color.gray500};
+  display:flex;
+  align-items : center;
+  flex-direction : column;
+`;
+
+const VoteCheck = styled.div`
+  width:30%;
+  height:37px;
+  background-color:${color.black};
+  border-radius:30px;
+  color:${color.white};
+  display:flex;
+  align-items : center;
+  flex-direction : column;
 `;
 
 const VoteSection = styled.section`
