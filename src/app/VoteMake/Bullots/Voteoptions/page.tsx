@@ -7,17 +7,26 @@ import color from "@/packages/design-system/src/color";
 import MemberChose from "@/components/Modal/MemberChose";
 import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
-
-import { motion, AnimatePresence } from "framer-motion";
+import TwoOptionsModal from "@/components/Modal/TwoOptionsModal";
+import AILoadingModal from "@/components/Modal/LoadingModal";
 
 export default
 function OptionsPage() {   
   
   const router = useRouter()
-  const pathname = usePathname()
+  
 
   const [isOpen,setIsOpen] = useState(false);
+  const [isOpenModal,setIsOpenModal] = useState(false);
+  const [isAiOpen,setIsAiOpen] = useState(false);
 
+  const handleUseAI = () => {
+    setIsAiOpen(true);
+
+    setTimeout(() => {
+      setIsAiOpen(false);
+    }, 5000);
+  }
   return (
     <OptionsLayout>
 
@@ -48,7 +57,7 @@ function OptionsPage() {
           </OptionContent>
         </OptionItemWrapper>
 
-        <OptionItemWrapper>
+        <OptionItemWrapper onClick={()=> setIsOpenModal(true)}>
           <OptionContent>
             <OptionHeaderRow>
               <OptionTitleText>선지 작성하기</OptionTitleText>
@@ -62,6 +71,20 @@ function OptionsPage() {
         </OptionItemWrapper>
 
         <MemberChose isOpen={isOpen} setIsOpen={setIsOpen} />
+        <TwoOptionsModal
+          isOpen={isOpenModal}
+          setIsOpen={setIsOpenModal}
+          icon="exclamation"
+          title="AI 선지 추천 기능 사용하기"
+          subtitle={`투포를 제작할 때 선지 작성에 어려움을 겪는 경우\n이 기능을 사용하여 AI가 선지를 작성하도록 할 수 있습니다.`}
+          primaryButtonText="사용하기 0/3"
+          secondaryButtonText="뒤로가기"
+          onPrimaryClick={() => handleUseAI()}
+          onSecondaryClick={() => console.log('뒤로가기')}
+        />
+
+        
+        {isAiOpen &&<AILoadingModal title="AI가 선지를 작성하는 중..." des="AI가 선지를 작성하는데 약 1분정도의 시간이 소요됩니다."/>}
       </OptionsSection>
 
     </OptionsLayout>

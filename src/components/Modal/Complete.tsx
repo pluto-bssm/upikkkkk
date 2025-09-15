@@ -8,9 +8,14 @@ import font from '@/packages/design-system/src/font';
 type CompleteVoteProps = React.ComponentProps<typeof motion.div> & {
   isOpen?: boolean;
   setIsOpen?: (isOpen: boolean) => void;
+  text1 ?: string;
+  text2 ?: string;
+  text3 ?: string;
+  subtext ?: string;
+  img ?: string;
 };
 
-export default function CompleteVote({ setIsOpen, ...motionProps }: CompleteVoteProps) {
+export default function CompleteVote({ setIsOpen , text1,text2,text3,subtext,img ,...motionProps}: CompleteVoteProps) {
   const router = useRouter();
 
   function handleComplete() {
@@ -27,14 +32,14 @@ export default function CompleteVote({ setIsOpen, ...motionProps }: CompleteVote
         transition={{ type: "spring", duration: 0.3 }}
       >
         <IconWrapper>
-          <img src='/svg/Completevote.svg' />
+          <img src={img} />
         </IconWrapper>
 
         <Text>
           <Title>
-            투표를 <OrangeText>완료</OrangeText>했어요!
+            {text1} <OrangeText>{text3}</OrangeText>{text2}
           </Title>
-          <SubP>마이페이지에서 지금까지 한 투표 내역을 확인할 수 있어요</SubP>
+          <SubP>{subtext}</SubP>
         </Text>
 
         <ConfirmButton onClick={handleComplete}>
@@ -86,7 +91,7 @@ const Text = styled.div`
 
 const Title = styled.h2`
   font-size: 22px;
-  font-weight: 500;
+  font-weight: 600;
   color: #011627;
 
 `;

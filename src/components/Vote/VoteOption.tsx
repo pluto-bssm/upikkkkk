@@ -2,7 +2,7 @@
 
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
-import font from "@/packages/design-system/src/font";
+
 
 interface VoteOptionProps {
   label: string;

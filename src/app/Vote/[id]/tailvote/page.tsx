@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import { AnimatePresence } from 'framer-motion';
-import CompleteVote from '@/components/Modal/CompleteVote';
+import CompleteVote from '@/components/Modal/Complete';
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
@@ -58,6 +58,11 @@ const Tailvote = () => {
         <CompleteVote
           isOpen={isCompleteOpen}
           setIsOpen={setIsCompleteOpen}
+          text1 = '투표를'
+          text2= '했어요!'
+          text3 = '완료'
+          subtext='마이페이지에서 지금까지 한 투표 내역을 확인할 수 있어요'
+          img ='/svg/Completevote.svg'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
