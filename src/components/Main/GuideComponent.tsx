@@ -4,18 +4,23 @@ import styled from "@emotion/styled";
 import { mockMainGuideData } from "@/mock/GuideComponent";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import { useRouter } from "next/navigation";
 
 type GuideComponentProps = {
   gap?: string;
+  category?: string;
 };
 
-const GuideComponent = ({ gap = "10px" }: GuideComponentProps) => {
+const GuideComponent = ({ gap = "10px", category = '전체' }: GuideComponentProps) => {
+  const router = useRouter();
   return (
     <Root>
       <Section>
         <SectionBody gap={gap}>
-          {mockMainGuideData.map((item) => (
-            <GuideCard key={item.id}>
+          {mockMainGuideData
+            .filter((item) => category === '전체' ? true : item.category === category)
+            .map((item) => (
+            <GuideCard key={item.id} onClick={() => router.push("/MoreGuide")}>            
               <GuideEmoji src={item.thumnail} alt="thumbnail" />
               <GuideTextWrap>
                 <GuideTitle>{item.title}</GuideTitle>
@@ -66,6 +71,7 @@ const GuideCard = styled.div`
     box-shadow: 
     -4px -4px 10px 0 rgba(0,0,0,0.03),
      4px  4px 10px 0 rgba(0,0,0,0.03);
+  cursor: pointer;
 `;
 
 const GuideEmoji = styled.img`

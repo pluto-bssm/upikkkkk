@@ -6,8 +6,10 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import GuideComponent from "@/components/Main/GuideComponent";
 import NavigationBar from "@/components/common/NavigationBar";
+import { useState } from "react";
 
 const Guide = () => {
+    const [selectedCategory, setSelectedCategory] = useState<string>('전체');
     return (
     <GuidePageLayout>
        <Header LeftItem={
@@ -18,10 +20,12 @@ const Guide = () => {
          />
       } 
         RightItem={<HeaderItemsBox type={'main'} />}
-         types={"default"} />
+         types={"default"}
+         onSelect={(label) => setSelectedCategory(label)}
+          />
         
         <MainLayout>
-        <GuideComponent gap="16px" />   
+        <GuideComponent gap="16px" category={selectedCategory} />   
         </MainLayout>     
         <NavigationBar />
         
