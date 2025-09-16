@@ -27,7 +27,7 @@ const Question = (): React.ReactElement => {
   };
 
   return (
-    <Wrap data-node-id="486:7171">
+    <Wrap>
       <Row>
         <Body>
           <Title>{q.title}</Title>
@@ -52,11 +52,8 @@ const Question = (): React.ReactElement => {
 
 export default Question;
 
-/* ---------- Emotion (컴포넌트 아래) ---------- */
-
 const Wrap = styled.div`
   width: 100%;
-  max-width: 350px;
   background: ${color.white};
   box-shadow: -4px -4px 10px rgba(0, 0, 0, 0.03),
     4px 4px 10px rgba(0, 0, 0, 0.03);
@@ -84,7 +81,7 @@ const Title = styled.div`
   word-break: keep-all;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* 두 줄 말줄임 */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 `;
 

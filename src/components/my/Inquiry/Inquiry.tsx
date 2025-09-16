@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
-// Reusable Inquiry card (from Figma node 392:6229)
 type InquiryProps = {
   imgSrc?: string;
   title?: string;

@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
-// MadeVote component (derived from Figma node 383:7250)
 type MadeVoteProps = {
   imgSrc?: string;
   title?: string;
@@ -42,7 +41,6 @@ const MadeVote = ({
 
 export default MadeVote;
 
-/* Styled components (kept at bottom per project convention) */
 const StyledMadeVote = styled.article`
   display: flex;
   align-items: center;

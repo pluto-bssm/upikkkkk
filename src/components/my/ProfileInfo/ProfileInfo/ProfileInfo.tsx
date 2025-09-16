@@ -5,101 +5,91 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
-const img = "http://localhost:3845/assets/3ff645e9cefab895b1f7bbc4cd7736a725dc7baa.svg";
+const imgFrame = "http://localhost:3845/assets/3ff645e9cefab895b1f7bbc4cd7736a725dc7baa.svg";
 
-const ProfileInfo = (): React.ReactElement => {
-  return (
-    <StyledProfileInfo data-node-id="316:3877">
-      <StyledHeader data-node-id="316:3969">
-        <div className="inner">
-          <div className="title">계정 정보</div>
-          <img src={img} alt="frame" />
-        </div>
-      </StyledHeader>
+export default function ProfileInfo(): React.ReactElement {
+	return (
+		<>
+			<Header>
+				<HeaderInner>
+					<Title>계정 정보</Title>
+					<Icon src={imgFrame} alt="frame" />
+				</HeaderInner>
+			</Header>
 
-      <div className="content" data-node-id="316:3988">
-        <div className="row">
-          <div className="label">이름</div>
-          <div className="value">박가은</div>
-        </div>
+			<Main>
+				<Row>
+					<Label>이름</Label>
+					<Value>박가은</Value>
+				</Row>
 
-        <div className="row">
-          <div className="label">학번</div>
-          <div className="value">2108</div>
-        </div>
+				<Row>
+					<Label>학번</Label>
+					<Value>2108</Value>
+				</Row>
 
-        <div className="row">
-          <div className="label">자격</div>
-          <div className="value">재학생</div>
-        </div>
+				<Row>
+					<Label>자격</Label>
+					<Value>재학생</Value>
+				</Row>
 
-        <div className="row">
-          <div className="label">이메일</div>
-          <div className="value">fake_bsm_email@bssm.hs.kr</div>
-        </div>
-      </div>
+				<Row>
+					<Label>이메일</Label>
+					<Value>fake_bsm_email@bssm.hs.kr</Value>
+				</Row>
+			</Main>
 
-      <div className="footer">로그아웃 | 탈퇴하기</div>
-    </StyledProfileInfo>
-  );
-};
+			<Footer>로그아웃 | 탈퇴하기</Footer>
+		</>
+	);
+}
 
-const StyledProfileInfo = styled.div`
-  background: ${color.white};
-  width: 100%;
-  max-width: 390px;
-  margin: 0 auto;
-  box-sizing: border-box;
-
-  .content {
-    padding: 16px 20px;
-  }
-
-  .row + .row {
-    margin-top: 12px;
-  }
-
-  .label {
-    color: ${color.gray400};
-    font-size: 10px;
-    margin-bottom: 4px;
-  }
-
-  .value {
-    color: ${color.black};
-    font-size: 13px;
-    ${font.H3}
-  }
-
-  .footer {
-    padding: 16px 20px 40px;
-    color: ${color.gray400};
-    font-size: 10px;
-  }
+const Header = styled.header`
+	padding: 20px 0;
 `;
 
-const StyledHeader = styled.header`
-  padding: 20px 0;
-
-  .inner {
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-  }
-
-  .title {
-    position: relative;
-    flex: 1;
-    text-align: center;
-    color: ${color.black};
-    font-weight: 600;
-  }
-
-  img {
-    width: 24px;
-    height: 24px;
-  }
+const HeaderInner = styled.div`
+	display: flex;
+	align-items: center;
+	padding: 0 20px;
 `;
 
-export default ProfileInfo;
+const Title = styled.div`
+	position: relative;
+	flex: 1;
+	text-align: center;
+	color: ${color.black};
+	font: ${font.D1};
+	font-weight: 600;
+`;
 
+const Icon = styled.img`
+	width: 24px;
+	height: 24px;
+`;
+
+const Main = styled.main`
+	padding: 16px 0;
+`;
+
+const Row = styled.div`
+	padding: 0 20px;
+	margin-top: 12px;
+`;
+
+const Label = styled.div`
+	color: ${color.gray500};
+	font-size: 10px;
+	margin-bottom: 4px;
+`;
+
+const Value = styled.div`
+	color: ${color.black};
+	font-size: 13px;
+`;
+
+const Footer = styled.footer`
+	padding: 16px 20px 40px;
+	color: ${color.gray500};
+	font-size: 10px;
+`;

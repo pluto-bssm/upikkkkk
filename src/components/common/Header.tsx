@@ -30,9 +30,11 @@ const Header = ({ LeftItem, RightItem, CenterItem, showInput = false,types, inpu
         </RightSection>
       </HeaderItem>
     </HeaderBarSection>
-    <NavigationBarSection>
-      <HeaderNavigaionBar type={types} />
-    </NavigationBarSection>
+    {types !== "Nones" && (
+      <NavigationBarSection>
+        <HeaderNavigaionBar type={types} />
+      </NavigationBarSection>
+    )}
     </HeaderPageLayout>
   );
 };

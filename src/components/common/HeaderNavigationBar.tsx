@@ -40,8 +40,7 @@ const HeaderNavigaionBar = ({ type }: Props) => {
                 );
 
             case "Nones" :
-                <>
-                </>
+                return null;
             
             case "Question":
                 return (
