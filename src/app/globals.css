@@ -3,8 +3,6 @@
   --foreground: #171717;
 }
 
-
-
 html,
 body {
   margin: 0;
@@ -24,8 +22,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   display:  flex;
   justify-content: center;
-  
-
 }
 
 * {
