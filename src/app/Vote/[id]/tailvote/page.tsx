@@ -34,6 +34,7 @@ const Tailvote = () => {
             src="/svg/Back.svg"
             width={20}
             height={50}
+            onClick={() => {router.back()}}
           />
         } 
         RightItem={
@@ -135,7 +136,8 @@ const TailvoteTextarea = styled.textarea`
     border-radius : 13px;
     padding : 16px 16px;
     outline : none;
-    color :  ${color.gray300};
+    color :  ${color.black};
+    resize: none;
 
 
     &::placeholder {

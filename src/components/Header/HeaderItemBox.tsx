@@ -91,10 +91,11 @@ const HeaderItemsBox = ({ type ,setIsOpen,isopen}: Props) => {
         );
       
       case 'reportvote':
+        const newPath = path.replace('/tailvote', '');
         return (
           <>
-            <img key="report" src="/svg/Report.svg" alt="리포트" width={24} height={24} />
-            <img key="close" src="/svg/Close.svg" alt="북마크" width={24} height={24} />
+            <img key="report" src="/svg/Report.svg" alt="리포트" width={24} height={24} onClick={() => {router.push(`${newPath}/report`)}}  />
+            <img key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} onClick={() => {router.back()}}  />
           </>
         );
 

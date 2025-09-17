@@ -8,7 +8,7 @@ import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import { useVoteStore } from "@/app/stores/useVoteStore";
 import color from "@/packages/design-system/src/color";
-import { useRouter } from "next/navigation";
+import { useRouter , usePathname } from "next/navigation";
 import { useState } from "react";
 import MakeCancel from "@/components/Modal/MakeCancel";
 import LoadingModal from "@/components/Modal/LoadingModal";
@@ -23,6 +23,7 @@ export default function BallotEditPage() {
   const [LikeguideModal, setLikeguideModal] = useState(false); 
 
   const { title, setTitle, ballots, setBallots } = useVoteStore();
+  const path = usePathname();
 
 const handleSubmit = () => {
     console.log('투표 제출:', { title, ballots });
@@ -40,6 +41,10 @@ const handleSubmit = () => {
     setTimeout(() => {
         setLikeguideModal(false);
     }, 4000);
+    setTimeout(() => {
+        router.push(`${path}/likeguide`);
+    }, 3000);
+    
 };
 
 

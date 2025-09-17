@@ -15,12 +15,12 @@ const font = {
   D3: fontGenerator(700, 20),
   D4: fontGenerator(600,19),
 
-  H1: fontGenerator(500,15),
-  H2: fontGenerator(500,14),
-  H3: fontGenerator(500,13),
-  H4: fontGenerator(500,12),
-  H5: fontGenerator(500,11),
-  H6: fontGenerator(500,10),
+  H1: fontGenerator(400,15),
+  H2: fontGenerator(400,14),
+  H3: fontGenerator(400,13),
+  H4: fontGenerator(400,12),
+  H5: fontGenerator(400,11),
+  H6: fontGenerator(400,10),
 
   H7: fontGenerator(700,15),
   H8: fontGenerator(700,14),
@@ -29,13 +29,13 @@ const font = {
   H11: fontGenerator(700,11),
   H12: fontGenerator(700,10),
 
-  p1: fontGenerator(500,10),
-  p2: fontGenerator(500,8),
-  p3: fontGenerator(500,6),
+  p1: fontGenerator(400,10),
+  p2: fontGenerator(400,8),
+  p3: fontGenerator(400,6),
 
-  btn1: fontGenerator(500,12),
-  btn2: fontGenerator(500,10),
-  btn3: fontGenerator(500,8),
+  btn1: fontGenerator(400,12),
+  btn2: fontGenerator(400,10),
+  btn3: fontGenerator(400,8),
 };
 
 export default font;

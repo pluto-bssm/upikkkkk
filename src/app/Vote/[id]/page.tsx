@@ -7,6 +7,8 @@ import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import VoteOption from "@/components/Vote/VoteOption";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation"
 
 const DoVote = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -19,12 +21,16 @@ const DoVote = () => {
     { label: 'E', text: '선지선지' }
   ];
 
+
+  const router = useRouter();
+  const path = usePathname();
   const handleVoteSubmit = () => {
     if (!selectedOption) {
       alert('선택지를 선택해주세요.');
       return;
     }
-    console.log('선택된 옵션:', selectedOption);
+    router.push(`${path}/tailvote`)
+    
   };
 
   return (
@@ -35,6 +41,7 @@ const DoVote = () => {
             src="/svg/Back.svg"
             width={20}
             height={50}
+            onClick={() => {router.back()}}
           />
         } 
         RightItem={
