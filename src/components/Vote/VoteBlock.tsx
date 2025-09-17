@@ -88,7 +88,6 @@ const Infomations = styled.div`
   flex-direction : row;
   align-items : center;
   gap : 10px;
-
 `
 
 const InfomationsBlock = styled.div`
@@ -97,8 +96,6 @@ const InfomationsBlock = styled.div`
   align-items : center;
   width : 90%;
   justify-content: space-between;
-
-  
 `
 
 const InfomationsBlocks = styled.div`
