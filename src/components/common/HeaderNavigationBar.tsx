@@ -9,10 +9,11 @@ const Questionnavs = ['전체','인기'];
 type Props = {
   type: string;
   onOptionClick?: () => void;
+  onSelect?: (label: string) => void;
 };
 
 
-const HeaderNavigaionBar = ({ type, onOptionClick }: Props) => {
+const HeaderNavigaionBar = ({ type, onOptionClick, onSelect }: Props) => {
     const [activeIdx, setActiveIdx] = useState(0);
 
     const renderItems = () => {
@@ -25,7 +26,10 @@ const HeaderNavigaionBar = ({ type, onOptionClick }: Props) => {
                             <React.Fragment key={nav}>
                                 <NavItem
                                     active={activeIdx === idx}
-                                    onClick={() => setActiveIdx(idx)}
+                                    onClick={() => {
+                                        setActiveIdx(idx);
+                                        onSelect?.(Defaultnavs[idx]);
+                                    }}
                                 >
                                     {nav}
                                 </NavItem>
@@ -51,7 +55,10 @@ const HeaderNavigaionBar = ({ type, onOptionClick }: Props) => {
                             <React.Fragment key={nav}>
                                 <NavItem
                                     active={activeIdx === idx}
-                                    onClick={() => setActiveIdx(idx)}
+                                    onClick={() => {
+                                        setActiveIdx(idx);
+                                        onSelect?.(Questionnavs[idx]);
+                                    }}
                                 >
                                     {nav}
                                 </NavItem>

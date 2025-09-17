@@ -33,8 +33,7 @@ const NavigationPageLayout = styled.div`
   align-items: center;
   position: fixed;
   bottom : 0px;
-  max-height : 50px;
-  height : 100%;
+  height: 56px;
   z-index: 1000;
   background-color: ${color.white};
 `;

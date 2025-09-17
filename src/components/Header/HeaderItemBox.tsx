@@ -163,5 +163,6 @@ const ItemsPageLayout = styled.div`
 `;
 
 const HeaderTitle = styled.p`
-   ${font.D2}
+   ${font.H9}
+
 `
