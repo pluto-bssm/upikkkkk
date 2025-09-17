@@ -18,13 +18,10 @@ const InquiryForm = () => {
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
 
   const handleSubmit = () => {
-    // 폼 유효성 검사
     if (!inquiryType || !title || !content || !email || !agreeTerms) {
-      // 에러 처리 로직
       return;
     }
 
-    // 여기에 API 요청 로직 추가
     console.log({
       inquiryType,
       title,
@@ -32,8 +29,6 @@ const InquiryForm = () => {
       email,
       agreeTerms
     });
-
-    // 성공 모달 표시
     setShowSuccessModal(true);
   };
 

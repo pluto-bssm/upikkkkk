@@ -34,8 +34,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 390px;
   background-color: ${color.white};
-  gap: 20px;
 `;
 
 export default QuestionList;

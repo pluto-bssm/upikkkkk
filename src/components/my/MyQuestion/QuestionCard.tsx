@@ -64,13 +64,19 @@ const QuestionCard = ({
 
 const StyledCardWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
   gap: 16px;
-  padding: 16px 0;
-  border-bottom: 1px solid ${color.gray100};
+  padding: 20px;
+  box-shadow: -4px -4px 10px 0px rgba(0, 0, 0, 0.03), 4px 4px 10px 0px rgba(0, 0, 0, 0.03);
   box-sizing: border-box;
   cursor: pointer;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -20px;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -82,15 +88,12 @@ const ContentContainer = styled.div`
 `;
 
 const Title = styled.div`
-  ${font.H6}
+  ${font.H9}
   color: ${color.black};
-  margin: 0;
-  margin-bottom: 8px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  width: 100%;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
 `;
 
 const InfoRow = styled.div`
@@ -120,23 +123,26 @@ const CommentCountBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-width: 40px;
+  width: 38px;
+  height: 49px;
   background: ${color.gray50};
   border-radius: 8px;
-  padding: 4px 8px;
+  padding: 0 7.5px;
   box-sizing: border-box;
+  font-family: 'Pretendard Variable';
 `;
 
 const CommentCount = styled.div`
-  ${font.H6}
-  font-weight: bold;
-  color: ${color.black};
+  font-size: 15px;
+  color: ${color.gray500};
+  width: 23px;
   text-align: center;
 `;
 
 const CommentText = styled.div`
-  ${font.H2}
-  color: ${color.gray400};
+  font-size: 10px;
+  color: ${color.gray500};
+  width: 23px;
   text-align: center;
 `;
 

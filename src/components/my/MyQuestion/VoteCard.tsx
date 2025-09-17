@@ -6,21 +6,18 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import Image from "next/image";
 
-// 카테고리별 이모지 매핑
 const CATEGORY_EMOJI = {
   schoolLife: "🏫",
   dormitory: "🏠",
   humor: "😄",
 };
 
-// 카테고리별 텍스트 매핑
 const CATEGORY_TEXT = {
   schoolLife: "학교생활",
   dormitory: "기숙사",
   humor: "유머",
 };
 
-// 상태별 텍스트 및 색상 매핑
 const STATE_CONFIG = {
   urgent: {
     text: (date: string) => `${date}에 마감되는 투표`,
