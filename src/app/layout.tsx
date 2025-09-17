@@ -4,8 +4,8 @@ import Providers from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "My App",
-    description: "Next.js + Emotion + React Query",
+  title: "My App",
+  description: "Next.js + Emotion + React Query",
 };
 
 const RootLayout = ({

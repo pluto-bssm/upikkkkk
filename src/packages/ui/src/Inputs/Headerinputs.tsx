@@ -1,14 +1,25 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
+import { ChangeEvent } from 'react';
 
 type Props = {
   placeholders: string;
+  value?: string;
+  onChange?: (value: string) => void;
 };
 
-const HeaderInputs = ({ placeholders }: Props) => {
+const HeaderInputs = ({ placeholders, value, onChange }: Props) => {
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(event.target.value);
+    }
+
+  };
+
   return (
     <HeaderInputsPageLayout>
-      <HeaderInput type="text" placeholder={placeholders} />
+      <HeaderInput type="text" placeholder={placeholders} value={value} onChange={handleChange} />
     </HeaderInputsPageLayout>
   );
 };

@@ -3,16 +3,14 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-
 type Props = {
   title: string,
   catogory: string,
-  views?: string,
-  state?: string,
-  id?: number
+  count: number,
+  id: number
 }
 
-const VoteBlock = ({ title, catogory, views, state, id }: Props) => {
+const GuideBlock = ({ title, catogory, count, id }: Props) => {
   const renderImage = () => {
     switch (catogory) {
       case "학교생활":
@@ -21,12 +19,10 @@ const VoteBlock = ({ title, catogory, views, state, id }: Props) => {
         return <img src="/svg/Humors.svg" alt="travel" width={35} height={35} />;
       case "기숙사":
         return <img src="/svg/Domitorys.svg" alt="tech" width={35} height={35} />;
-
       default:
         return null;
     }
   }
-
 
   const Router = useRouter();
   const path = usePathname();
@@ -41,21 +37,19 @@ const VoteBlock = ({ title, catogory, views, state, id }: Props) => {
             <Infomations>
               <Catogorys>{catogory}</Catogorys>
               <ViewBlock>
-                <img src="/svg/Views.svg" height={14} width={14} />
-                <Views> {views}</Views>
+                <img src="/svg/Bookmark.svg" height={12} width={12} />
+                <Views> {count}</Views>
               </ViewBlock>
 
             </Infomations>
-            <States>{state}</States>
           </InfomationsBlock>
         </InfomationsBlocks>
-
       </VoteBlocks>
     </VoteBlockLayout>
   );
 }
 
-export default VoteBlock;
+export default GuideBlock;
 
 const VoteBlockLayout = styled.div`
     max-width : 600px;
@@ -67,13 +61,14 @@ const VoteBlockLayout = styled.div`
     gap : 10px;
     background-color : ${color.white};
     border : 1.5px solid ${color.gray50};
-    border-radius : 10px;
+        border-radius : 10px;
 
 `
 
 const VoteBlocks = styled.div`
     width : 100%;
     height : 80px;
+
     display : flex;
     justify-content : start;
     align-items : center;
@@ -84,7 +79,6 @@ const VoteBlocks = styled.div`
 
 const Title = styled.p`
   ${font.D4};
-
 `
 
 const Infomations = styled.div`
@@ -92,6 +86,7 @@ const Infomations = styled.div`
   flex-direction : row;
   align-items : center;
   gap : 10px;
+
 `
 
 const InfomationsBlock = styled.div`
@@ -101,6 +96,7 @@ const InfomationsBlock = styled.div`
   width : 90%;
   justify-content: space-between;
 
+  
 `
 
 const InfomationsBlocks = styled.div`
@@ -132,5 +128,4 @@ const ViewBlock = styled.div`
 const States = styled.p`
   font-size : 10px;
     color : ${color.gray500};
-
 `

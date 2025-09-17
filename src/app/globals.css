@@ -10,7 +10,8 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: auto;
+  font-family: 'Pretendard';
+
 
 }
 
@@ -43,4 +44,12 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Thin.woff') format('woff');
+    font-weight: 100;
+    font-display: swap;
 }
