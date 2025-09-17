@@ -7,6 +7,8 @@ import color from "@/packages/design-system/src/color";
 import NavigationBar from "@/components/common/NavigationBar";
 import VoteMakeButton from "@/components/Vote/VoteMakeButton";
 import VoteBlock from "@/components/Vote/VoteBlock";
+import VoteSort from "@/components/Modal/VoteSort";
+import { useState } from "react";
 
 const voteData = [
     {
@@ -32,43 +34,55 @@ const voteData = [
     }
 ];
 
-const Vote = () => {
+const VotePage = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
+
     const handleOptionClick = () => {
-        // TODO: Implement modal functionality
+        setIsModalOpen(true);
     };
 
     return (
-        <VotePageLayout>
-            <Header 
-                LeftItem={<img src="/svg/Logo.svg" width={50} height={50}/>} 
-                RightItem={<HeaderItemsBox type={"main"}/>}
-                types={"default"} 
+        <VoteLayout>
+            <Header
+                LeftItem={<img src="/svg/Logo.svg" width={50} height={50} />}
+                RightItem={<HeaderItemsBox type={"main"} />}
+                types={"default"}
                 onOptionClick={handleOptionClick}
             />
-            <VoteButton>
+
+            <VoteMakeButtonWrapper>
                 <VoteMakeButton />
-            </VoteButton>
-            <Contents>
+            </VoteMakeButtonWrapper>
+
+            <VoteListSection>
                 {voteData.map((vote) => (
-                    <VoteBlock 
+                    <VoteBlock
                         key={vote.id}
-                        title={vote.title} 
-                        catogory={vote.category} 
-                        views={vote.views} 
-                        state={vote.state} 
+                        id={vote.id}
+                        title={vote.title}
+                        catogory={vote.category}
+                        views={vote.views}
+                        state={vote.state}
                     />
                 ))}
-            </Contents>
+            </VoteListSection>
 
             <NavigationBar />
 
-        </VotePageLayout>
+            <VoteSort
+                sortstandard={sortStandard}
+                setsortstandard={setSortStandard}
+                isOpen={isModalOpen}
+                setIsOpen={setIsModalOpen}
+            />
+        </VoteLayout>
     )
 }
 
-export default Vote;
+export default VotePage;
 
-const VoteButton = styled.div`
+const VoteMakeButtonWrapper = styled.div`
     max-width : 600px;
     width : 100%;
     position : fixed;
@@ -79,15 +93,15 @@ const VoteButton = styled.div`
     z-index : 1000;
 `
 
-const Contents = styled.div`
+const VoteListSection = styled.div`
     margin-top : 100px;
-    width : 100%;
+    width : 90%;
     display : flex;
     flex-direction : column;
     gap : 16px;
 `
 
-const VotePageLayout = styled.div`
+const VoteLayout = styled.div`
     display :flex;
     flex-direction : column;
     align-items : center;
