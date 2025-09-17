@@ -50,12 +50,9 @@ const HeaderNavigaionBar = ({ type, onOptionClick }: Props) => {
                     </NavWrapper>
                 );
 
-            case "Nones":
-                return (
-                    <>
-                    </>
-                );
-
+            case "Nones" :
+                return null;
+            
             case "Question":
                 return (
                     <NavWrapper>

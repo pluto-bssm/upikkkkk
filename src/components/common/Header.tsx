@@ -17,23 +17,25 @@ type Props = {
 const Header = ({ LeftItem, RightItem, CenterItem, showInput = false, types, inputProps, onOptionClick }: Props) => {
   return (
     <HeaderPageLayout>
-      <HeaderBarSection>
-        <HeaderItem>
-          <LeftSection>
-            {LeftItem}
-          </LeftSection>
-          <CenterSection>
-            {CenterItem}
-            {showInput && <StyledInput {...inputProps} />}
-          </CenterSection>
-          <RightSection>
-            {RightItem}
-          </RightSection>
-        </HeaderItem>
-      </HeaderBarSection>
+    <HeaderBarSection>
+      <HeaderItem>
+        <LeftSection>
+          {LeftItem}
+        </LeftSection>
+        <CenterSection>
+          {CenterItem}
+          {showInput && <StyledInput {...inputProps} />}
+        </CenterSection>
+        <RightSection>
+          {RightItem}
+        </RightSection>
+      </HeaderItem>
+    </HeaderBarSection>
+    {types !== "Nones" && (
       <NavigationBarSection>
-        <HeaderNavigaionBar type={types} onOptionClick={onOptionClick} />
+        <HeaderNavigaionBar type={types}  onOptionClick={onOptionClick} />
       </NavigationBarSection>
+    )}
     </HeaderPageLayout>
   );
 };
