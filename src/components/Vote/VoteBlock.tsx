@@ -130,33 +130,6 @@ const States = styled.p`
   font-size : 10px;
   color : ${color.gray500};
 `
-import styled from "@emotion/styled";
-import color from "@/packages/design-system/src/color";
-import font from "@/packages/design-system/src/font";
-<<<<<<< HEAD
-=======
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
->>>>>>> main
-type Props = {
-  title: string,
-  catogory: string,
-  views?: string,
-  state?: string,
-  id?: number
-}
-
-<<<<<<< HEAD
-const VoteBlock = ({ title, catogory, views, state } : Props) => {
-  const renderImage = () => {
-    switch (catogory) {
-      case "학교생활":
-        return <img src="svg/School.svg" alt="food" width={40} height={40} />;
-      case "유머":
-        return <img src="svg/Humors.svg" alt="travel" width={40} height={40} />;
-      case "기숙사":
-        return <img src="svg/Domitorys.svg" alt="tech" width={40} height={40} />;
-=======
 const VoteBlock = ({ title, catogory, views, state, id }: Props) => {
   const renderImage = () => {
     switch (catogory) {

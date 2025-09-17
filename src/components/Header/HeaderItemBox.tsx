@@ -42,7 +42,6 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen }: Props) => {
 
 
   const router = useRouter();
->>>>>>> main
   const renderItems = () => {
     switch (type) {
       case 'main':

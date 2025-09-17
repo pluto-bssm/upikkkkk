@@ -15,7 +15,6 @@ const font = {
   D3: fontGenerator(700, 20),
   D4: fontGenerator(600,19),
 
-  // Keep both naming schemes for compatibility
   P1: fontGenerator(400,15),
   P2: fontGenerator(400,14),
   P3: fontGenerator(400,13),
