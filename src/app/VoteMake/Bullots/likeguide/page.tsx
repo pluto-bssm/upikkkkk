@@ -11,6 +11,9 @@ import { useRouter } from "next/navigation";
 import GuideBlock from "@/components/VoteMakes/GuideBlock";
 import LoadingModal from "@/components/Modal/LoadingModal";
 import Complete from "@/components/Modal/Complete"
+import { useVoteStore } from "@/app/stores/useVoteStore";
+import { Create_Vote } from "@/app/api/mutations/mutation";
+import { useMutation } from "@apollo/client/react";
 
 const SimilarGuide = () => {
   const guideData = [
@@ -26,17 +29,56 @@ const SimilarGuide = () => {
   const [CompleteModal, setCompleteModal] = useState(false);
 
 
-  const handleContinue = () => {
-    setLodingModal(true);
+  const { title, category, ballots, resetVoteData } = useVoteStore();
 
-    setTimeout(() => {
+
+  const [createVote, { loading, error }] = useMutation(Create_Vote, {
+    onCompleted: (data : any) => {
+      console.log("투표 생성 완료:", data);
       setLodingModal(false);
       setCompleteModal(true);
-    }, 1000);
+    },
+    onError: (error : any) => {
+      console.error("투표 생성 실패:", error);
+      setLodingModal(false);
 
+    }
+  });
+
+  const handleContinue = async () => {
+    if (!title.trim()) {
+      alert("투표 제목을 입력해주세요.");
+      return;
+    }
+
+    const validBallots = ballots.filter(ballot => ballot.trim() !== "");
+    if (validBallots.length < 2) {
+      alert("최소 2개의 투표 옵션을 입력해주세요.");
+      return;
+    }
+
+    setLodingModal(true);
+
+    const voteData = {
+      title: title.trim(),
+      category: category,
+      options: validBallots
+    };
+
+    console.log("투표 데이터:", voteData);
+
+    try {
+      await createVote({
+        variables: voteData
+      });
+    } catch (err) {
+      console.error("Mutation 실행 중 오류:", err);
+      setLodingModal(false);
+    }
   };
 
   const CompleteVotemake = () => {
+    resetVoteData();
     router.push("/");
   }
 
@@ -66,9 +108,9 @@ const SimilarGuide = () => {
             <Description>가이드 제목을 클릭하면 내용 전부를 확인할 수 있어요.</Description>
           </TextWrapper>
 
+
           <GuideListWrapper>
             {guideData.map((guide) => (
-
               <GuideBlock
                 key={guide.id}
                 id={guide.id}
@@ -76,12 +118,15 @@ const SimilarGuide = () => {
                 catogory={guide.category}
                 count={guide.count}
               />
-
             ))}
           </GuideListWrapper>
 
-          <ContinueButton onClick={handleContinue}>
-            <img src="/svg/Plus.svg" width={24} height={24} /> 계속 진행하기
+          <ContinueButton 
+            onClick={handleContinue} 
+            disabled={loading || !title.trim() || ballots.filter(b => b.trim()).length < 2}
+          >
+            <img src="/svg/Plus.svg" width={24} height={24} /> 
+            {loading ? "투표 생성 중..." : "계속 진행하기"}
           </ContinueButton>
         </ContentWrapper>
       </SimilarGuideContainer>
@@ -90,10 +135,29 @@ const SimilarGuide = () => {
         <MakeCancel setIsOpen={setIsOpenMakeModal} isOpen={isOpenMakeModal} />
       ) : null}
 
-      {LodingModal && <LoadingModal title="투표를 제작하고 있어요." des="유픽에서는 재학생들로부터 더 정확한 정보를 제공받을 수 있어요." />}
+      {LodingModal && (
+        <LoadingModal 
+          title="투표를 제작하고 있어요." 
+          des="유픽에서는 재학생들로부터 더 정확한 정보를 제공받을 수 있어요." 
+        />
+      )}
 
-      {CompleteModal && <Complete text1="투표 제작을" text2="했어요!" text3="완료" subtext="투표 제작 이후 투표 내용은 변경될 수 없어요." img="/svg/Completevote.svg" onfunciton={CompleteVotemake} />}
+      {CompleteModal && (
+        <Complete 
+          text1="투표 제작을" 
+          text2="했어요!" 
+          text3="완료" 
+          subtext="투표 제작 이후 투표 내용은 변경될 수 없어요." 
+          img="/svg/Completevote.svg" 
+          onfunciton={CompleteVotemake} 
+        />
+      )}
 
+      {error && (
+        <ErrorMessage>
+          투표 생성 중 오류가 발생했습니다: {error.message}
+        </ErrorMessage>
+      )}
     </SimilarGuideLayout>
   );
 }
@@ -103,7 +167,6 @@ export default SimilarGuide;
 const SimilarGuideLayout = styled.div`
   max-width: 600px;
   width: 100%;
-
   background-color: ${color.white};
   min-height: 100vh;
 `;
@@ -139,71 +202,18 @@ const MainTitle = styled.h1`
   color : #011627;
   font-weight: 600;
   font-size : 23px;
-
 `;
 
 const Description = styled.p`
   ${font.H3};
   color: #9CA3AF;
   margin: 0;
-
 `;
 
 const GuideListWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-`;
-
-const GuideItem = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 16px;
-  background-color: #F9FAFB;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background-color: #F3F4F6;
-  }
-`;
-
-const GuideIcon = styled.div`
-  margin-right: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const GuideInfo = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-const GuideTitle = styled.p`
-  font-size: 16px;
-  font-weight: 600;
-  color: #1F2937;
-  margin: 0;
-`;
-
-const GuideDetails = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-`;
-
-const Category = styled.span`
-  font-size: 12px;
-  color: #6B7280;
-`;
-
-const Count = styled.span`
-  font-size: 12px;
-  color: #6B7280;
 `;
 
 const ContinueButton = styled.button`
@@ -221,13 +231,32 @@ const ContinueButton = styled.button`
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background-color: ${color.primary};
     opacity: 0.9;
   }
 
-  display : flex;
-  align-items : center;
-  justify-content : center;
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #ccc;
+  }
+`;
+
+const ErrorMessage = styled.div`
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fee;
+  color: #c53030;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #fed7d7;
+  font-size: 14px;
+  z-index: 1000;
 `;

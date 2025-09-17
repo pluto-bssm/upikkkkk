@@ -12,11 +12,13 @@ import ChooseButton from "@/components/VoteMakes/ChoseButton";
 import MakeCancel from "@/components/Modal/MakeCancel";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useVoteStore } from "@/app/stores/useVoteStore";
 
 const VoteMakePage = () => {
   const router = useRouter();
-
-  const [guideCategory, setGuideCategory] = useState("학교생활");
+  
+  const { category, setCategory } = useVoteStore();
+  
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenMakeModal, setIsOpenMakeModal] = useState(false);
 
@@ -43,12 +45,12 @@ const VoteMakePage = () => {
 
       <ContentWrapper>
         <CategoryGuideSection>
-          <GuideCategoryImage category={guideCategory} />
+          <GuideCategoryImage category={category} />
           <GuideCategoryText />
         </CategoryGuideSection>
 
         <CategoryChooseBox
-          category={guideCategory}
+          category={category}
           setIsOpen={setIsOpen}
           isOpen={isOpen}
         />
@@ -56,8 +58,8 @@ const VoteMakePage = () => {
         <ChooseButton />
 
         <CategoryChooseModal
-          setGuideCategory={setGuideCategory}
-          category={guideCategory}
+          setGuideCategory={setCategory} 
+          category={category}
           setIsOpen={setIsOpen}
           isOpen={isOpen}
         />
