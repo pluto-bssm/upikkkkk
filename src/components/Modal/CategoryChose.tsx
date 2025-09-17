@@ -18,13 +18,13 @@ export default function CategoryChoseBox({ category, setGuideCategory, isOpen, s
     <AnimatePresence>
       {isOpen && (
         <Background
-            key="bg"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            onClick={() => setIsOpen && setIsOpen(false)}
-          >
+          key="bg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={() => setIsOpen && setIsOpen(false)}
+        >
           <MotionBox
             key="category-box"
             initial={{ y: "100%" }}

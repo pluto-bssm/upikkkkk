@@ -8,15 +8,15 @@ import font from '@/packages/design-system/src/font';
 type CompleteVoteProps = React.ComponentProps<typeof motion.div> & {
   isOpen?: boolean;
   setIsOpen?: (isOpen: boolean) => void;
-  text1 ?: string;
-  text2 ?: string;
-  text3 ?: string;
-  subtext ?: string;
-  img ?: string;
+  text1?: string;
+  text2?: string;
+  text3?: string;
+  subtext?: string;
+  img?: string;
   onfunciton?: () => void;
 };
 
-export default function CompleteVote({ setIsOpen , text1,text2,text3,subtext,img ,onfunciton,...motionProps}: CompleteVoteProps) {
+export default function CompleteVote({ setIsOpen, text1, text2, text3, subtext, img, onfunciton, ...motionProps }: CompleteVoteProps) {
   const router = useRouter();
 
 

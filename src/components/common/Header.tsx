@@ -10,7 +10,7 @@ type Props = {
   CenterItem?: React.ReactNode;
   showInput?: boolean;
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
-  types : string;
+  types: string;
   onOptionClick?: () => void;
 };
 

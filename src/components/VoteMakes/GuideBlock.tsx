@@ -4,13 +4,13 @@ import font from "@/packages/design-system/src/font";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 type Props = {
-    title : string,
-    catogory : string,
-    count : number,
-    id : number
+  title: string,
+  catogory: string,
+  count: number,
+  id: number
 }
 
-const GuideBlock = ({ title, catogory, count ,id } : Props) => {
+const GuideBlock = ({ title, catogory, count, id }: Props) => {
   const renderImage = () => {
     switch (catogory) {
       case "학교생활":
@@ -27,23 +27,23 @@ const GuideBlock = ({ title, catogory, count ,id } : Props) => {
   const Router = useRouter();
   const path = usePathname();
   return (
-    <VoteBlockLayout onClick={() =>{Router.push(`${path}/${id}`)}}>
+    <VoteBlockLayout onClick={() => { Router.push(`${path}/${id}`) }}>
       <VoteBlocks>
         {renderImage()}
-          <InfomationsBlocks>
+        <InfomationsBlocks>
           <Title>{title}</Title>
-            <InfomationsBlock>
+          <InfomationsBlock>
 
-              <Infomations>
+            <Infomations>
               <Catogorys>{catogory}</Catogorys>
-                <ViewBlock>
-                  <img src="/svg/Bookmark.svg" height={12} width={12}/>
-                  <Views> {count}</Views>
-                </ViewBlock>
-              
-              </Infomations>
-            </InfomationsBlock>
-          </InfomationsBlocks>
+              <ViewBlock>
+                <img src="/svg/Bookmark.svg" height={12} width={12} />
+                <Views> {count}</Views>
+              </ViewBlock>
+
+            </Infomations>
+          </InfomationsBlock>
+        </InfomationsBlocks>
       </VoteBlocks>
     </VoteBlockLayout>
   );

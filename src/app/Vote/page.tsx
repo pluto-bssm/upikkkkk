@@ -44,10 +44,10 @@ const VotePage = () => {
 
     return (
         <VoteLayout>
-            <Header 
-                LeftItem={<img src="/svg/Logo.svg" width={50} height={50}/>} 
-                RightItem={<HeaderItemsBox type={"main"}/>}
-                types={"default"} 
+            <Header
+                LeftItem={<img src="/svg/Logo.svg" width={50} height={50} />}
+                RightItem={<HeaderItemsBox type={"main"} />}
+                types={"default"}
                 onOptionClick={handleOptionClick}
             />
 
@@ -57,20 +57,20 @@ const VotePage = () => {
 
             <VoteListSection>
                 {voteData.map((vote) => (
-                    <VoteBlock 
+                    <VoteBlock
                         key={vote.id}
                         id={vote.id}
-                        title={vote.title} 
-                        catogory={vote.category} 
-                        views={vote.views} 
-                        state={vote.state} 
+                        title={vote.title}
+                        catogory={vote.category}
+                        views={vote.views}
+                        state={vote.state}
                     />
                 ))}
             </VoteListSection>
 
             <NavigationBar />
-            
-            <VoteSort 
+
+            <VoteSort
                 sortstandard={sortStandard}
                 setsortstandard={setSortStandard}
                 isOpen={isModalOpen}

@@ -22,27 +22,27 @@ const SimilarGuide = () => {
 
   const router = useRouter();
   const [isOpenMakeModal, setIsOpenMakeModal] = useState(false);
-  const [LodingModal,setLodingModal] = useState(false);
-  const [CompleteModal,setCompleteModal] = useState(false);
+  const [LodingModal, setLodingModal] = useState(false);
+  const [CompleteModal, setCompleteModal] = useState(false);
 
 
   const handleContinue = () => {
     setLodingModal(true);
 
     setTimeout(() => {
-        setLodingModal(false);
-        setCompleteModal(true);
+      setLodingModal(false);
+      setCompleteModal(true);
     }, 1000);
 
   };
 
-  const CompleteVotemake = () =>{
+  const CompleteVotemake = () => {
     router.push("/");
   }
 
   return (
     <SimilarGuideLayout>
-      <Header 
+      <Header
         LeftItem={
           <img
             src="/svg/Back.svg"
@@ -50,12 +50,12 @@ const SimilarGuide = () => {
             height={50}
             onClick={() => router.back()}
           />
-        } 
+        }
         RightItem={
           <div onClick={() => setIsOpenMakeModal(true)}>
             <HeaderItemsBox type="votemake" />
           </div>
-        } 
+        }
         types="Nones"
       />
       <SimilarGuideContainer>
@@ -68,15 +68,15 @@ const SimilarGuide = () => {
 
           <GuideListWrapper>
             {guideData.map((guide) => (
-              
-                <GuideBlock 
-                        key={guide.id}
-                        id={guide.id}
-                        title={guide.title} 
-                        catogory={guide.category} 
-                        count={guide.count}
-                    />
- 
+
+              <GuideBlock
+                key={guide.id}
+                id={guide.id}
+                title={guide.title}
+                catogory={guide.category}
+                count={guide.count}
+              />
+
             ))}
           </GuideListWrapper>
 
@@ -87,12 +87,12 @@ const SimilarGuide = () => {
       </SimilarGuideContainer>
 
       {isOpenMakeModal ? (
-              <MakeCancel setIsOpen={setIsOpenMakeModal} isOpen={isOpenMakeModal} />
-            ) : null}
+        <MakeCancel setIsOpen={setIsOpenMakeModal} isOpen={isOpenMakeModal} />
+      ) : null}
 
-        {LodingModal && <LoadingModal title="투표를 제작하고 있어요." des="유픽에서는 재학생들로부터 더 정확한 정보를 제공받을 수 있어요." />}
+      {LodingModal && <LoadingModal title="투표를 제작하고 있어요." des="유픽에서는 재학생들로부터 더 정확한 정보를 제공받을 수 있어요." />}
 
-      {CompleteModal && <Complete text1="투표 제작을" text2="했어요!" text3="완료" subtext="투표 제작 이후 투표 내용은 변경될 수 없어요." img="/svg/Completevote.svg" onfunciton={CompleteVotemake}/>}
+      {CompleteModal && <Complete text1="투표 제작을" text2="했어요!" text3="완료" subtext="투표 제작 이후 투표 내용은 변경될 수 없어요." img="/svg/Completevote.svg" onfunciton={CompleteVotemake} />}
 
     </SimilarGuideLayout>
   );

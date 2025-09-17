@@ -23,13 +23,13 @@ const Report = () => {
     const [selectedReason, setSelectedReason] = useState('');
     const [detailContent, setDetailContent] = useState('');
 
-    const [modalopen,setmodalopen] = useState(false);
+    const [modalopen, setmodalopen] = useState(false);
 
-    const [completemodal,setCompleteModal] = useState(false);
-    
+    const [completemodal, setCompleteModal] = useState(false);
+
     const router = useRouter();
 
-    const CompleteReport =() =>{
+    const CompleteReport = () => {
         router.replace("/")
     }
 
@@ -57,23 +57,23 @@ const Report = () => {
         setCompleteModal(true);
     };
 
-    return(
+    return (
         <ReportLayout>
-            <Header 
+            <Header
                 LeftItem={
                     <img
                         src="/svg/Back.svg"
                         width={20}
                         height={50}
-                        onClick={() => {setmodalopen(true)}}
+                        onClick={() => { setmodalopen(true) }}
                     />
                 }
                 CenterItem={
-                    <HeaderItemsBox type={'reportdis'}/>
+                    <HeaderItemsBox type={'reportdis'} />
                 }
                 types="nones"
             />
-            
+
             <ReportContent>
                 <ReportSection>
                     <SectionTitle>신고할 내용</SectionTitle>
@@ -86,7 +86,7 @@ const Report = () => {
                     </SectionLabel>
                     <ReasonList>
                         {reportReasons.map((reason, index) => (
-                            <ReasonOption 
+                            <ReasonOption
                                 key={index}
                                 selected={selectedReason === reason}
                                 onClick={() => handleReasonSelect(reason)}
@@ -97,31 +97,31 @@ const Report = () => {
                     </ReasonList>
                 </ReportSection>
                 <ReportContentSection>
-                <ReportSection>
-                    <SectionLabel>
-                        상세 내용 <RequiredMark>*</RequiredMark>
-                    </SectionLabel>
-                    <DetailTextarea
-                        placeholder="신고 사유에 대해서 더 자세히 설명해주세요"
-                        value={detailContent}
-                        onChange={(e) => setDetailContent(e.target.value)}
-                        maxLength={500}
-                    />
-                    <CharacterCount>500자 이내로 입력해주세요</CharacterCount>
-                </ReportSection>
+                    <ReportSection>
+                        <SectionLabel>
+                            상세 내용 <RequiredMark>*</RequiredMark>
+                        </SectionLabel>
+                        <DetailTextarea
+                            placeholder="신고 사유에 대해서 더 자세히 설명해주세요"
+                            value={detailContent}
+                            onChange={(e) => setDetailContent(e.target.value)}
+                            maxLength={500}
+                        />
+                        <CharacterCount>500자 이내로 입력해주세요</CharacterCount>
+                    </ReportSection>
 
-                <SubmitButton 
-                    onClick={handleSubmit}
-                    disabled={!selectedReason || !detailContent.trim()}
-                >
-                    신고 접수하기
-                </SubmitButton>
+                    <SubmitButton
+                        onClick={handleSubmit}
+                        disabled={!selectedReason || !detailContent.trim()}
+                    >
+                        신고 접수하기
+                    </SubmitButton>
                 </ReportContentSection>
             </ReportContent>
 
             {modalopen && <ReportCancel isOpen={modalopen} setIsOpen={setmodalopen} />}
             {completemodal && <CompleteVote text1="신고가" text2="으로 접수됐어요" text3="성공적" subtext="지속적으로 정상적인 투표를 신고하는 경우
-제재의 대상이 될 수 있어요" img="/svg/CompleteVote.svg" onfunciton={CompleteReport}/>}
+제재의 대상이 될 수 있어요" img="/svg/CompleteVote.svg" onfunciton={CompleteReport} />}
         </ReportLayout>
     )
 }

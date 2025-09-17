@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { useRouter } from "next/navigation";
 import { usePathname } from 'next/navigation';
 
-export default function ChoseButton( ) {
+export default function ChoseButton() {
 
   const router = useRouter();
   const path = usePathname();
@@ -11,10 +11,10 @@ export default function ChoseButton( ) {
 
   return (
     <ButtonDiv>
-        <Button onClick={() => router.push(`${path}/bullots`)}>
-            <img src="svg/Plus.svg" alt="plus" />
-            <p>투표 제작하기</p>
-        </Button>
+      <Button onClick={() => router.push(`${path}/bullots`)}>
+        <img src="svg/Plus.svg" alt="plus" />
+        <p>투표 제작하기</p>
+      </Button>
     </ButtonDiv>
   )
 }

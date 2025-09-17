@@ -30,25 +30,25 @@ const DoVote = () => {
       return;
     }
     router.push(`${path}/tailvote`)
-    
+
   };
 
   return (
     <DoVoteLayout>
-      <Header 
+      <Header
         LeftItem={
           <img
             src="/svg/Back.svg"
             width={20}
             height={50}
-            onClick={() => {router.back()}}
+            onClick={() => { router.back() }}
           />
-        } 
+        }
         RightItem={
-          <HeaderItemsBox 
-            type={'reportvote'} 
+          <HeaderItemsBox
+            type={'reportvote'}
           />
-        } 
+        }
         types="Nones"
       />
       <DoVoteContainer>
@@ -67,9 +67,9 @@ const DoVote = () => {
                 text={option.text}
                 isSelected={selectedOption === option.label}
                 onClick={() =>
-                    setSelectedOption(prev =>
+                  setSelectedOption(prev =>
                     prev === option.label ? null : option.label
-                    )
+                  )
                 }
               />
             ))}

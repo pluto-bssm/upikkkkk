@@ -7,7 +7,7 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import VoteMakeButton from "@/components/Vote/VoteMakeButton";
 import NavigationBar from "@/components/common/NavigationBar";
-import React,{useState} from "react";
+import React, { useState } from "react";
 import VoteBlock from "@/components/Vote/VoteBlock";
 import { useRouter } from "next/navigation";
 
@@ -42,18 +42,18 @@ const Search = () => {
         setsearchitem(value);
     }
 
-    const filteredVotes = voteData.filter(vote => 
+    const filteredVotes = voteData.filter(vote =>
         vote.title.includes(searchitem)
     );
 
     const showResults = searchitem.trim() !== "";
 
     const router = useRouter();
-    return(
+    return (
         <SearchLayout>
-            <Header 
-                LeftItem={<img src="/svg/Back2.svg" width={20} height={50} onClick={() => {router.back()}} />}
-                CenterItem={<HeaderInputs placeholders="원하는 투표 검색하기" value={searchitem} onChange={handleSearchChange}/>}
+            <Header
+                LeftItem={<img src="/svg/Back2.svg" width={20} height={50} onClick={() => { router.back() }} />}
+                CenterItem={<HeaderInputs placeholders="원하는 투표 검색하기" value={searchitem} onChange={handleSearchChange} />}
                 RightItem={<></>}
                 types=""
             />
@@ -64,17 +64,17 @@ const Search = () => {
                 ) : filteredVotes.length > 0 ? (
                     <SearchResults>
                         <ResultSection>
-                        <ResultText>결과 <ResultNumberText>{filteredVotes.length }</ResultNumberText></ResultText>
+                            <ResultText>결과 <ResultNumberText>{filteredVotes.length}</ResultNumberText></ResultText>
                         </ResultSection>
                         {filteredVotes.map(vote => (
-                            <VoteBlock 
-                            key={vote.id}
-                            id={vote.id}
-                            title={vote.title} 
-                            catogory={vote.category} 
-                            views={vote.views} 
-                            state={vote.state} 
-                        />
+                            <VoteBlock
+                                key={vote.id}
+                                id={vote.id}
+                                title={vote.title}
+                                catogory={vote.category}
+                                views={vote.views}
+                                state={vote.state}
+                            />
                         ))}
                     </SearchResults>
                 ) : (

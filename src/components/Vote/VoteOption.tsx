@@ -15,7 +15,7 @@ const VoteOption = ({ label, text, isSelected = false, onClick }: VoteOptionProp
   return (
     <VoteOptionContainer onClick={onClick} isSelected={isSelected}>
       <LabelCircle isSelected={isSelected}>
-        {isSelected && <img src="/svg/Check.svg"/> }
+        {isSelected && <img src="/svg/Check.svg" />}
         {!isSelected && label}
       </LabelCircle>
       <OptionText>{text}</OptionText>

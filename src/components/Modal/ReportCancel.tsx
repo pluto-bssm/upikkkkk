@@ -6,36 +6,36 @@ import color from '@/packages/design-system/src/color';
 
 type CancelButtonProps = React.ComponentProps<typeof motion.div> & {
 
-  isOpen?: boolean;
-  setIsOpen?: (isOpen: boolean) => void;
+    isOpen?: boolean;
+    setIsOpen?: (isOpen: boolean) => void;
 
 };
 
 export default function CancelButton({ setIsOpen, ...motionProps }: CancelButtonProps) {
 
-  const router = useRouter();
+    const router = useRouter();
 
-  function handleCancel() {
-    setIsOpen?.(false);
-    router.back();
-}
-  
+    function handleCancel() {
+        setIsOpen?.(false);
+        router.back();
+    }
 
-  return (
-    <ModalBackground {...motionProps}>
-        <ModalContent>
-            <Text>
-                <Title>신고를 <Accent>취소</Accent>하시겠어요?</Title>
-                <SubP>지금까지 작성한 내용은 저장되지 않습니다.</SubP>
-            </Text>
 
-            <ButtonGroup>
-                <Button onClick={() => {setIsOpen?.(false)}}>취소</Button>
-                <Button onClick={() => {handleCancel()}}>확인</Button>
-            </ButtonGroup>
-        </ModalContent>
-    </ModalBackground>
-  )
+    return (
+        <ModalBackground {...motionProps}>
+            <ModalContent>
+                <Text>
+                    <Title>신고를 <Accent>취소</Accent>하시겠어요?</Title>
+                    <SubP>지금까지 작성한 내용은 저장되지 않습니다.</SubP>
+                </Text>
+
+                <ButtonGroup>
+                    <Button onClick={() => { setIsOpen?.(false) }}>취소</Button>
+                    <Button onClick={() => { handleCancel() }}>확인</Button>
+                </ButtonGroup>
+            </ModalContent>
+        </ModalBackground>
+    )
 }
 const Accent = styled.span`
     color : ${color.primary};
@@ -97,7 +97,7 @@ const ButtonGroup = styled.div`
     display: flex;
     justify-content: center;
     gap: 16px;
-`  
+`
 
 const Button = styled.button`
     font-weight: 700;

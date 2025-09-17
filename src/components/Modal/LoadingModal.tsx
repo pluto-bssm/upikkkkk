@@ -4,12 +4,12 @@ import { motion } from 'framer-motion';
 import color from '@/packages/design-system/src/color';
 
 type LodingProps = {
-  title : string;
-  des : string ;
+  title: string;
+  des: string;
 }
 
 
-export default function LoadingModal({title,des} : LodingProps) {
+export default function LoadingModal({ title, des }: LodingProps) {
   return (
     <ModalBackground>
       <ModalContainer>
@@ -25,7 +25,7 @@ export default function LoadingModal({title,des} : LodingProps) {
             }}
           />
         </SpinnerContainer>
-        
+
         <Title>
           {title}
         </Title>

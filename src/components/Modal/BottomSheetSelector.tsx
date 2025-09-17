@@ -18,12 +18,12 @@ type Props = {
   arrowIconSrc?: string;
 };
 
-export default function BottomSheetSelector({ 
+export default function BottomSheetSelector({
   title,
-  selectedValue, 
-  setSelectedValue, 
+  selectedValue,
+  setSelectedValue,
   items,
-  isOpen, 
+  isOpen,
   setIsOpen,
   showArrowIcon = true,
   arrowIconSrc = "/svg/Select.svg"
@@ -58,7 +58,7 @@ export default function BottomSheetSelector({
                     <ItemText selected={item.value === selectedValue}>
                       {item.label}
                     </ItemText>
-                    
+
                     <RightSection>
                       {item.badge && <Badge>{item.badge}</Badge>}
                       {item.value === selectedValue && showArrowIcon && (

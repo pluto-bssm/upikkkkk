@@ -19,11 +19,11 @@ export default function VoteEndConditionModal({ isOpen, setIsOpen }: Props) {
   const [OpenModal, setOpenModal] = useState(false);
   const [isTimeOpen, setIsTimeOpen] = useState(false);
   const [isMemberOpen, setIsMemberOpen] = useState(false);
-  
+
   const [selectedTime, setSelectedTime] = useState("7");
   const [selectedMembers, setSelectedMembers] = useState("13");
 
- 
+
   const timeOptions = [
     { value: '2', label: '2일' },
     { value: '3', label: '3일' },
@@ -69,13 +69,13 @@ export default function VoteEndConditionModal({ isOpen, setIsOpen }: Props) {
 
   const handleOptionSelect = (index: number) => {
     setSelectedOption(index);
-    
+
 
     switch (index) {
-      case 1: 
-        setTimeout(() => setIsTimeOpen(true), 300); 
+      case 1:
+        setTimeout(() => setIsTimeOpen(true), 300);
         break;
-      case 2: 
+      case 2:
         setTimeout(() => setIsMemberOpen(true), 300);
         break;
       default:
@@ -104,12 +104,12 @@ export default function VoteEndConditionModal({ isOpen, setIsOpen }: Props) {
               onClick={e => e.stopPropagation()}
             >
               <ModalTitle>투표 종료 조건 선택하기</ModalTitle>
-              
+
               <OptionList>
                 {options.map((option, index) => (
                   <OptionItem key={index}>
                     <div>
-                      <RadioButton 
+                      <RadioButton
                         isSelected={selectedOption === index}
                         onClick={() => handleOptionSelect(index)}
                       >
@@ -120,7 +120,7 @@ export default function VoteEndConditionModal({ isOpen, setIsOpen }: Props) {
                       <OptionDescription>{option.description}</OptionDescription>
                       <OptionTitle isSelected={selectedOption === index}>
                         {option.title}
-        
+
                         {index === 1 && selectedOption === 1 && ` (${selectedTime}일)`}
                         {index === 2 && selectedOption === 2 && ` (${selectedMembers}명)`}
                       </OptionTitle>
@@ -130,7 +130,7 @@ export default function VoteEndConditionModal({ isOpen, setIsOpen }: Props) {
               </OptionList>
 
               <ResultBox>
-                <Result onClick={() => {setOpenModal(true)}}>
+                <Result onClick={() => { setOpenModal(true) }}>
                   더욱 빠르게 답변을 받고 싶다면?
                 </Result>
               </ResultBox>
@@ -149,7 +149,7 @@ export default function VoteEndConditionModal({ isOpen, setIsOpen }: Props) {
         primaryButtonText="이동하기"
         secondaryButtonText="뒤로가기"
         onPrimaryClick={() => router.push('/question-board')}
-        onSecondaryClick={() => {}}
+        onSecondaryClick={() => { }}
       />
 
 

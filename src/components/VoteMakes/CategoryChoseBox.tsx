@@ -6,33 +6,33 @@ import styled from '@emotion/styled'
 
 
 type Props = {
-  category: string;
-  isOpen?: boolean;
-  setIsOpen?: (isOpen: boolean) => void;
+    category: string;
+    isOpen?: boolean;
+    setIsOpen?: (isOpen: boolean) => void;
 };
 
 export default function CategoryChoseBox({ category, isOpen, setIsOpen }: Props) {
-  return (
-    <Appdiv>
-    <CatogoryBox>
-        
-        <Category>투표 카테고리 선택</Category>
+    return (
+        <Appdiv>
+            <CatogoryBox>
 
-        <BoxDiv onClick={() => setIsOpen && setIsOpen(!isOpen)}>
-            <CategoryP>{category}</CategoryP>
-            <img src="svg/UnderBar.svg" alt="underbar" />
-        </BoxDiv>
+                <Category>투표 카테고리 선택</Category>
 
-        <div>
-            {category === "기숙사" && <DesP>학교 기숙사에 관한 내용이 궁금할 때 이 카테고리를 선택해주세요</DesP>}
-            {category === "학교생활" && <DesP>학교 생활에 내용이 궁금할 때 이 카테고리를 선택해주세요</DesP>}
-            {category === "유머" && <DesP>유머유머유머유머유머유머유머유머유머유머유머유머유머유머유머</DesP>}
-        </div>
-        
-        
-    </CatogoryBox>
-    </Appdiv>
-  );
+                <BoxDiv onClick={() => setIsOpen && setIsOpen(!isOpen)}>
+                    <CategoryP>{category}</CategoryP>
+                    <img src="svg/UnderBar.svg" alt="underbar" />
+                </BoxDiv>
+
+                <div>
+                    {category === "기숙사" && <DesP>학교 기숙사에 관한 내용이 궁금할 때 이 카테고리를 선택해주세요</DesP>}
+                    {category === "학교생활" && <DesP>학교 생활에 내용이 궁금할 때 이 카테고리를 선택해주세요</DesP>}
+                    {category === "유머" && <DesP>유머유머유머유머유머유머유머유머유머유머유머유머유머유머유머</DesP>}
+                </div>
+
+
+            </CatogoryBox>
+        </Appdiv>
+    );
 }
 
 const Appdiv = styled.div`
@@ -42,7 +42,7 @@ const Appdiv = styled.div`
     justify-content: center;
 `
 
-const CatogoryBox= styled.div`
+const CatogoryBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;

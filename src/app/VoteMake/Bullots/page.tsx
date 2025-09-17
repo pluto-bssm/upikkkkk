@@ -8,29 +8,29 @@ import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import { useVoteStore } from "@/app/stores/useVoteStore";
 import color from "@/packages/design-system/src/color";
-import { useRouter , usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import MakeCancel from "@/components/Modal/MakeCancel";
 import LoadingModal from "@/components/Modal/LoadingModal";
 
-export default function BallotEditPage() {  
+export default function BallotEditPage() {
   const lis = ["A", "B", "C", "D", "E"];
   const maxPossibleBallots = lis.length;
   const router = useRouter();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [isOpenSubmitModal, setIsOpenSubmitModal] = useState(false); 
-  const [LikeguideModal, setLikeguideModal] = useState(false); 
+  const [isOpenSubmitModal, setIsOpenSubmitModal] = useState(false);
+  const [LikeguideModal, setLikeguideModal] = useState(false);
 
   const { title, setTitle, ballots, setBallots } = useVoteStore();
   const path = usePathname();
 
-const handleSubmit = () => {
+  const handleSubmit = () => {
 
 
 
     setIsOpenSubmitModal(true);
-    
+
 
     setTimeout(() => {
       setIsOpenSubmitModal(false);
@@ -39,13 +39,13 @@ const handleSubmit = () => {
 
 
     setTimeout(() => {
-        setLikeguideModal(false);
+      setLikeguideModal(false);
     }, 4000);
     setTimeout(() => {
-        router.push(`${path}/likeguide`);
+      router.push(`${path}/likeguide`);
     }, 3000);
-    
-};
+
+  };
 
 
   const handleAddBallot = () => {
@@ -60,11 +60,11 @@ const handleSubmit = () => {
     }
   };
 
-  const [isOpenMakemodal , setIsOpenMakemodal] = useState(false);
+  const [isOpenMakemodal, setIsOpenMakemodal] = useState(false);
 
   return (
     <BallotEditLayout>
-      <Header 
+      <Header
         LeftItem={
           <img
             src="/svg/Back.svg"
@@ -72,25 +72,25 @@ const handleSubmit = () => {
             height={50}
             onClick={() => router.back()}
           />
-        } 
+        }
         RightItem={
-          <HeaderItemsBox 
-            type={'bollot'} 
-            isopen={isOpenMakemodal} 
+          <HeaderItemsBox
+            type={'bollot'}
+            isopen={isOpenMakemodal}
             setIsOpen={setIsOpenMakemodal}
           />
-        } 
+        }
         types="votemake"
       />
 
       <BallotEditContainer>
         <EditInfo title={title} setTitle={setTitle} />
-        
+
         <BallotListForm>
           {ballots.map((b, idx) => (
             <Ballot
               key={idx}
-              Info={lis[idx]} 
+              Info={lis[idx]}
               value={b}
               onChange={(v) => {
                 const newBallots = [...ballots];
@@ -109,7 +109,7 @@ const handleSubmit = () => {
         )}
 
         <ActionButtonWrapper>
-          <ChoseButton 
+          <ChoseButton
             onSubmitClick={() => setIsOpenModal(true)}
             onSubmitConfirm={handleSubmit}
             isSubmitModalOpen={isOpenModal}
@@ -120,18 +120,18 @@ const handleSubmit = () => {
       </BallotEditContainer>
 
       {isOpenMakemodal ? (
-        <MakeCancel setIsOpen={setIsOpenMakemodal} isOpen={isOpenMakemodal}/> 
+        <MakeCancel setIsOpen={setIsOpenMakemodal} isOpen={isOpenMakemodal} />
       ) : null}
 
       {isOpenSubmitModal && (
-        <LoadingModal 
-          title="욕설이 있는지 확인하고 있어요" 
+        <LoadingModal
+          title="욕설이 있는지 확인하고 있어요"
           des="욕설이 포함된 투표는 제작될 수 없어요."
         />
       )}
 
       {LikeguideModal && (
-        <LoadingModal 
+        <LoadingModal
           title={`유사한 내용의 가이드가 있는지\n확인하고 있어요`}
           des="유사한 내용의 가이드가 있다면, 기다리지 않아도 돼요."
         />

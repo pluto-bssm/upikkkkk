@@ -17,9 +17,9 @@ type TwoOptionsModalProps = React.ComponentProps<typeof motion.div> & {
   onSecondaryClick?: () => void;
 };
 
-export default function TwoOptionsModal({ 
+export default function TwoOptionsModal({
   isOpen,
-  setIsOpen, 
+  setIsOpen,
   icon,
   title,
   subtitle,
@@ -41,7 +41,7 @@ export default function TwoOptionsModal({
   }
 
   return (
-    (isOpen&& <ModalBackground {...motionProps}>
+    (isOpen && <ModalBackground {...motionProps}>
       <ModalContent
         initial={{ scale: 0.7, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}

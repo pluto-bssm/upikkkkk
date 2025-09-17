@@ -5,36 +5,36 @@ import { useRouter } from 'next/navigation';
 
 type CancelButtonProps = React.ComponentProps<typeof motion.div> & {
 
-  isOpen?: boolean;
-  setIsOpen?: (isOpen: boolean) => void;
+    isOpen?: boolean;
+    setIsOpen?: (isOpen: boolean) => void;
 
 };
 
 export default function CancelButton({ setIsOpen, ...motionProps }: CancelButtonProps) {
 
-  const router = useRouter();
+    const router = useRouter();
 
-  function handleCancel() {
-    setIsOpen?.(false);
-    router.replace("/")
-}
-  
+    function handleCancel() {
+        setIsOpen?.(false);
+        router.replace("/")
+    }
 
-  return (
-    <ModalBackground {...motionProps}>
-        <ModalContent>
-            <Text>
-                <Title>투표 제작을 취소하시겠어요?</Title>
-                <SubP>지금까지 작성한 내용은 저장되지 않습니다.</SubP>
-            </Text>
 
-            <ButtonGroup>
-                <Button onClick={() => {setIsOpen?.(false)}}>취소</Button>
-                <Button onClick={() => {handleCancel()}}>확인</Button>
-            </ButtonGroup>
-        </ModalContent>
-    </ModalBackground>
-  )
+    return (
+        <ModalBackground {...motionProps}>
+            <ModalContent>
+                <Text>
+                    <Title>투표 제작을 취소하시겠어요?</Title>
+                    <SubP>지금까지 작성한 내용은 저장되지 않습니다.</SubP>
+                </Text>
+
+                <ButtonGroup>
+                    <Button onClick={() => { setIsOpen?.(false) }}>취소</Button>
+                    <Button onClick={() => { handleCancel() }}>확인</Button>
+                </ButtonGroup>
+            </ModalContent>
+        </ModalBackground>
+    )
 }
 
 const ModalBackground = styled(motion.div)`
@@ -93,7 +93,7 @@ const ButtonGroup = styled.div`
     display: flex;
     justify-content: center;
     gap: 16px;
-`  
+`
 
 const Button = styled.button`
     font-weight: 700;

@@ -28,34 +28,34 @@ const Tailvote = () => {
 
   return (
     <TailvoteLayout>
-      <Header 
+      <Header
         LeftItem={
           <img
             src="/svg/Back.svg"
             width={20}
             height={50}
-            onClick={() => {router.back()}}
+            onClick={() => { router.back() }}
           />
-        } 
+        }
         RightItem={
-          <HeaderItemsBox 
-            type={'reportvote'} 
+          <HeaderItemsBox
+            type={'reportvote'}
           />
-        } 
+        }
         types="Nones"
       />
       <DoVoteContainer>
         <ContentWrapper>
-            <ContentContainer>
+          <ContentContainer>
             <TextWrapper>
-                <Title>꼬리질문 응답하기</Title>
-                <Question>해당 선지를 고른 이유는 무엇인가요?</Question>
-                <Description>꼬리질문은 응답하지 않고 넘어갈 수 있어요</Description>
+              <Title>꼬리질문 응답하기</Title>
+              <Question>해당 선지를 고른 이유는 무엇인가요?</Question>
+              <Description>꼬리질문은 응답하지 않고 넘어갈 수 있어요</Description>
             </TextWrapper>
 
             <TailvoteTextarea placeholder="응답을 작성해주세요!&#13;&#10;꼬리 질문 응답은 더 질 높은 가이드를 제작하는데 도움이 됩니다."></TailvoteTextarea>
-            </ContentContainer>
-          
+          </ContentContainer>
+
 
           <SubmitButton onClick={handleVoteSubmit}>
             투표 완료하기
@@ -66,24 +66,24 @@ const Tailvote = () => {
       </DoVoteContainer>
 
       <AnimatePresence>
-      {isCompleteOpen && (
-        <CompleteVote
-          isOpen={isCompleteOpen}
-          setIsOpen={setIsCompleteOpen}
-          text1 = '투표를'
-          text2= '했어요!'
-          text3 = '완료'
-          subtext='마이페이지에서 지금까지 한 투표 내역을 확인할 수 있어요'
-          img ='/svg/Completevote.svg'
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onfunciton={handleComplete}
-          
-        />
-      )}
-    </AnimatePresence>
-    
+        {isCompleteOpen && (
+          <CompleteVote
+            isOpen={isCompleteOpen}
+            setIsOpen={setIsCompleteOpen}
+            text1='투표를'
+            text2='했어요!'
+            text3='완료'
+            subtext='마이페이지에서 지금까지 한 투표 내역을 확인할 수 있어요'
+            img='/svg/Completevote.svg'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onfunciton={handleComplete}
+
+          />
+        )}
+      </AnimatePresence>
+
     </TailvoteLayout>
   );
 }

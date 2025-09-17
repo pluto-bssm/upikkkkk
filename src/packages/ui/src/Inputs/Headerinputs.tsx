@@ -10,7 +10,7 @@ type Props = {
 
 const HeaderInputs = ({ placeholders, value, onChange }: Props) => {
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (onChange) {
       onChange(event.target.value);
     }
