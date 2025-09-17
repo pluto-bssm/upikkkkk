@@ -9,28 +9,32 @@ import VoteMakeButton from "@/components/Vote/VoteMakeButton";
 import VoteBlock from "@/components/Vote/VoteBlock";
 import VoteSort from "@/components/Modal/VoteSort";
 import { useState } from "react";
+import { Vote } from "@/types/api";
 
-const voteData = [
+const voteData: Vote[] = [
     {
-        id: 1,
+        id: "1",
         title: "투표제목",
         category: "학교생활",
-        views: "16",
-        state: "2025-08-31에 마감되는 투표"
+        totalResponses: 16,
+        finishedAt: "2025-08-31T23:59:59Z",
+        status: "ACTIVE"
     },
     {
-        id: 2,
+        id: "2",
         title: "투표제목",
         category: "기숙사",
-        views: "16",
-        state: "2025-08-31에 마감되는 투표"
+        totalResponses: 16,
+        finishedAt: "2025-08-31T23:59:59Z",
+        status: "ACTIVE"
     },
     {
-        id: 3,
+        id: "3",
         title: "투표제목",
         category: "유머",
-        views: "20",
-        state: "2025-08-31에 마감되는 투표"
+        totalResponses: 20,
+        finishedAt: "2025-08-31T23:59:59Z",
+        status: "ACTIVE"
     }
 ];
 
@@ -59,11 +63,7 @@ const VotePage = () => {
                 {voteData.map((vote) => (
                     <VoteBlock
                         key={vote.id}
-                        id={vote.id}
-                        title={vote.title}
-                        catogory={vote.category}
-                        views={vote.views}
-                        state={vote.state}
+                        vote={vote}
                     />
                 ))}
             </VoteListSection>

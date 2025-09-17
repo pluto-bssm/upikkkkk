@@ -25,7 +25,6 @@ const VoteBlock = ({ vote }: Props) => {
         }
     }
     
- 
     const getStateText = () => {
         if (isPast(new Date(vote.finishedAt))) {
             return "마감된 투표";

@@ -1,0 +1,76 @@
+"use client";
+import React from "react";
+import styled from "@emotion/styled";
+import { mockRevoteeData } from "@/mock/RevoteComponent";
+import color from "@/packages/design-system/src/color";
+import font from "@/packages/design-system/src/font";
+
+interface RevoteComponentProps {
+  selectedIndex: number | null;
+  onSelect: (idx: number) => void;
+}
+
+const RevoteComponent = ({ selectedIndex, onSelect }: RevoteComponentProps) => {
+
+  return (
+    <Section>
+        <SectionBody>
+        {mockRevoteeData.map((text, idx) => (
+            <GuideCard key={idx}
+            isSelected={selectedIndex === idx}
+            onClick={()=>onSelect(idx)}>
+                <GuideTextWrap>
+                <GuideTitle>{text}</GuideTitle>
+                </GuideTextWrap>
+            </GuideCard>
+            ))}
+        </SectionBody>
+    </Section>
+  );
+};
+
+export default RevoteComponent;
+
+const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width : 100%;
+`;
+
+const SectionBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap:8px;
+`;
+
+const GuideCard = styled.div<{ isSelected:boolean}>`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 67px;
+  border: 1px solid
+    ${({ isSelected }) => (isSelected ? color.primary : color.gray100)};
+  border-radius: 16px;
+  background-color: ${({ isSelected }) =>
+    isSelected ? `${color.primary}33` : color.white};
+  padding: 0 16px;
+  box-shadow: 
+    -4px -4px 10px 0 rgba(0,0,0,0.03),
+     4px  4px 10px 0 rgba(0,0,0,0.03);
+`;
+
+const GuideTextWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+`;
+
+const GuideTitle = styled.div`
+  color: ${color.gray600};
+  font-family:  ${font.P1};
+  text-align:center;
+`;
+
+
