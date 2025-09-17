@@ -6,12 +6,11 @@ import { usePathname } from "next/navigation";
 type Props = {
   title: string,
   catogory: string,
-  views?: string,
-  state?: string,
-  id?: number
+  count: number,
+  id: number
 }
 
-const VoteBlock = ({ title, catogory, views, state, id }: Props) => {
+const GuideBlock = ({ title, catogory, count, id }: Props) => {
   const renderImage = () => {
     switch (catogory) {
       case "학교생활":
@@ -38,12 +37,11 @@ const VoteBlock = ({ title, catogory, views, state, id }: Props) => {
             <Infomations>
               <Catogorys>{catogory}</Catogorys>
               <ViewBlock>
-                <img src="/svg/Views.svg" height={14} width={14} />
-                <Views> {views}</Views>
+                <img src="/svg/Bookmark.svg" height={12} width={12} />
+                <Views> {count}</Views>
               </ViewBlock>
 
             </Infomations>
-            <States>{state}</States>
           </InfomationsBlock>
         </InfomationsBlocks>
       </VoteBlocks>
@@ -51,7 +49,7 @@ const VoteBlock = ({ title, catogory, views, state, id }: Props) => {
   );
 }
 
-export default VoteBlock;
+export default GuideBlock;
 
 const VoteBlockLayout = styled.div`
     max-width : 600px;
@@ -63,13 +61,14 @@ const VoteBlockLayout = styled.div`
     gap : 10px;
     background-color : ${color.white};
     border : 1.5px solid ${color.gray50};
-    border-radius : 10px;
+        border-radius : 10px;
 
 `
 
 const VoteBlocks = styled.div`
     width : 100%;
     height : 80px;
+
     display : flex;
     justify-content : start;
     align-items : center;

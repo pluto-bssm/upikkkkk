@@ -14,10 +14,10 @@ const NavigationBar = () => {
   return (
     <NavigationPageLayout>
       <NavigationItem>
-        <img src='svg/Home.svg' width={40} height={40} onClick={() => {router.push("/")}}/>
-        <img src='svg/Vote.svg' width={40} height={40} onClick={() => {router.push("/Vote")}} />
-        <img src='svg/Guide.svg' width={40} height={40} onClick={() => {router.push("/Guide")}} />
-        <img src='svg/Dashboard.svg' width={40} height={40} onClick={() => {router.push("/Dashboard")}} />
+        <img src='/svg/Home.svg' width={40} height={40} onClick={() => { router.push("/") }} />
+        <img src='/svg/Vote.svg' width={40} height={40} onClick={() => { router.push("/vote") }} />
+        <img src='/svg/Guide.svg' width={40} height={40} onClick={() => { router.push("/Guide") }} />
+        <img src='/svg/Dashboard.svg' width={40} height={40} onClick={() => { router.push("/Dashboard") }} />
       </NavigationItem>
     </NavigationPageLayout>
   );
