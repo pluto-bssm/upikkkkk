@@ -1,12 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 
-import Image from 'next/image';
-
-
-
-
-// Ballot.tsx
 export default function Ballot({
   Info,
   value,
