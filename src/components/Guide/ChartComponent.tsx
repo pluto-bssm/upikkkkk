@@ -1,18 +1,30 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import Chart from 'chart.js/auto';
+import styled from '@emotion/styled';
+import color from '@/packages/design-system/src/color';
+import font from '@/packages/design-system/src/font';
 
-const ChartComponent = () => {
+type ChartDatum = { label: string; value: number; color: string };
+
+type ChartComponentProps = {
+  data?: ChartDatum[];
+};
+
+const ChartComponent = ({ data }: ChartComponentProps) => {
 const canvasRef = useRef<HTMLCanvasElement>(null);
 const chartRef = useRef<Chart | null>(null);
 
-// 📊 차트 데이터 (한 곳에서 관리)
-const chartData = [
-  { label: '선지1', value: 34, color: '#FF3B3B' },
-  { label: '선지2', value: 33, color: '#FF6D38' },
-  { label: '선지3', value: 33, color: '#FFBE3C' }
-];
+// 📊 차트 데이터
+const chartData: ChartDatum[] = useMemo(() => {
+  if (data && data.length > 0) return data;
+  return [
+    { label: '선지1', value: 34, color: '#FF3B3B' },
+    { label: '선지2', value: 33, color: '#FF6D38' },
+    { label: '선지3', value: 33, color: '#FFBE3C' }
+  ];
+}, [data]);
 
 useEffect(() => {
   // 클라이언트 사이드에서만 실행
@@ -61,97 +73,110 @@ useEffect(() => {
       chartRef.current.destroy();
     }
   };
-}, []);
+}, [chartData]);
 
 // 🎨 커스텀 선지 컴포넌트 (useEffect 밖으로!)
 const CustomLegend = () => {
   return (
-    <div 
-      style={{ 
-        backgroundColor: '#E6E6E6',
-        width: '318px',
-        height: '94px',
-        borderRadius: '8px',
-        padding: '16px'
-  }}
->
-
-      {/* 첫 번째 행: 선지1, 선지2 */}
-      <div className="flex justify-between mb-3">
-        <div className="flex items-center">
-          <div 
-            className="w-3 h-3 rounded-full mr-2" 
-            style={{ backgroundColor: '#FF3B3B' }}
-          ></div>
-          <span 
-            className="text-sm"
-            style={{ 
-              fontFamily: 'Pretendard',
-              fontWeight: 400,
-              fontSize: '14px',
-              color: '#011627'
-            }}
-          >
-            선지1
-          </span>
-        </div>
-        
-        <div className="flex items-center">
-          <div 
-            className="w-3 h-3 rounded-full mr-2" 
-            style={{ backgroundColor: '#FF6D38' }}
-          ></div>
-          <span 
-            className="text-sm"
-            style={{ 
-              fontFamily: 'Pretendard',
-              fontWeight: 400,
-              fontSize: '14px',
-              color: '#011627'
-            }}
-          >
-            선지2
-          </span>
-        </div>
-      </div>
-      
-      {/* 두 번째 행: 선지3 */}
-      <div className="flex items-center">
-        <div 
-          className="w-3 h-3 rounded-full mr-2" 
-          style={{ backgroundColor: '#FFBE3C' }}
-        ></div>
-        <span 
-          className="text-sm"
-          style={{ 
-            fontFamily: 'Pretendard',
-            fontWeight: 400,
-            fontSize: '14px',
-            color: '#011627'
-          }}
-        >
-          선지3
-        </span>
-      </div>
-    </div>
+    <LegendBox>
+      <LegendRowTop>
+        {chartData.slice(0, 2).map((d) => (
+          <LegendItem key={d.label}>
+            <LegendDot style={{ backgroundColor: d.color }} />
+            <LegendLabel>{d.label}</LegendLabel>
+          </LegendItem>
+        ))}
+      </LegendRowTop>
+      <LegendRowBottom>
+        {chartData.slice(2).map((d) => (
+          <LegendItem key={d.label}>
+            <LegendDot style={{ backgroundColor: d.color }} />
+            <LegendLabel>{d.label}</LegendLabel>
+          </LegendItem>
+        ))}
+      </LegendRowBottom>
+    </LegendBox>
   );
 };
 
 return (
-    <div className="flex flex-col items-center gap-8">
-      {/* 🎯 차트 영역 */}
-      <div className="flex justify-center items-start">
-        <div className="w-80 h-80 bg-white rounded-xl shadow-lg p-6">
-          <canvas ref={canvasRef} id="myChart" />
-        </div>
-      </div>
-
-      {/* 📊 커스텀 선지 영역 */}
-      <div className="flex justify-center">
+    <Root>
+      <ChartCard>
+        <Canvas ref={canvasRef} id="myChart" />
+      </ChartCard>
+      <LegendWrap>
         <CustomLegend />
-      </div>
-    </div>
+      </LegendWrap>
+    </Root>
 );
 };
 
 export default ChartComponent;
+
+// Styled components for pixel-perfect publishing
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+`;
+
+const ChartCard = styled.div`
+  width: 200px;
+  height: 200px;
+  background: ${color.white};
+  border-radius: 200px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Canvas = styled.canvas`
+  width: 100% !important;
+  height: 100% !important;
+`;
+
+const LegendWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
+const LegendBox = styled.div`
+  background-color:${color.gray100};
+  width: 318px;
+  min-height: 94px;
+  border-radius: 8px;
+  padding: 10%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  row-gap: 12px;
+`;
+
+const LegendRowTop = styled.div`
+  display: contents;
+`;
+
+const LegendRowBottom = styled.div`
+  display: contents;
+`;
+
+const LegendItem = styled.div`
+  display: flex;
+  align-items: center;
+  width: 50%;
+`;
+
+const LegendDot = styled.div`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+`;
+
+const LegendLabel = styled.span`
+  font-family: ${font.P2};
+  color:${color.black};
+`;
