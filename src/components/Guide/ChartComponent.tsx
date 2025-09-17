@@ -45,24 +45,34 @@ useEffect(() => {
       datasets: [{
         data: chartData.map(item => item.value),
         backgroundColor: chartData.map(item => item.color),
+        hoverBackgroundColor: chartData.map(item => item.color), // 호버 시에도 동일한 색상 유지
         borderWidth: 2,
         borderColor: '#ffffff',
-        hoverOffset: 8,
+        hoverBorderColor: '#ffffff', // 호버 시에도 동일한 테두리 색상 유지
+        hoverOffset: 0, // 호버 시 오프셋 제거
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      animation: {
+        duration: 0, // 애니메이션 완전 비활성화
+      },
       plugins: {
         legend: {
           display: false, // 🚫 기본 범례 숨기기
         },
         tooltip: {
-          backgroundColor: 'rgba(0,0,0,0.8)',
-          titleColor: '#fff',
-          bodyColor: '#fff',
-          cornerRadius: 8,
+          enabled: false, // 🚫 툴팁 비활성화
         }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'nearest'
+      },
+      onHover: (event, activeElements) => {
+        // 호버 시 아무것도 하지 않음
+        return;
       }
     }
   });

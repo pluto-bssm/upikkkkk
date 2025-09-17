@@ -87,5 +87,3 @@ const VoteMain = styled.div`
   -webkit-mask: url('/svg/VoteMain.svg') no-repeat center / contain;
   mask: url('/svg/VoteMain.svg') no-repeat center / contain;
 `;
-
-
