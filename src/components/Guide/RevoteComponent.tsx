@@ -1,20 +1,24 @@
 "use client";
-import Reac, { useState} from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { mockRevoteeData } from "@/mock/RevoteComponent";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
-const RevoteComponent = () => {
-  const [selected, setSelected] = useState<number | null>(null);
+interface RevoteComponentProps {
+  selectedIndex: number | null;
+  onSelect: (idx: number) => void;
+}
+
+const RevoteComponent = ({ selectedIndex, onSelect }: RevoteComponentProps) => {
 
   return (
     <Section>
         <SectionBody>
         {mockRevoteeData.map((text, idx) => (
             <GuideCard key={idx}
-            isSelected={selected === idx}
-            onClick={()=>setSelected(idx)}>
+            isSelected={selectedIndex === idx}
+            onClick={()=>onSelect(idx)}>
                 <GuideTextWrap>
                 <GuideTitle>{text}</GuideTitle>
                 </GuideTextWrap>
@@ -31,7 +35,7 @@ const Section = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width : 90%;
+  width : 100%;
 `;
 
 const SectionBody = styled.div`
