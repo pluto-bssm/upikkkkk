@@ -23,6 +23,8 @@ export type HeaderType =
 
 type Props = {
   type: HeaderType;
+  isopen?: boolean;
+  setIsOpen?: (value: boolean) => void;
 };
 
 const HeaderItemsBox = ({ type }: Props) => {
