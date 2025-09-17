@@ -83,16 +83,16 @@ const Home = () => {
     <MainPageLayout>
       <Header LeftItem={
         <img
-        src="/svg/Logo.svg"
-        width={50}
-        height={50}
-         />
-      } 
+          src="/svg/Logo.svg"
+          width={50}
+          height={50}
+        />
+      }
         RightItem={<HeaderItemsBox type={'main'} />}
-        types='None'/>
+        types='None' />
 
 
-        <ContentArea>
+      <ContentArea>
         <div>스크롤해서 sticky 테스트</div>
         <div style={{ margin: '16px 0' }}>
           <Node2582079 />
