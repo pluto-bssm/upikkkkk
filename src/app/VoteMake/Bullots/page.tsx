@@ -26,7 +26,7 @@ export default function BallotEditPage() {
   const path = usePathname();
 
 const handleSubmit = () => {
-    console.log('투표 제출:', { title, ballots });
+
 
 
     setIsOpenSubmitModal(true);

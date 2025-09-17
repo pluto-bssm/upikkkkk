@@ -40,7 +40,7 @@ type Props = {
 const HeaderItemsBox = ({ type ,setIsOpen,isopen}: Props) => {
   const path = usePathname();
 
-  console.log(path);
+ 
   const router = useRouter();
   const renderItems = () => {
     switch (type) {
@@ -48,7 +48,7 @@ const HeaderItemsBox = ({ type ,setIsOpen,isopen}: Props) => {
         return (
           <>
             <img key="bell" src="svg/Bell.svg" alt="알림" width={24} height={24} />
-            <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24} onClick={() => {router.push(`/Vote/search`)}}/>
+            <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24} onClick={() => {router.push(`/vote/search`)}}/>
             <img key="user" src="svg/User.svg" alt="사용자" width={24} height={24} />
           </>
         );
@@ -103,7 +103,7 @@ const HeaderItemsBox = ({ type ,setIsOpen,isopen}: Props) => {
         return (
           <>
            <img key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} onClick={() =>setIsOpen?.(true)}/>
-           <img key="options" src="/svg/Options.svg" alt="설정" width={24} height={24} onClick={() => {router.push(`${path}/Voteoptions`)}} />
+           <img key="options" src="/svg/Options.svg" alt="설정" width={24} height={24} onClick={() => {router.push(`${path}/voteoptions`)}} />
           </>
         ); 
 

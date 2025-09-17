@@ -14,7 +14,7 @@ const HeaderNavigaionBar = ({ type, onOptionClick }: Props) => {
     const [activeIdx, setActiveIdx] = useState(0);
 
     const handleOptionClick = () => {
-        console.log('Option button clicked!');
+    
         if (onOptionClick) {
             onOptionClick();
         }

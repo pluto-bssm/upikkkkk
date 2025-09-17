@@ -11,7 +11,7 @@ export default function ChoseButton( ) {
 
   return (
     <ButtonDiv>
-        <Button onClick={() => router.push(`${path}/Bullots`)}>
+        <Button onClick={() => router.push(`${path}/bullots`)}>
             <img src="svg/Plus.svg" alt="plus" />
             <p>투표 제작하기</p>
         </Button>

@@ -54,9 +54,6 @@ const Report = () => {
             alert('상세 내용을 입력해주세요.');
             return;
         }
-
-        console.log('신고 사유:', selectedReason);
-        console.log('상세 내용:', detailContent);
         setCompleteModal(true);
     };
 

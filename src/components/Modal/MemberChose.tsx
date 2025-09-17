@@ -149,7 +149,7 @@ export default function VoteEndConditionModal({ isOpen, setIsOpen }: Props) {
         primaryButtonText="이동하기"
         secondaryButtonText="뒤로가기"
         onPrimaryClick={() => router.push('/question-board')}
-        onSecondaryClick={() => console.log('취소')}
+        onSecondaryClick={() => {}}
       />
 
 

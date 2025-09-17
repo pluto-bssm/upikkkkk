@@ -30,7 +30,7 @@ function OptionsPage() {
     const savedCount = sessionStorage.getItem('aiUsageCount');
       if (savedCount) {
         setAiUsageCount(parseInt(savedCount));
-        console.log(savedCount)
+  
       }
   }, []);
 

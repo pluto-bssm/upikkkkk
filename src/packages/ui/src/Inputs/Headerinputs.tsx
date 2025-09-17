@@ -14,7 +14,7 @@ const HeaderInputs = ({ placeholders, value, onChange }: Props) => {
     if (onChange) {
       onChange(event.target.value);
     }
-    console.log(event.target.value);
+
   };
 
   return (
