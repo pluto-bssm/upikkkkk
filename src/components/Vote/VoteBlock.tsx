@@ -8,10 +8,11 @@ type Props = {
   catogory: string,
   views?: string,
   state?: string,
-  id?: number
+  id?: number,
+  hrefBase?: string
 }
 
-const VoteBlock = ({ title, catogory, views, state, id }: Props) => {
+const VoteBlock = ({ title, catogory, views, state, id, hrefBase }: Props) => {
   const renderImage = () => {
     switch (catogory) {
       case "학교생활":
@@ -28,7 +29,7 @@ const VoteBlock = ({ title, catogory, views, state, id }: Props) => {
   const Router = useRouter();
   const path = usePathname();
   return (
-    <VoteBlockLayout onClick={() => { Router.push(`${path}/${id}`) }}>
+    <VoteBlockLayout onClick={() => { Router.push(`${hrefBase ? hrefBase : path}/${id}`) }}>
       <VoteBlocks>
         {renderImage()}
         <InfomationsBlocks>

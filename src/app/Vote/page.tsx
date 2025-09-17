@@ -64,6 +64,7 @@ const VotePage = () => {
                         catogory={vote.category}
                         views={vote.views}
                         state={vote.state}
+                        hrefBase={"/Vote"}
                     />
                 ))}
             </VoteListSection>

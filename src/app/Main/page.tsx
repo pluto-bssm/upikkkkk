@@ -8,7 +8,7 @@ import color from '@/packages/design-system/src/color'
 import font from '@/packages/design-system/src/font'
 import RecoVote from '@/components/Main/RecoVote'
 import GuideComponent from '@/components/Main/GuideComponent'
-import PopularVote from '@/components/Main/PopularVote'
+import VoteBlock from '@/components/Vote/VoteBlock'
 
 const Main = () => {
   return (
@@ -32,7 +32,24 @@ const Main = () => {
           <VoteMain />
           <SectionTitle>인기 투표</SectionTitle>
         </SectionHeader>
-        <PopularVote />
+        <VoteListSection>
+          {[
+            { id: 1, title: '투표제목', category: '학교생활', views: '16', state: '2025-08-31에 마감되는 투표' },
+            { id: 2, title: '투표제목', category: '기숙사', views: '16', state: '2025-08-31에 마감되는 투표' },
+            { id: 3, title: '투표제목', category: '유머', views: '20', state: '2025-08-31에 마감되는 투표' }
+          ].map((vote) => (
+            <VoteItemWrapper key={vote.id}>
+              <VoteBlock
+                id={vote.id}
+                title={vote.title}
+                catogory={vote.category}
+                views={vote.views}
+                state={vote.state}
+                hrefBase={"/Vote"}
+              />
+            </VoteItemWrapper>
+          ))}
+        </VoteListSection>
         <SectionHeader>
           <Book />
           <SectionTitle>오늘의 가이드</SectionTitle>
@@ -86,4 +103,20 @@ const VoteMain = styled.div`
   background-color:${color.gray700};
   -webkit-mask: url('/svg/VoteMain.svg') no-repeat center / contain;
   mask: url('/svg/VoteMain.svg') no-repeat center / contain;
+`;
+
+const VoteListSection = styled.div`
+  width: 100%;
+  padding: 0 6%;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+`;
+
+const VoteItemWrapper = styled.div`
+  flex: 0 0 100%;
+  width: 100%;
+  scroll-snap-align: start;
 `;
