@@ -9,16 +9,30 @@ import { useRouter } from "next/navigation";
 type GuideComponentProps = {
   gap?: string;
   category?: string;
+  sortstandard?: string;
 };
 
-const GuideComponent = ({ gap = "10px", category = '전체' }: GuideComponentProps) => {
+const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가이드 제작일 기준' }: GuideComponentProps) => {
   const router = useRouter();
+  const filtered = mockMainGuideData
+    .filter((item) => (category === '전체' ? true : item.category === category));
+
+  const sorted = [...filtered].sort((a, b) => {
+    if (sortstandard === '가이드 제작일 기준') {
+      const timeA = new Date(a.date).getTime();
+      const timeB = new Date(b.date).getTime();
+      return timeB - timeA; 
+    }
+    if (sortstandard === '많이 저장한 가이드 기준') {
+      return b.markcount - a.markcount;
+    }
+    return 0;
+  });
   return (
     <Root>
       <Section>
         <SectionBody gap={gap}>
-          {mockMainGuideData
-            .filter((item) => category === '전체' ? true : item.category === category)
+          {sorted
             .map((item) => (
             <GuideCard key={item.id} onClick={() => router.push("/MoreGuide")}>            
               <GuideEmoji src={item.thumnail} alt="thumbnail" />
