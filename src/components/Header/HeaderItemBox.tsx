@@ -23,16 +23,17 @@ export type HeaderType =
 
 type Props = {
   type: HeaderType;
+  onSearchClick?: () => void;
 };
 
-const HeaderItemsBox = ({ type }: Props) => {
+const HeaderItemsBox = ({ type, onSearchClick }: Props) => {
   const renderItems = () => {
     switch (type) {
       case 'main':
         return (
           <>
             <img key="bell" src="svg/Bell.svg" alt="알림" width={24} height={24} />
-            <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24} />
+            <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24} onClick={onSearchClick} style={{ cursor: 'pointer' }} />
             <img key="user" src="svg/User.svg" alt="사용자" width={24} height={24} />
           </>
         );
@@ -163,6 +164,5 @@ const ItemsPageLayout = styled.div`
 `;
 
 const HeaderTitle = styled.p`
-   ${font.H9}
-
+   ${font.P14}
 `

@@ -1,6 +1,6 @@
 export const mockMainGuideData = [{
     id:1,
-    title: "가이드 제목",
+    title: "학교생활 잘하는 가이드",
     thumnail: "/svg/School.svg",
     category: "학교생활",
     markcount: 15,
@@ -8,7 +8,7 @@ export const mockMainGuideData = [{
   },
   {
     id:2,
-    title: "가이드 제목",
+    title: "급식 줄 서는 가이드",
     thumnail: "/svg/Humors.svg",
     category: "유머",
     markcount: 15,
@@ -16,7 +16,7 @@ export const mockMainGuideData = [{
   },
   { 
     id:3,
-    title: "가이드 제목",
+    title: "방과후 가이드",
     thumnail: "/svg/Domitorys.svg",
     category: "기숙사",
     markcount: 15,

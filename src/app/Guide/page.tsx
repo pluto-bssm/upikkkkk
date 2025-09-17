@@ -7,6 +7,7 @@ import color from "@/packages/design-system/src/color";
 import GuideComponent from "@/components/Main/GuideComponent";
 import NavigationBar from "@/components/common/NavigationBar";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Guide = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('전체');
