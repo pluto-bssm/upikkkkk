@@ -12,9 +12,23 @@ type Props = {
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   types: string;
   onOptionClick?: () => void;
+
+  // ✅ 추가된 props
+  activeIdx?: number;
+  setActiveIdx?: (idx: number) => void;
 };
 
-const Header = ({ LeftItem, RightItem, CenterItem, showInput = false, types, inputProps, onOptionClick }: Props) => {
+const Header = ({ 
+  LeftItem, 
+  RightItem, 
+  CenterItem, 
+  showInput = false, 
+  types, 
+  inputProps, 
+  onOptionClick,
+  activeIdx,
+  setActiveIdx
+}: Props) => {
   return (
     <HeaderPageLayout>
       <HeaderBarSection>
@@ -31,9 +45,17 @@ const Header = ({ LeftItem, RightItem, CenterItem, showInput = false, types, inp
           </RightSection>
         </HeaderItem>
       </HeaderBarSection>
-      <NavigationBarSection>
-        <HeaderNavigaionBar type={types} onOptionClick={onOptionClick} />
-      </NavigationBarSection>
+      
+      {types !== "Nones" && (
+        <NavigationBarSection>
+          <HeaderNavigaionBar 
+            type={types}  
+            onOptionClick={onOptionClick}
+            activeIdx={activeIdx}
+            setActiveIdx={setActiveIdx}
+          />
+        </NavigationBarSection>
+      )}
     </HeaderPageLayout>
   );
 };
@@ -113,4 +135,4 @@ const StyledInput = styled.input`
   &:focus {
     outline: none;
   }
-`;
+`

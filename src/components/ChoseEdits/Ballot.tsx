@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import font from '@/packages/design-system/src/font';
+import color from '@/packages/design-system/src/color';
 
 export default function Ballot({
   Info,
@@ -87,10 +89,9 @@ const Input = styled.input`
 
     border :none;
     outline : none;
-    color : #011627;
+    color : ${color.gray600};
 
-    font-size : 15px;
-    font-weight : 600;
+    ${font.H2};
 
     padding : 0px 8px;
     
