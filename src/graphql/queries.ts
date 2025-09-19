@@ -313,3 +313,26 @@ export const CREATE_INQUIRY = gql`
     }
   }
 `;
+
+//오늘의 투표
+export const TODAY_VOTE = gql`
+query TodayVote {
+  vote {
+    getLeastPopularOpenVote {
+      category
+      finishedAt
+      hasVoted
+      id
+      options {
+        content
+        id
+        percentage
+        responseCount
+      }
+      status
+      title
+      totalResponses
+    }
+  }
+}
+`;

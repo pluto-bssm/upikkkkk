@@ -42,7 +42,8 @@ const SaveGuidePage = () => {
     router.back();
   };
 
-  const handleGuideClick = (id: string) => {
+  const handleGuideClick = (guideId: string) => {
+    router.push(`/MoreGuide?guideId=${guideId}`);
   };
 
   // 로딩 처리
@@ -66,7 +67,6 @@ const SaveGuidePage = () => {
   }
 
   const bookmarkedGuides = data?.bookmark?.getBookmarkedGuides?.filter(guide => guide && guide.id) || [];
-
   return (
     <PageContainer>
       <Header 

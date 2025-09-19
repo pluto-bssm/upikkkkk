@@ -36,6 +36,7 @@ export interface Guide {
   like?: number;
   likeCount?: number;
   revoteCount?: number;
+  voteId?: string; // 연결된 투표 ID
 }
 
 export interface SimilarGuide {

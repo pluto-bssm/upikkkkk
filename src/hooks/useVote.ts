@@ -6,6 +6,7 @@ import {
   GET_VOTE_BY_ID,
   CREATE_VOTE,
   CREATE_VOTE_RESPONSE,
+  TODAY_VOTE,
 } from "@/graphql/queries";
 import type { Vote, CreateVoteInput, CreateVoteResponseInput } from "@/types/api";
 
@@ -117,5 +118,24 @@ export function useVoteResponse() {
     createResponse,
     loading,
     error,
+  };
+}
+
+interface TodayVoteData {
+  vote: {
+    getLeastPopularOpenVote: Vote
+  }
+}
+
+export function useTodayVote() {
+  const { data, loading, error, refetch } = useQuery<TodayVoteData>(TODAY_VOTE, {
+    fetchPolicy: 'network-only'
+  });
+
+  return {
+    vote: data?.vote?.getLeastPopularOpenVote,
+    loading,
+    error,
+    refetch
   };
 }

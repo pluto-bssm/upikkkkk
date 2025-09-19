@@ -1,9 +1,16 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { Vote } from "@/types/api";
 import { useRouter } from "next/navigation";
 import { format, isPast, differenceInDays } from "date-fns";
+
+type Vote = {
+  id: string;
+  title: string;
+  category: string;
+  totalResponses: number;
+  finishedAt: string;
+};
 
 type Props = {
   vote: Vote;

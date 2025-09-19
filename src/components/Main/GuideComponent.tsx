@@ -1,51 +1,96 @@
 "use client";
 import React from "react";
 import styled from "@emotion/styled";
-import { mockMainGuideData } from "@/mock/GuideComponent";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { useRouter } from "next/navigation";
+import { useAllGuides } from "@/hooks/useGuides";
 
 type GuideComponentProps = {
   gap?: string;
   category?: string;
   sortstandard?: string;
+  limit?: number;
 };
 
-const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가이드 제작일 기준' }: GuideComponentProps) => {
+const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가이드 제작일 기준', limit }: GuideComponentProps) => {
   const router = useRouter();
-  const filtered = mockMainGuideData
-    .filter((item) => (category === '전체' ? true : item.category === category));
+  
+  const { guides, loading, error } = useAllGuides(0, 20, sortstandard === '가이드 제작일 기준' ? 'createdAt' : 'like');
+  
+  const filteredGuides = guides.filter((guide) => {
+    if (category === '전체') return true;
+    return guide.category === category;
+  });
 
-  const sorted = [...filtered].sort((a, b) => {
+  const sorted = [...filteredGuides].sort((a, b) => {
     if (sortstandard === '가이드 제작일 기준') {
-      const timeA = new Date(a.date).getTime();
-      const timeB = new Date(b.date).getTime();
+      const timeA = new Date(a.createdAt).getTime();
+      const timeB = new Date(b.createdAt).getTime();
       return timeB - timeA; 
     }
+    if (sortstandard === '가이드 제작일 빠른순') {
+      const timeA = new Date(a.createdAt).getTime();
+      const timeB = new Date(b.createdAt).getTime();
+      return timeA - timeB;
+    }
     if (sortstandard === '많이 저장한 가이드 기준') {
-      return b.markcount - a.markcount;
+      return (b.like || 0) - (a.like || 0);
     }
     return 0;
   });
+
+  const limitedGuides = typeof limit === 'number' ? sorted.slice(0, limit) : sorted;
+
+  const getThumbnailByCategory = (category: string) => {
+    switch (category) {
+      case '유머':
+        return "/svg/Humors.svg";
+      case '학교생활':
+        return "/svg/School.svg";
+      case '기숙사':
+        return "/svg/Domitorys.svg";
+      default:
+        return "/svg/Guide.svg";
+    }
+  };
+
+  if (loading) {
+    return (
+      <Root>
+        <LoadingText>가이드를 불러오는 중...</LoadingText>
+      </Root>
+    );
+  }
+
+  if (error) {
+    return (
+      <Root>
+        <ErrorText>가이드를 불러오는데 실패했습니다.</ErrorText>
+      </Root>
+    );
+  }
   return (
     <Root>
       <Section>
         <SectionBody gap={gap}>
-          {sorted
-            .map((item) => (
-            <GuideCard key={item.id} onClick={() => router.push("/MoreGuide")}>            
-              <GuideEmoji src={item.thumnail} alt="thumbnail" />
-              <GuideTextWrap>
-                <GuideTitle>{item.title}</GuideTitle>
-                <GuideMeta>
-                  <GuideTag>{item.category}</GuideTag>
+          {limitedGuides.length > 0 ? (
+            limitedGuides.map((item) => (
+              <GuideCard key={item.id} onClick={() => router.push(`/MoreGuide?id=${item.id}`)}>            
+                <GuideEmoji src={getThumbnailByCategory(item.category || '기타')} alt="thumbnail" />
+                <GuideTextWrap>
+                  <GuideTitle>{item.title}</GuideTitle>
+                  <GuideMeta>
+                    <GuideTag>{item.category || '기타'}</GuideTag>
                     <GuideCountIcon />
-                    <GuideCount>{item.markcount}</GuideCount>
-                </GuideMeta>
-              </GuideTextWrap>
-            </GuideCard>
-          ))}
+                    <GuideCount>{item.like || 0}</GuideCount>
+                  </GuideMeta>
+                </GuideTextWrap>
+              </GuideCard>
+            ))
+          ) : (
+            <NoDataText>등록된 가이드가 없습니다.</NoDataText>
+          )}
         </SectionBody>
       </Section>
     </Root>
@@ -129,6 +174,27 @@ const GuideCount = styled.div`
   color: ${color.gray600};
   font-family:${font.p2};
   margin-left:2px;
+`;
+
+const LoadingText = styled.div`
+  color: ${color.gray500};
+  font-family: ${font.P1};
+  text-align: center;
+  padding: 20px;
+`;
+
+const ErrorText = styled.div`
+  color: ${color.accent};
+  font-family: ${font.P1};
+  text-align: center;
+  padding: 20px;
+`;
+
+const NoDataText = styled.div`
+  color: ${color.gray400};
+  font-family: ${font.P1};
+  text-align: center;
+  padding: 20px;
 `;
 
 

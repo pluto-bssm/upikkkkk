@@ -7,7 +7,8 @@ import {
   GET_GUIDE_BY_ID,
   GET_BOOKMARKED_GUIDES,
   TOGGLE_BOOKMARK,
-  GET_GUIDES_BY_CATEGORY, // ✅ feat#8 기준 사용
+  GET_GUIDES_BY_CATEGORY,
+  GET_ALL_GUIDES,
 } from "@/graphql/queries";
 import type { Guide } from "@/types/api";
 
@@ -22,6 +23,42 @@ interface GuidesByCategoryData {
 interface AllGuidesData {
   guide: {
     getAllGuides: Guide[];
+  };
+}
+
+interface AllGuidesPaginationData {
+  getAllGuides: {
+    content: Guide[];
+    hasNext: boolean;
+    pageNumber: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+  };
+}
+
+// 모든 가이드를 가져오는 훅 (페이지네이션 지원)
+export function useAllGuides(page: number = 0, size: number = 10, sortBy?: string) {
+  const { data, loading, error, refetch } = useQuery<AllGuidesPaginationData>(
+    GET_ALL_GUIDES,
+    {
+      variables: { page, size, sortBy },
+      fetchPolicy: 'network-only'
+    }
+  );
+
+  return {
+    guides: data?.getAllGuides?.content || [],
+    pagination: {
+      hasNext: data?.getAllGuides?.hasNext || false,
+      pageNumber: data?.getAllGuides?.pageNumber || 0,
+      size: data?.getAllGuides?.size || 10,
+      totalElements: data?.getAllGuides?.totalElements || 0,
+      totalPages: data?.getAllGuides?.totalPages || 0,
+    },
+    loading,
+    error,
+    refetch
   };
 }
 
