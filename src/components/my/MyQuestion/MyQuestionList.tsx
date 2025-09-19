@@ -7,7 +7,15 @@ import VoteCard, { VoteCardProps } from "./VoteCard";
 import { useRouter } from "next/navigation";
 
 interface MyQuestionListProps {
-  questions: Omit<VoteCardProps, "onClick">[];
+  questions: Array<{
+    id: string;
+    title: string;
+    category: string;
+    state: string;
+    voteCount: number;
+    endDate: string;
+    createdAt: string;
+  }>;
 }
 
 const MyQuestionList = ({ questions }: MyQuestionListProps) => {
@@ -22,7 +30,15 @@ const MyQuestionList = ({ questions }: MyQuestionListProps) => {
       {questions.map((question) => (
         <VoteCard
           key={question.id}
-          {...question}
+          vote={{
+            id: question.id,
+            title: question.title,
+            category: question.category,
+            status: question.state,
+            totalResponses: question.voteCount,
+            finishedAt: question.endDate,
+            createdAt: question.createdAt
+          }}
           onClick={handleVoteClick}
         />
       ))}

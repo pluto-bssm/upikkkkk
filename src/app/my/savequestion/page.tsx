@@ -9,56 +9,57 @@ import QuestionItem from "@/components/my/SavedQuestion/QuestionItem";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import TabButton from "@/components/common/TabButton";
+import { useQuery } from '@apollo/client/react';
+import { GET_BOOKMARKS } from '@/graphql/queries';
 
-const DUMMY_SAVED_QUESTIONS = [
-  {
-    id: 1,
-    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
-    date: "2025-08-31 21:31",
-    views: 16,
-    comments: 10
-  },
-  {
-    id: 2,
-    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
-    date: "2025-08-31 21:31",
-    views: 16,
-    comments: 10
-  },
-  {
-    id: 3,
-    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
-    date: "2025-08-31 21:31",
-    views: 16,
-    comments: 10
-  },
-  {
-    id: 4,
-    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
-    date: "2025-08-31 21:31",
-    views: 16,
-    comments: 10
-  },
-  {
-    id: 5,
-    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
-    date: "2025-08-31 21:31",
-    views: 16,
-    comments: 10
-  }
-];
+interface BookmarksData {
+  bookmark: {
+    getBookmarks: Array<{
+      id: string;
+      userId: string;
+      guideId: string;
+      createdAt: string;
+    }>;
+  };
+}
 
 const SavedQuestionPage = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'all' | 'recent'>('all');
 
+  const { data, loading, error } = useQuery<BookmarksData>(GET_BOOKMARKS, {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'ignore'
+  });
+
+  console.log('❓ 저장한 질문 데이터:', { data, loading, error });
+
   const handleBack = () => {
     router.back();
   };
 
-  const handleQuestionClick = (id: number) => {
-    console.log(`질문 ${id} 클릭됨`);
+  const handleQuestionClick = (id: string) => {
   };
+
+  // 로딩 처리
+  if (loading) {
+    return (
+      <PageContainer>
+        <Header 
+          LeftItem={
+            <BackButton onClick={handleBack}>
+              <Image src="/svg/Back.svg" alt="Back" width={24} height={24} />
+            </BackButton>
+          }
+          types="saveQuestion"
+        />
+        <div style={{ padding: '20px', textAlign: 'center' }}>로딩 중...</div>
+      </PageContainer>
+    );
+  }
+
+  // 북마크 데이터는 ID만 있으므로, 필터링은 임시로 전체만 표시
+  const bookmarks = data?.bookmark?.getBookmarks || [];
 
   return (
     <PageContainer>
@@ -72,16 +73,19 @@ const SavedQuestionPage = () => {
       />
         
         <QuestionList>
-          {DUMMY_SAVED_QUESTIONS.map(question => (
+          {bookmarks.map(bookmark => (
             <QuestionItem
-              key={question.id}
-              title={question.title}
-              date={question.date}
-              views={question.views}
-              comments={question.comments}
-              onClick={() => handleQuestionClick(question.id)}
+              key={bookmark.id}
+              title={`북마크 ID: ${bookmark.guideId}`}
+              date={new Date(bookmark.createdAt).toLocaleDateString()}
+              views={0}
+              comments={0}
+              onClick={() => handleQuestionClick(bookmark.id)}
             />
           ))}
+          {bookmarks.length === 0 && (
+            <div style={{ padding: '20px', textAlign: 'center' }}>저장한 질문이 없습니다.</div>
+          )}
         </QuestionList>
     </PageContainer>
   );

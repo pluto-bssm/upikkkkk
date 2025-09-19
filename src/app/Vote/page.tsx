@@ -54,6 +54,7 @@ const VotePage = () => {
 
   if (loading) {
     return (
+
       <VoteLayout>
         <Header
           LeftItem={<img src="/svg/Logo.svg" width={50} height={50} />}
@@ -163,6 +164,60 @@ const VoteLayout = styled.div`
   width: 100%;
   min-height: 100vh;
   background-color: ${color.white};
+`
+
+const VotePageLayout = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    width: 100%;
+    min-height: 100vh;
+    background-color: ${color.white};
+    margin: 0 auto;
+`
+
+const VoteButton = styled.div`
+    max-width: 600px;
+    width: 100%;
+    position: fixed;
+    bottom: 70px;
+    display: flex;
+    justify-content: end;
+    padding: 0px 24px;
+    z-index: 1000;
+`
+
+const VoteContent = styled.div`
+    padding: 100px 0 80px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    gap: 16px;
+`
+
+const LoadingMessage = styled.div`
+    color: ${color.gray500};
+    font-size: 16px;
+    margin-top: 40px;
+    text-align: center;
+`
+
+const ErrorMessage = styled.div`
+    color: ${color.accent};
+    font-size: 16px;
+    margin-top: 40px;
+    text-align: center;
+`
+
+const EmptyMessage = styled.div`
+    color: ${color.gray500};
+    font-size: 16px;
+    margin-top: 40px;
+    text-align: center;
+>>>>>>> 44f42c43caf8282f3baee88c45a640a0a88629df
 `
 
 const LoadingContainer = styled.div`

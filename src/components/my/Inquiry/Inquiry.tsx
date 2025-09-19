@@ -15,7 +15,7 @@ type InquiryProps = {
 };
 
 const Inquiry = ({
-  imgSrc = "http://localhost:3845/assets/placeholder-392-6229.svg",
+  imgSrc = "/svg/placeholder.svg",
   title = "섹션 타이틀",
   count = 24,
   description = "간단한 설명 텍스트가 이 자리에 들어갑니다.",
@@ -47,7 +47,6 @@ const Inquiry = ({
 
 export default Inquiry;
 
-/* Styled components (styles at bottom) */
 const Card = styled.article`
   display: flex;
   gap: 12px;

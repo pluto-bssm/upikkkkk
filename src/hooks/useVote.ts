@@ -63,7 +63,6 @@ interface VoteByIdData {
   }
 }
 
-// 특정 ID의 투표 정보를 가져오는 훅
 export function useVoteById(id: string) {
   const { data, loading, error } = useQuery<VoteByIdData>(GET_VOTE_BY_ID, {
     variables: { id },
@@ -95,7 +94,6 @@ export function useCreateVote() {
       });
       return result.data?.vote?.createVote;
     } catch (err) {
-      console.error('투표 생성 실패:', err);
       throw err;
     }
   };
@@ -121,7 +119,6 @@ interface VoteResponseData {
   }
 }
 
-// 투표 참여 훅
 export function useVoteResponse() {
   const [createResponseMutation, { loading, error }] = useMutation<VoteResponseData, { input: CreateVoteResponseInput }>(CREATE_VOTE_RESPONSE);
   
@@ -138,7 +135,6 @@ export function useVoteResponse() {
       });
       return result.data?.voteResponse?.createVoteResponse;
     } catch (err) {
-      console.error('투표 참여 실패:', err);
       throw err;
     }
   };

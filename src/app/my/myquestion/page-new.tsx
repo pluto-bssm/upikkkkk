@@ -40,26 +40,32 @@ const MyQuestionPage = () => {
     );
   }
 
-  const myVotes = data?.vote?.getMyVotes || [];
+  // 에러 처리
+  if (error) {
+    console.error('❌ 투표 데이터 로딩 에러:', error);
+    return (
+      <MainPageLayout>
+        <MyPageHeader title="내가 만든 투표" backLink="/my" headerType="makeVote" />
+        <div style={{ padding: '20px', textAlign: 'center' }}>데이터를 불러오는 중 오류가 발생했습니다.</div>
+      </MainPageLayout>
+    );
+  }
 
-  // API 데이터를 컴포넌트 형식에 맞게 변환
-  const transformedQuestions = myVotes.map(vote => ({
+  // MyQuestionList가 기대하는 형태로 데이터 변환
+  const transformedQuestions = data?.vote?.getMyVotes?.map(vote => ({
     id: vote.id,
     title: vote.title,
     category: vote.category,
     state: vote.status,
     voteCount: vote.totalResponses,
     endDate: vote.finishedAt,
-    createdAt: vote.createdAt
-  }));
+    createdAt: vote.finishedAt
+  })) || [];
 
   return (
     <MainPageLayout>
       <MyPageHeader title="내가 만든 투표" backLink="/my" headerType="makeVote" />
       <MyQuestionList questions={transformedQuestions} />
-      {myVotes.length === 0 && (
-        <div style={{ padding: '20px', textAlign: 'center' }}>만든 투표가 없습니다.</div>
-      )}
     </MainPageLayout>
   );
 };

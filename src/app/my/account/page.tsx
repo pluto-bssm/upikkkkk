@@ -2,21 +2,13 @@
 
 import React from "react";
 import ProfileInfo from "@/components/my/ProfileInfo/ProfileInfo";
-import { useUser } from "@/stores/user/user";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 
 const AccountInfoPage = (): React.ReactElement => {
-  const { user } = useUser();
-
   return (
     <MainPageLayout>
-      <ProfileInfo
-        name={user?.name}
-        studentId={user?.studentId}
-        status={user?.status}
-        email={user?.email}
-      />
+      <ProfileInfo />
     </MainPageLayout>
   );
 };

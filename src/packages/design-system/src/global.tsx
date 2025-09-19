@@ -3,7 +3,7 @@ import color from './color'
 
 const GlobalStyle = () => (
     <Global styles={css`
-      @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+      @import url('https:
 
       * {
         box-sizing: border-box;
