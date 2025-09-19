@@ -5,11 +5,11 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
-const imgFrame = "http://localhost:3845/assets/3ff645e9cefab895b1f7bbc4cd7736a725dc7baa.svg";
+const imgFrame = "/svg/placeholder.svg"
 
 export default function ProfileInfo(): React.ReactElement {
 	return (
-		<>
+		<StyledProfileInfo>
 			<Header>
 				<HeaderInner>
 					<Title>계정 정보</Title>
@@ -40,9 +40,19 @@ export default function ProfileInfo(): React.ReactElement {
 			</Main>
 
 			<Footer>로그아웃 | 탈퇴하기</Footer>
-		</>
+		</StyledProfileInfo>
 	);
 }
+
+
+
+const StyledProfileInfo = styled.div`
+	background: ${color.white};
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	box-sizing: border-box;
+`;
 
 const Header = styled.header`
 	padding: 20px 0;

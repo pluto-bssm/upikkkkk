@@ -5,17 +5,27 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import Image from "next/image";
+import { Vote } from "@/types/api";
+import { format, isBefore, addDays } from "date-fns";
 
-const CATEGORY_EMOJI = {
-  schoolLife: "🏫",
-  dormitory: "🏠",
-  humor: "😄",
+const CATEGORY_EMOJI: Record<string, string> = {
+  "기숙사": "�",
+  "학식": "�",
+  "수업": "�",
+  "동아리": "🎭",
+  "교통": "🚌",
+  "기타": "✨",
+  "default": "🏫",
 };
 
-const CATEGORY_TEXT = {
-  schoolLife: "학교생활",
-  dormitory: "기숙사",
-  humor: "유머",
+const CATEGORY_TEXT: Record<string, string> = {
+  "기숙사": "기숙사",
+  "학식": "학식",
+  "수업": "수업",
+  "동아리": "동아리",
+  "교통": "교통",
+  "기타": "기타",
+  "default": "학교생활",
 };
 
 const STATE_CONFIG = {
@@ -28,57 +38,71 @@ const STATE_CONFIG = {
     color: color.gray400,
   },
   finished: {
-    text: () => "가이드 제작이 완료된 투표",
+    text: () => "마감된 투표",
     color: color.primary,
   },
   onGoing: {
-    text: () => "가이드가 제작 중인 투표",
+    text: () => "진행 중인 투표",
     color: color.secondary,
   },
 };
 
 export interface VoteCardProps {
-  id: string;
-  title: string;
-  category: "schoolLife" | "dormitory" | "humor";
-  state: "urgent" | "default" | "finished" | "onGoing";
-  voteCount: number;
-  endDate?: string;
+  vote: Vote;
   onClick?: (id: string) => void;
 }
 
 const VoteCard = ({
-  id,
-  title,
-  category,
-  state,
-  voteCount,
-  endDate = "2025-08-31",
+  vote,
   onClick,
 }: VoteCardProps) => {
   const handleClick = () => {
     if (onClick) {
-      onClick(id);
+      onClick(vote.id);
     }
   };
 
+  const getVoteState = () => {
+    const today = new Date();
+    const finishDate = new Date(vote.finishedAt);
+    
+    if (isBefore(finishDate, today)) {
+      return "finished";
+    }
+    
+    const urgentThreshold = addDays(today, 3);
+    if (isBefore(finishDate, urgentThreshold)) {
+      return "urgent";
+    }
+    
+    return "default";
+  };
+
+  const state = getVoteState();
   const stateConfig = STATE_CONFIG[state];
-  const statusText = stateConfig.text(endDate);
+  const formattedDate = format(new Date(vote.finishedAt), "yyyy-MM-dd");
+  const statusText = state === "finished" 
+    ? stateConfig.text("") 
+    : stateConfig.text(formattedDate);
   const statusColor = stateConfig.color;
 
+  const categoryKey = vote.category in CATEGORY_EMOJI ? vote.category : "default";
+  
   return (
     <StyledVoteCard onClick={handleClick}>
-      <CategoryEmoji category={category}>{CATEGORY_EMOJI[category]}</CategoryEmoji>
+      <CategoryEmoji category={categoryKey}>
+        {CATEGORY_EMOJI[categoryKey]}
+      </CategoryEmoji>
       
       <ContentWrapper>
-        <Title>{title}</Title>
+        <Title>{vote.title}</Title>
         
         <InfoRow>
-          <CategoryText>{CATEGORY_TEXT[category]}</CategoryText>
+          <CategoryText>{CATEGORY_TEXT[categoryKey]}</CategoryText>
           
           <VoteCountWrapper>
             <Image src="/svg/Vote.svg" alt="투표수" width={10} height={10} />
-            <VoteCountText>{voteCount}</VoteCountText>
+            <VoteCountText>{vote.totalResponses || 0}</VoteCountText>
           </VoteCountWrapper>
           
           <StatusText color={statusColor}>{statusText}</StatusText>
@@ -124,7 +148,7 @@ const ContentWrapper = styled.div`
 `;
 
 const Title = styled.div`
-  ${font.H13}
+  ${font.H9}
   color: ${color.black};
   width: 100%;
 `;

@@ -7,106 +7,94 @@ import color from "@/packages/design-system/src/color";
 import NavigationBar from "@/components/common/NavigationBar";
 import VoteMakeButton from "@/components/Vote/VoteMakeButton";
 import VoteBlock from "@/components/Vote/VoteBlock";
-import VoteSort from "@/components/Modal/VoteSort";
-import { useState } from "react";
-
-const voteData = [
-    {
-        id: 1,
-        title: "투표제목",
-        category: "학교생활",
-        views: "16",
-        state: "2025-08-31에 마감되는 투표"
-    },
-    {
-        id: 2,
-        title: "투표제목",
-        category: "기숙사",
-        views: "16",
-        state: "2025-08-31에 마감되는 투표"
-    },
-    {
-        id: 3,
-        title: "투표제목",
-        category: "유머",
-        views: "20",
-        state: "2025-08-31에 마감되는 투표"
-    }
-];
+import { useVotes } from "@/hooks/useVote";
 
 const VotePage = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
-
-    const handleOptionClick = () => {
-        setIsModalOpen(true);
-    };
+    const { votes, loading, error } = useVotes();
 
     return (
-        <VoteLayout>
-            <Header
-                LeftItem={<img src="/svg/Logo.svg" width={50} height={50} />}
-                RightItem={<HeaderItemsBox type={"main"} />}
-                types={"default"}
-                onOptionClick={handleOptionClick}
+        <VotePageLayout>
+            <Header 
+                LeftItem={
+                    <img src="/svg/Logo.svg" width={50} height={50} alt="Logo" />
+                } 
+                RightItem={<HeaderItemsBox type={"main"}/>}
+                types={"default"} 
             />
-
-            <VoteMakeButtonWrapper>
+            <VoteButton>
                 <VoteMakeButton />
-            </VoteMakeButtonWrapper>
-
-            <VoteListSection>
-                {voteData.map((vote) => (
-                    <VoteBlock
-                        key={vote.id}
-                        id={vote.id}
-                        title={vote.title}
-                        catogory={vote.category}
-                        views={vote.views}
-                        state={vote.state}
-                    />
-                ))}
-            </VoteListSection>
+            </VoteButton>
+            
+            <VoteContent>
+                {loading ? (
+                    <LoadingMessage>투표를 불러오는 중...</LoadingMessage>
+                ) : error ? (
+                    <ErrorMessage>투표를 불러오는데 문제가 발생했습니다</ErrorMessage>
+                ) : votes.length === 0 ? (
+                    <EmptyMessage>등록된 투표가 없습니다</EmptyMessage>
+                ) : (
+                    votes.map((vote) => (
+                        <VoteBlock key={vote.id} vote={vote} />
+                    ))
+                )}
+            </VoteContent>
 
             <NavigationBar />
-
-            <VoteSort
-                sortstandard={sortStandard}
-                setsortstandard={setSortStandard}
-                isOpen={isModalOpen}
-                setIsOpen={setIsModalOpen}
-            />
-        </VoteLayout>
+        </VotePageLayout>
     )
 }
 
 export default VotePage;
 
-const VoteMakeButtonWrapper = styled.div`
-    max-width : 600px;
-    width : 100%;
-    position : fixed;
-    bottom : 70px;
-    display : flex;
-    justify-content : end;
-    padding : 0px 24px;
-    z-index : 1000;
-`
-
-const VoteListSection = styled.div`
-    margin-top : 100px;
-    width : 90%;
-    display : flex;
-    flex-direction : column;
-    gap : 16px;
-`
-
-const VoteLayout = styled.div`
-    display :flex;
-    flex-direction : column;
-    align-items : center;
-    max-width : 600px;
-    width : 100%;
+const VotePageLayout = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    width: 100%;
     min-height: 100vh;
-    background-color : ${color.white};
+    background-color: ${color.white};
+    margin: 0 auto;
+`
+
+const VoteButton = styled.div`
+    max-width: 600px;
+    width: 100%;
+    position: fixed;
+    bottom: 70px;
+    display: flex;
+    justify-content: end;
+    padding: 0px 24px;
+    z-index: 1000;
+`
+
+const VoteContent = styled.div`
+    padding: 100px 0 80px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    gap: 16px;
+`
+
+const LoadingMessage = styled.div`
+    color: ${color.gray500};
+    font-size: 16px;
+    margin-top: 40px;
+    text-align: center;
+`
+
+const ErrorMessage = styled.div`
+    color: ${color.accent};
+    font-size: 16px;
+    margin-top: 40px;
+    text-align: center;
+`
+
+const EmptyMessage = styled.div`
+    color: ${color.gray500};
+    font-size: 16px;
+    margin-top: 40px;
+    text-align: center;
 `

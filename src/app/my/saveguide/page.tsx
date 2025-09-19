@@ -9,80 +9,64 @@ import GuideItem from "@/components/my/SavedGuide/GuideItem";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import TabButton from "@/components/common/TabButton";
+import { useQuery } from '@apollo/client/react';
+import { GET_BOOKMARKED_GUIDES } from '@/graphql/queries';
 
-const DUMMY_SAVED_GUIDES = [
-  {
-    id: 1,
-    title: "가이드 제목",
-    category: "기숙사",
-    views: 16,
-    emoji: "🏫"
-  },
-  {
-    id: 2,
-    title: "가이드 제목",
-    category: "학식",
-    views: 16,
-    emoji: "🏫"
-  },
-  {
-    id: 3,
-    title: "가이드 제목",
-    category: "기숙사",
-    views: 16,
-    emoji: "🏫"
-  },
-  {
-    id: 4,
-    title: "가이드 제목",
-    category: "기숙사",
-    views: 16,
-    emoji: "🏫"
-  },
-  {
-    id: 5,
-    title: "가이드 제목",
-    category: "기숙사",
-    views: 16,
-    emoji: "⚠️"
-  },
-  {
-    id: 6,
-    title: "가이드 제목",
-    category: "기숙사",
-    views: 16,
-    emoji: "🏫"
-  },
-  {
-    id: 7,
-    title: "가이드 제목",
-    category: "학식",
-    views: 16,
-    emoji: "😊"
-  },
-  {
-    id: 8,
-    title: "가이드 제목",
-    category: "기숙사",
-    views: 16,
-    emoji: "🏫"
-  },
-  {
-    id: 9,
-    title: "가이드 제목",
-    category: "기숙사",
-    views: 16,
-    emoji: "🏫"
-  }
-];
+interface BookmarkedGuidesData {
+  bookmark: {
+    getBookmarkedGuides: Array<{
+      id: string;
+      title: string;
+      category?: {
+        id: string;
+        name: string;
+      } | null;
+      views: number;
+      emoji: string;
+    }>;
+  };
+}
 
 const SaveGuidePage = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'all' | 'recent'>('all');
 
+  const { data, loading, error } = useQuery<BookmarkedGuidesData>(GET_BOOKMARKED_GUIDES, {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'ignore'
+  });
+
+  console.log('📚 저장한 가이드 데이터:', { data, loading, error });
+
   const handleBack = () => {
     router.back();
   };
+
+  const handleGuideClick = (id: string) => {
+  };
+
+  // 로딩 처리
+  if (loading) {
+    return (
+      <PageContainer>
+        <Header 
+          LeftItem={
+            <BackButton onClick={handleBack}>
+              <Image src="/svg/Back.svg" alt="Back" width={24} height={24} />
+            </BackButton>
+          }
+          CenterItem={<Title>저장한 가이드</Title>}
+          types="saveGuide"
+        />
+        <ContentContainer>
+          <div style={{ padding: '20px', textAlign: 'center' }}>로딩 중...</div>
+        </ContentContainer>
+      </PageContainer>
+    );
+  }
+
+  const bookmarkedGuides = data?.bookmark?.getBookmarkedGuides?.filter(guide => guide && guide.id) || [];
+
   return (
     <PageContainer>
       <Header 
@@ -96,18 +80,21 @@ const SaveGuidePage = () => {
       />
       
       <ContentContainer>
-
         <GuideList>
-          {DUMMY_SAVED_GUIDES.map(guide => (
-            <GuideItem
-              key={guide.id}
-              title={guide.title}
-              category={guide.category}
-              views={guide.views}
-              emoji={guide.emoji}
-              onClick={() => handleGuideClick(guide.id)}
-            />
-          ))}
+          {bookmarkedGuides.length > 0 ? (
+            bookmarkedGuides.map(guide => (
+              <GuideItem
+                key={guide.id}
+                title={guide.title || '제목 없음'}
+                category={guide.category?.name || '기타'}
+                views={guide.views || 0}
+                emoji={guide.emoji || '📚'}
+                onClick={() => handleGuideClick(guide.id)}
+              />
+            ))
+          ) : (
+            <div style={{ padding: '20px', textAlign: 'center' }}>저장한 가이드가 없습니다.</div>
+          )}
         </GuideList>
       </ContentContainer>
     </PageContainer>

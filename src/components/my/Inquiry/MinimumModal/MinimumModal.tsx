@@ -40,7 +40,6 @@ const MinimumModal = ({
 
 export default MinimumModal;
 
-/* Styled */
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;

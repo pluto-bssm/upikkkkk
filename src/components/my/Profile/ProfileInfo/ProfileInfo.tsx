@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
-const img = "http://localhost:3845/assets/3ff645e9cefab895b1f7bbc4cd7736a725dc7baa.svg";
+const img = "/svg/placeholder.svg"
 
 const ProfileInfo = (): React.ReactElement => {
   return (

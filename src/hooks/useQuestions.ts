@@ -10,7 +10,6 @@ interface QuestionsData {
   }
 }
 
-// 질문 목록을 가져오는 훅
 export function useQuestions(page: number = 0, size: number = 10) {
   const { data, loading, error, refetch } = useQuery<QuestionsData>(
     GET_QUESTIONS,
@@ -36,7 +35,6 @@ interface QuestionByIdData {
   }
 }
 
-// 특정 ID의 질문을 가져오는 훅
 export function useQuestionById(id: string) {
   const { data, loading, error } = useQuery<QuestionByIdData>(
     GET_QUESTION_BY_ID,
@@ -59,7 +57,6 @@ interface CommentsData {
   }
 }
 
-// 댓글을 가져오는 훅
 export function useComments(boardId: string, page: number = 0, size: number = 10) {
   const { data, loading, error, refetch } = useQuery<CommentsData>(
     GET_COMMENTS,
@@ -85,7 +82,6 @@ interface CreateCommentData {
   }
 }
 
-// 댓글 생성 훅
 export function useCreateComment() {
   const [createCommentMutation, { loading, error }] = useMutation<CreateCommentData, { input: CreateCommentInput }>(
     CREATE_COMMENT
@@ -104,7 +100,6 @@ export function useCreateComment() {
       });
       return result.data?.board?.createComment;
     } catch (err) {
-      console.error('댓글 작성 실패:', err);
       throw err;
     }
   };

@@ -12,20 +12,6 @@ type Props = {
 const VoteBlock = ({ vote }: Props) => {
     const router = useRouter();
     
-    const renderImage = () => {
-        switch (vote.category) {
-            case "학교생활":
-                return <img src="/svg/School.svg" alt="school" width={35} height={35} />;
-            case "유머":
-                return <img src="/svg/Humors.svg" alt="humor" width={35} height={35} />;
-            case "기숙사":
-                return <img src="/svg/Domitorys.svg" alt="dormitory" width={35} height={35} />;
-            default:
-                return null;
-        }
-    }
-    
- 
     const getStateText = () => {
         if (isPast(new Date(vote.finishedAt))) {
             return "마감된 투표";
@@ -34,98 +20,63 @@ const VoteBlock = ({ vote }: Props) => {
     };
     
     return (
-        <VoteBlockLayout>
-            <VoteBlocks onClick={() => router.push(`/Vote/${vote.id}`)}>
-                {renderImage()}
-                <InfomationsBlocks>
-                    <Title>{vote.title}</Title>
-                    <InfomationsBlock>
-                        <Infomations>
-                            <Catogorys>{vote.category}</Catogorys>
-                            <ViewBlock>
-                                <img src="/svg/Views.svg" height={14} width={14} />
-                                <Views>{vote.totalResponses}</Views>
-                            </ViewBlock>
-                        </Infomations>
-                        <States>{getStateText()}</States>
-                    </InfomationsBlock>
-                </InfomationsBlocks>
-            </VoteBlocks>
-        </VoteBlockLayout>
+        <VoteBlocks onClick={() => router.push(`/Vote/${vote.id}`)}>
+            <VoteTitle>{vote.title}</VoteTitle>
+            <VoteInfo>
+                <Category>{vote.category}</Category>
+                <Views>참여자 {vote.totalResponses}명</Views>
+            </VoteInfo>
+            <VoteState>{getStateText()}</VoteState>
+        </VoteBlocks>
     )
 }
 
 export default VoteBlock;
 
-const VoteBlockLayout = styled.div`
-    max-width: 600px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 10px;
+const VoteBlocks = styled.div`
+    width: 90%;
+    min-height: 120px;
     background-color: ${color.white};
     border: 1.5px solid ${color.gray50};
     border-radius: 10px;
+    padding: 16px;
     cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 `
 
-const VoteBlocks = styled.div`
-    width: 100%;
-    height: 80px;
+const VoteTitle = styled.h3`
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: ${color.black};
+`
+
+const VoteInfo = styled.div`
     display: flex;
-    justify-content: start;
     align-items: center;
-    gap: 20px;
-    padding-left: 20px;
+    margin-bottom: 8px;
 `
 
-const Title = styled.p`
-    ${font.D4};
+const Category = styled.span`
+    background-color: ${color.gray100};
+    color: ${color.primary};
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-right: 12px;
 `
 
-const Infomations = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-`
-
-const InfomationsBlock = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 90%;
-    justify-content: space-between;
-`
-
-const InfomationsBlocks = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    width: 100%;
-`
-
-const Catogorys = styled.p`
-    font-size: 9px;
-    color: ${color.gray600};
-    line-height: 100%;
-`
-
-const Views = styled.p`
-    font-size: 9px;
-    color: ${color.gray600};
-`
-
-const ViewBlock = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`
-
-const States = styled.p`
-    font-size: 10px;
+const Views = styled.span`
     color: ${color.gray500};
+    font-size: 14px;
+`
+
+const VoteState = styled.div`
+    color: ${color.gray600};
+    font-size: 13px;
+    font-style: italic;
 `

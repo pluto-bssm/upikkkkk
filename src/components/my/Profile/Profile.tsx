@@ -7,19 +7,104 @@ import font from '@/packages/design-system/src/font';
 import IconProfile from "../../../../public/svg/profile";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/hooks/useUser";
+import { useQuery } from '@apollo/client/react';
+import { GET_BOOKMARKED_GUIDES, GET_BOOKMARKS, GET_MY_VOTES } from "@/graphql/queries";
 
-// 이미지 에셋
-const imgBack = "http://localhost:3845/assets/5e6a8bf9c10e5e7d087dbd3eaed71c9a65468e87.svg";
-const imgClose = "http://localhost:3845/assets/0b87515fe0d3d4f29893996b70f2dec4c2c7d00b.svg";
-const imgArrow = "http://localhost:3845/assets/82a67a15b272414210f229b2722f154504afce9f.svg";
+// GraphQL 응답 타입 정의
+interface BookmarkedGuidesData {
+  bookmark: {
+    getBookmarkedGuides: Array<{
+      id: string;
+      title: string;
+      category: string;
+      content: string;
+      createdAt: string;
+      like: number;
+      voteId: string;
+    }>;
+  };
+}
+
+interface BookmarksData {
+  bookmark: {
+    getBookmarks: Array<{
+      id: string;
+      userId: string;
+      guideId: string;
+      createdAt: string;
+    }>;
+  };
+}
+
+interface MyVotesData {
+  vote: {
+    getMyVotes: Array<{
+      id: string;
+      title: string;
+      category: string;
+      status: string;
+      totalResponses: number;
+      createdAt: string;
+      finishedAt: string;
+    }>;
+  };
+}
+
+const imgBack = "/svg/Back.svg";
+const imgClose = "/svg/Close.svg";
+const imgArrow = "/svg/Nexts.svg";
 
 const Profile = () => {
   const router = useRouter();
-  const user = {
-    auth: "STUDENT",
-    name: "박땡땡",
-    email: "fake_bsm_email@bssm.hs.kr",
-  };
+  const { user, loading: userLoading } = useUser();
+
+  // GraphQL API 호출들
+  const { data: bookmarkedGuidesData, loading: guidesLoading } = useQuery<BookmarkedGuidesData>(GET_BOOKMARKED_GUIDES, {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'ignore'
+  });
+  
+  const { data: bookmarksData, loading: bookmarksLoading } = useQuery<BookmarksData>(GET_BOOKMARKS, {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'ignore'
+  });
+  
+  const { data: myVotesData, loading: votesLoading } = useQuery<MyVotesData>(GET_MY_VOTES, {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'ignore'
+  });
+
+  console.log('👤 Profile 컴포넌트 - 사용자 정보:', user);
+  console.log('📊 Profile 컴포넌트 - 북마크 가이드:', bookmarkedGuidesData);
+  console.log('📑 Profile 컴포넌트 - 북마크:', bookmarksData);
+  console.log('🗳️ Profile 컴포넌트 - 내 투표:', myVotesData);
+
+  // 실제 카운트 계산
+  const savedGuidesCount = bookmarkedGuidesData?.bookmark?.getBookmarkedGuides?.length || 0;
+  const savedQuestionsCount = bookmarksData?.bookmark?.getBookmarks?.length || 0;
+  const myVotesCount = myVotesData?.vote?.getMyVotes?.length || 0;
+
+  // 로딩 상태 처리
+  const isLoading = userLoading || guidesLoading || bookmarksLoading || votesLoading;
+  
+  // 로딩 처리
+  if (isLoading) {
+    return (
+      <ProfileContainer>
+        <div style={{ padding: '20px', textAlign: 'center' }}>로딩 중...</div>
+      </ProfileContainer>
+    );
+  }
+
+  // 사용자가 없으면 로그인 필요 메시지
+  if (!user) {
+    return (
+      <ProfileContainer>
+        <div style={{ padding: '20px', textAlign: 'center' }}>로그인이 필요합니다.</div>
+      </ProfileContainer>
+    );
+  }
 
   return (
     <ProfileContainer>
@@ -38,7 +123,7 @@ const Profile = () => {
         <ProfileDetails>
           <NameWrapper>
             <Name>{user.name}</Name>
-            <Badge>{user.auth === "STUDENT" ? "재학생" : "방문자"}</Badge>
+            <Badge>{user.role === "STUDENT" ? "재학생" : "방문자"}</Badge>
           </NameWrapper>
           <Email>{user.email}</Email>
         </ProfileDetails>
@@ -49,14 +134,14 @@ const Profile = () => {
         <StatBox>
           <Link href="/my/saveguide" style={{ textDecoration: 'none' }}>
           <StatText>
-            저장한 가이드 <StatNumber>0</StatNumber>
+            저장한 가이드 <StatNumber>{savedGuidesCount}</StatNumber>
           </StatText>
           </Link>
         </StatBox>
           <StatBox>
              <Link href="/my/savequestion" style={{ textDecoration: 'none' }}>
             <StatText>
-              저장한 질문 <StatNumber>0</StatNumber>
+              저장한 질문 <StatNumber>{savedQuestionsCount}</StatNumber>
             </StatText>
              </Link>
           </StatBox>
@@ -120,7 +205,6 @@ const Profile = () => {
 
 export default Profile;
 
-// 스타일드 컴포넌트
 const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;

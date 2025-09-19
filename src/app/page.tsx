@@ -6,13 +6,24 @@ import styled from '@emotion/styled'
 import HeaderItemsBox from '@/components/Header/HeaderItemBox'
 import color from '@/packages/design-system/src/color'
 import font from '@/packages/design-system/src/font'
+import { useUser } from '@/hooks/useUser'
 
-// Inlined Figma node 258:2079 component (moved here per request)
 const Node2582079 = (): React.ReactElement => {
-  const imgSrc = "http://localhost:3845/assets/placeholder-258-2079.svg";
-
   return (
-    <Wrapper data-node-id="258:2079">
+    <Wrapper>
+      <Left>
+        <Avatar>
+          <img src="/svg/Logo.svg" alt="avatar" />
+        </Avatar>
+      </Left>
+      
+      <Right>
+        <TopRow>
+          <Name>사용자 이름</Name>
+          <Badge>재학생</Badge>
+        </TopRow>
+        <Message>최근 활동 메시지</Message>
+      </Right>
     </Wrapper>
   );
 };
@@ -77,7 +88,7 @@ const Message = styled.div`
 
 
 const Home = () => {
-
+  const { user } = useUser();
 
   return (
     <MainPageLayout>
@@ -120,7 +131,6 @@ const MainPageLayout = styled.div`
   width : 100%;
   min-height: 100vh;
   background-color : ${color.white};
-  
 `
 
 
@@ -128,4 +138,13 @@ const ContentArea = styled.div`
   width: 100%;
   flex: 1;
   margin-top : 100px;
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  ${font.H3}
+  color: ${color.gray600};
 `;

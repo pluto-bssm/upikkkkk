@@ -9,58 +9,38 @@ import Header from "@/components/common/Header";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import TabButton from "@/components/common/TabButton";
-
-// 더미 데이터
-const DUMMY_QUESTIONS = [
-  {
-    id: "1",
-    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
-    author: "박땡땡",
-    date: "2025-08-31 21:31",
-    bookmarkCount: 16,
-    commentCount: 10
-  },
-  {
-    id: "2",
-    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
-    author: "박땡땡",
-    date: "2025-08-31 21:31",
-    bookmarkCount: 16,
-    commentCount: 10
-  },
-  {
-    id: "3",
-    title: "게시판 질문게시판 질문게시판 질문게시판 질문게시판 질문",
-    author: "박땡땡",
-    date: "2025-08-31 21:31",
-    bookmarkCount: 16,
-    commentCount: 10
-  },
-  {
-    id: "4",
-    title: "게시판 질문",
-    author: "박땡땡",
-    date: "2025-08-31 21:31",
-    bookmarkCount: 16,
-    commentCount: 4
-  },
-  {
-    id: "5",
-    title: "게시판 질문",
-    author: "박땡땡",
-    date: "2025-08-31 21:31",
-    bookmarkCount: 16,
-    commentCount: 4
-  }
-];
+import { useQuestions } from "@/hooks/useQuestions";
 
 const MyQuestionHistoryPage = () => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'all' | 'recent'>('all');
+  
+  const { questions, loading, error } = useQuestions(0, 20);
+
+  console.log('📝 내 질문 히스토리 데이터:', { questions, loading, error });
 
   const handleBack = () => {
     router.back();
   };
+
+  if (loading) {
+    return (
+      <MainPageLayout>
+        <Header 
+          LeftItem={
+            <BackButton onClick={handleBack}>
+              <Image src="/svg/Back.svg" alt="Back" width={24} height={24} />
+            </BackButton>
+          }
+          CenterItem={<Title>질문 게시판 글 작성 내역</Title>}
+          types="Nones"
+        />
+        <ContentContainer>
+          <div style={{ padding: '20px', textAlign: 'center' }}>로딩 중...</div>
+        </ContentContainer>
+      </MainPageLayout>
+    );
+  }
 
   return (
     <MainPageLayout>
@@ -71,7 +51,7 @@ const MyQuestionHistoryPage = () => {
           </BackButton>
         }
         CenterItem={<Title>질문 게시판 글 작성 내역</Title>}
-        types="Nones"
+        types="saveGuide"
       />
       
       <ContentContainer>
@@ -90,7 +70,17 @@ const MyQuestionHistoryPage = () => {
           </TabButton>
         </TabContainer>
         
-        <QuestionList questions={DUMMY_QUESTIONS} />
+        <QuestionList questions={questions.map(q => ({
+          id: q.id,
+          title: q.title,
+          author: q.userName,
+          date: new Date(q.createdAt).toLocaleDateString(),
+          bookmarkCount: q.bookmarkCount,
+          commentCount: q.commentCount
+        }))} />
+        {questions.length === 0 && (
+          <div style={{ padding: '20px', textAlign: 'center' }}>작성한 질문이 없습니다.</div>
+        )}
       </ContentContainer>
     </MainPageLayout>
   );

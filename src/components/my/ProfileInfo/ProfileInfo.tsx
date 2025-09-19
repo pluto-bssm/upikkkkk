@@ -8,20 +8,48 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
+import { useUser } from "@/hooks/useUser";
 
-interface UserInfoProps {
-  name: string;
-  studentId: string;
-  status: string;
-  email: string;
-}
+const ProfileInfo = (): React.ReactElement => {
+  const { user, loading, error } = useUser();
+  
+  const studentId = user?.email ? user.email.split('@')[0].replace(/[^0-9]/g, '') : "0000";
+  const status = "재학생";
 
-const ProfileInfo = ({
-  name = "박가은",
-  studentId = "2108",
-  status = "재학생",
-  email = "fake_bsm_email@bssm.hs.kr",
-}: Partial<UserInfoProps>): React.ReactElement => {
+  if (loading) {
+    return (
+      <StyledProfileInfo data-name="계정정보-로딩중">
+        <Header
+          LeftItem={
+            <Link href="/my">
+              <Image src="/svg/Back.svg" alt="뒤로가기" width={24} height={24} />
+            </Link>
+          }
+          CenterItem={<HeaderItemsBox type="infomation" />}
+          types="None"
+        />
+        <LoadingContainer>사용자 정보를 불러오는 중...</LoadingContainer>
+      </StyledProfileInfo>
+    );
+  }
+
+  if (error || !user) {
+    return (
+      <StyledProfileInfo data-name="계정정보-오류">
+        <Header
+          LeftItem={
+            <Link href="/my">
+              <Image src="/svg/Back.svg" alt="뒤로가기" width={24} height={24} />
+            </Link>
+          }
+          CenterItem={<HeaderItemsBox type="infomation" />}
+          types="None"
+        />
+        <ErrorContainer>사용자 정보를 불러올 수 없습니다</ErrorContainer>
+      </StyledProfileInfo>
+    );
+  }
+  
   return (
     <StyledProfileInfo data-name="계정정보-재학생">
       <Header
@@ -37,7 +65,7 @@ const ProfileInfo = ({
       <StyledContent>
         <InfoSection>
           <InfoLabel>이름</InfoLabel>
-          <InfoValue>{name}</InfoValue>
+          <InfoValue>{user.name}</InfoValue>
         </InfoSection>
 
         <InfoSection>
@@ -52,7 +80,7 @@ const ProfileInfo = ({
 
         <InfoSection>
           <InfoLabel>이메일</InfoLabel>
-          <InfoValue>{email}</InfoValue>
+          <InfoValue>{user.email}</InfoValue>
         </InfoSection>
       </StyledContent>
 
@@ -75,7 +103,7 @@ const StyledProfileInfo = styled.div`
   min-height: 100vh;
 `;
 
-// 기존 StyledHeader는 Header 컴포넌트로 대체되었으므로 제거
+
 
 const StyledContent = styled.div`
   padding: 20px;
@@ -127,6 +155,26 @@ const FooterAction = styled.button`
 const FooterDivider = styled.span`
   color: ${color.gray400};
   ${font.p1};
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: ${color.gray500};
+  ${font.p1};
+  margin-top: 80px;
+`;
+
+const ErrorContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: ${color.accent};
+  ${font.p1};
+  margin-top: 80px;
 `;
 
 export default ProfileInfo;

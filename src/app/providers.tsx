@@ -5,6 +5,7 @@ import { ReactNode, useState } from "react";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { ApolloWrapper } from "@/lib/apollo-provider";
+import { UserProvider } from "../hooks/useUser";
 
 const cache = createCache({ key: "css", prepend: true });
 
@@ -15,7 +16,9 @@ export default function Providers({ children }: { children: ReactNode }) {
         <CacheProvider value={cache}>
             <QueryClientProvider client={client}>
                 <ApolloWrapper>
-                    {children}
+                    <UserProvider>
+                        {children}
+                    </UserProvider>
                 </ApolloWrapper>
             </QueryClientProvider>
         </CacheProvider>
