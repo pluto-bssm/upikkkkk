@@ -56,6 +56,7 @@ const Header = ({
           />
         </NavigationBarSection>
       )}
+
     </HeaderPageLayout>
   );
 };

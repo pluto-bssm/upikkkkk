@@ -7,11 +7,13 @@ type Props = {
   setsortstandard: (category: string) => void;
   isOpen?: boolean;
   setIsOpen?: (isOpen: boolean) => void;
+  title?: string;
+  options?: string[];
 };
 
 const Sortstandard = ["투표 제작일 기준", "투표 종료일 기준", "투표 참여율 기준"];
 
-export default function votesort({ sortstandard, setsortstandard, isOpen, setIsOpen }: Props) {
+export default function votesort({ sortstandard, setsortstandard, isOpen, setIsOpen, title, options }: Props) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -31,9 +33,9 @@ export default function votesort({ sortstandard, setsortstandard, isOpen, setIsO
             transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             onClick={e => e.stopPropagation()}
           >
-            <Title>투표 정렬하기</Title>
+            <Title>{title ?? "투표 정렬하기"}</Title>
             <CategoryList>
-              {Sortstandard.map((cat) => (
+              {(options ?? Sortstandard).map((cat) => (
                 <CategoryItem
                   key={cat}
                   selected={cat === sortstandard}

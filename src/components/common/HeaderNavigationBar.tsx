@@ -8,12 +8,12 @@ type Props = {
     type: string;
     onOptionClick?: () => void;
 
-    // ✅ 외부에서 state 주입
     activeIdx?: number;
     setActiveIdx?: (idx: number) => void;
 };
 
 const HeaderNavigaionBar = ({ type, onOptionClick, activeIdx = 0, setActiveIdx }: Props) => {
+
 
     const handleOptionClick = () => {
         if (onOptionClick) {
@@ -32,6 +32,7 @@ const HeaderNavigaionBar = ({ type, onOptionClick, activeIdx = 0, setActiveIdx }
                                     <NavItem
                                         active={activeIdx === idx}
                                         onClick={() => setActiveIdx && setActiveIdx(idx)}
+
                                     >
                                         {nav}
                                     </NavItem>

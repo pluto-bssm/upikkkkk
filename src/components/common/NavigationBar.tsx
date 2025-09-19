@@ -14,7 +14,7 @@ const NavigationBar = () => {
   return (
     <NavigationPageLayout>
       <NavigationItem>
-        <img src='/svg/Home.svg' width={40} height={40} onClick={() => { router.push("/") }} />
+        <img src='/svg/Home.svg' width={40} height={40} onClick={() => { router.push("/Main") }} />
         <img src='/svg/Vote.svg' width={40} height={40} onClick={() => { router.push("/vote") }} />
         <img src='/svg/Guide.svg' width={40} height={40} onClick={() => { router.push("/Guide") }} />
         <img src='/svg/Dashboard.svg' width={40} height={40} onClick={() => { router.push("/dashboard") }} />
@@ -33,8 +33,7 @@ const NavigationPageLayout = styled.div`
   align-items: center;
   position: fixed;
   bottom : 0px;
-  max-height : 50px;
-  height : 100%;
+  height: 56px;
   z-index: 1000;
   background-color: ${color.white};
 `;

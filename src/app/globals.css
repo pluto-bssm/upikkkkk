@@ -3,16 +3,13 @@
   --foreground: #171717;
 }
 
-
-
 html,
 body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  overflow-y: auto;
   font-family: 'Pretendard';
-
-
 }
 
 body {
@@ -25,8 +22,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   display:  flex;
   justify-content: center;
-  
-
 }
 
 * {
