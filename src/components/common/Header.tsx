@@ -12,31 +12,51 @@ type Props = {
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   types: string;
   onOptionClick?: () => void;
-  onSelect?: (label: string) => void;
+
+  // ✅ 추가된 props
+  activeIdx?: number;
+  setActiveIdx?: (idx: number) => void;
 };
 
-const Header = ({ LeftItem, RightItem, CenterItem, showInput = false, types, inputProps, onOptionClick, onSelect }: Props) => {
+const Header = ({ 
+  LeftItem, 
+  RightItem, 
+  CenterItem, 
+  showInput = false, 
+  types, 
+  inputProps, 
+  onOptionClick,
+  activeIdx,
+  setActiveIdx
+}: Props) => {
   return (
     <HeaderPageLayout>
-    <HeaderBarSection>
-      <HeaderItem>
-        <LeftSection>
-          {LeftItem}
-        </LeftSection>
-        <CenterSection>
-          {CenterItem}
-          {showInput && <StyledInput {...inputProps} />}
-        </CenterSection>
-        <RightSection>
-          {RightItem}
-        </RightSection>
-      </HeaderItem>
-    </HeaderBarSection>
-    {types !== "Nones" && (
-      <NavigationBarSection>
-        <HeaderNavigaionBar type={types} onOptionClick={onOptionClick} onSelect={onSelect} />
-      </NavigationBarSection>
-    )}
+      <HeaderBarSection>
+        <HeaderItem>
+          <LeftSection>
+            {LeftItem}
+          </LeftSection>
+          <CenterSection>
+            {CenterItem}
+            {showInput && <StyledInput {...inputProps} />}
+          </CenterSection>
+          <RightSection>
+            {RightItem}
+          </RightSection>
+        </HeaderItem>
+      </HeaderBarSection>
+      
+      {types !== "Nones" && (
+        <NavigationBarSection>
+          <HeaderNavigaionBar 
+            type={types}  
+            onOptionClick={onOptionClick}
+            activeIdx={activeIdx}
+            setActiveIdx={setActiveIdx}
+          />
+        </NavigationBarSection>
+      )}
+
     </HeaderPageLayout>
   );
 };
@@ -116,4 +136,4 @@ const StyledInput = styled.input`
   &:focus {
     outline: none;
   }
-`;
+`

@@ -1,8 +1,41 @@
 "use client";
 
 import { useQuery, useMutation } from '@apollo/client/react';
-import { GET_VOTES, GET_VOTE_BY_ID, CREATE_VOTE, CREATE_VOTE_RESPONSE } from '@/graphql/queries';
+import { GET_VOTES, GET_VOTE_BY_ID, CREATE_VOTE, CREATE_VOTE_RESPONSE,AIOPTION_CREATE } from '@/graphql/queries';
 import { Vote, CreateVoteInput, CreateVoteResponseInput } from '@/types/api';
+
+
+interface OptionGeneratorData {
+  optionGenerator: {
+    generateOptions: {
+      options: string[];
+      message: string;
+    }
+  }
+}
+
+interface OptionGeneratorVars {
+  count: number;
+  title: string;
+}
+
+export function useAiOptionCreate(count: number, title: string) {
+  const { data, loading, error, refetch } = useQuery<OptionGeneratorData, OptionGeneratorVars>(
+    AIOPTION_CREATE,
+    {
+      variables: { count, title },
+      fetchPolicy: 'network-only'
+    }
+  );
+
+  return {
+    options: data?.optionGenerator?.generateOptions?.options || [],
+    message: data?.optionGenerator?.generateOptions?.message || "",
+    loading,
+    error,
+    refetch
+  };
+}
 
 interface VotesData {
   vote: {
@@ -10,7 +43,7 @@ interface VotesData {
   }
 }
 
-// 모든 투표 목록을 가져오는 훅
+
 export function useVotes() {
   const { data, loading, error, refetch } = useQuery<VotesData>(GET_VOTES, {
     fetchPolicy: 'network-only'
@@ -50,7 +83,7 @@ interface CreateVoteData {
   }
 }
 
-// 투표 생성 훅
+
 export function useCreateVote() {
   const [createVoteMutation, { loading, error }] = useMutation<CreateVoteData, { input: CreateVoteInput }>(CREATE_VOTE);
   

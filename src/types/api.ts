@@ -16,6 +16,7 @@ export interface VoteOption {
 }
 
 export interface Vote {
+
   id: string;
   title: string;
   category: string;
@@ -38,6 +39,23 @@ export interface Guide {
   likeCount?: number; // 상세 정보에서 사용
   revoteCount?: number;
 }
+
+export interface SimilarGuide {
+  id: string;
+  title: string;
+  content: string;
+  category: string;
+  createdAt: string;
+  guideType: string;
+  keyword: string;
+  likeCount: number;
+  revoteCount: number;
+  userEmail?: string | null;
+  userId?: string | null;
+  userName?: string | null;
+  userProfileImage?: string | null;
+}
+
 
 // 질문 및 게시판 관련 타입
 export interface Comment {
@@ -63,6 +81,31 @@ export interface Question {
   viewCount: number;
   isBookmarked?: boolean;
 }
+
+// types/api.ts 파일 생성
+export interface QuestionsResponse {
+  data: {
+    board: {
+      getQuestionList: {
+        content: Question[];
+        totalElements: number;
+        totalPages: number;
+        __typename: string;
+      };
+      __typename: string;
+    };
+    __typename: string;
+  };
+}
+
+export interface UseQuestionsReturn {
+  questions: QuestionsResponse | null;
+  loading: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
+
 
 // 페이지네이션 관련 타입
 export interface Page<T> {
@@ -92,8 +135,7 @@ export interface AIQuota {
 export interface CreateVoteInput {
   title: string;
   category: string;
-  options: { content: string }[];
-  finishedAt: string;
+  options: string[];
 }
 
 export interface CreateVoteResponseInput {

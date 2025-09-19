@@ -3,7 +3,7 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { Vote } from "@/types/api";
 import { useRouter } from "next/navigation";
-import { format, isPast } from "date-fns";
+import { format, isPast, differenceInDays } from "date-fns";
 
 type Props = {
     vote: Vote;
@@ -11,8 +11,17 @@ type Props = {
 
 const VoteBlock = ({ vote }: Props) => {
     const router = useRouter();
+
+    if (!vote) return null;
+
+
+    if (isPast(new Date(vote.finishedAt))) {
+        return null;
+    }
     
     const renderImage = () => {
+        if (!vote.category) return null;
+
         switch (vote.category) {
             case "학교생활":
                 return <img src="/svg/School.svg" alt="school" width={35} height={35} />;
@@ -26,15 +35,21 @@ const VoteBlock = ({ vote }: Props) => {
     }
     
     const getStateText = () => {
-        if (isPast(new Date(vote.finishedAt))) {
-            return "마감된 투표";
-        }
-        return `${format(new Date(vote.finishedAt), "yyyy-MM-dd")}에 마감되는 투표`;
+    const finishDate = new Date(vote.finishedAt);
+    const today = new Date();
+    const daysLeft = differenceInDays(finishDate, today); 
+
+    return {
+        text: daysLeft <= 0 ? "마감된 투표" : `${format(finishDate, "yyyy-MM-dd")}에 마감되는 투표`,
+        isUrgent: daysLeft <= 3 && daysLeft > 0 
+        };
     };
+
+    const { text, isUrgent } = getStateText();
     
     return (
         <VoteBlockLayout>
-            <VoteBlocks onClick={() => router.push(`/Vote/${vote.id}`)}>
+            <VoteBlocks onClick={() => router.push(`/vote/${vote.id}`)}>
                 {renderImage()}
                 <InfomationsBlocks>
                     <Title>{vote.title}</Title>
@@ -46,13 +61,14 @@ const VoteBlock = ({ vote }: Props) => {
                                 <Views>{vote.totalResponses}</Views>
                             </ViewBlock>
                         </Infomations>
-                        <States>{getStateText()}</States>
+                       <States urgent={isUrgent}>{text}</States>
                     </InfomationsBlock>
                 </InfomationsBlocks>
             </VoteBlocks>
         </VoteBlockLayout>
-    )
-}
+    );
+};
+
 
 export default VoteBlock;
 
@@ -81,7 +97,7 @@ const VoteBlocks = styled.div`
 `
 
 const Title = styled.p`
-    ${font.D4};
+    ${font.H1};
 `
 
 const Infomations = styled.div`
@@ -105,6 +121,7 @@ const InfomationsBlocks = styled.div`
     height: 100%;
     justify-content: center;
     width: 100%;
+    gap : 14px;
 `
 
 const Catogorys = styled.p`
@@ -124,7 +141,7 @@ const ViewBlock = styled.div`
     align-items: center;
 `
 
-const States = styled.p`
-    font-size: 10px;
-    color: ${color.gray500};
+const States = styled.p<{ urgent?: boolean }>`
+  font-size: 10px;
+  color: ${({ urgent }) => (urgent ? "red" : color.gray500)};
 `

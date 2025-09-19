@@ -19,6 +19,7 @@ export const GET_VOTES = gql`
       getAllVotes {
         id
         title
+        hasVoted
         category
         status
         totalResponses
@@ -33,6 +34,7 @@ export const GET_VOTES = gql`
     }
   }
 `;
+
 
 export const GET_VOTE_BY_ID = gql`
   query GetVoteById($id: ID!) {
@@ -86,9 +88,32 @@ export const GET_GUIDE_BY_ID = gql`
   }
 `;
 
+export const SEARCH_SIMILAR_GUIDES = gql`
+  query SearchSimilarGuides($title: String!) {
+    keywordGuide {
+      searchSimilarByTitle(title: $title) {
+        category
+        content
+        createdAt
+        guideType
+        id
+        keyword
+        likeCount
+        revoteCount
+        title
+        userEmail
+        userId
+        userName
+        userProfileImage
+      }
+    }
+  }
+`;
+
+
 // 질문 관련 쿼리
 export const GET_QUESTIONS = gql`
-  query GetQuestions($page: Int, $size: Int) {
+  query GetQuestions($page: Int!, $size: Int!) {
     board {
       getQuestionList(page: $page, size: $size) {
         content {
@@ -110,7 +135,7 @@ export const GET_QUESTIONS = gql`
 export const GET_QUESTION_BY_ID = gql`
   query GetQuestionById($id: ID!) {
     board {
-      getQuestionDetail(id: $id) {
+      getQuestionDetail(boardId: $id) {
         id
         title
         content
@@ -126,7 +151,7 @@ export const GET_QUESTION_BY_ID = gql`
 
 // 댓글 가져오기
 export const GET_COMMENTS = gql`
-  query GetComments($boardId: ID!, $page: Int, $size: Int) {
+  query GetComments($boardId: ID!, $page: Int!, $size: Int!) {
     board {
       getComments(boardId: $boardId, page: $page, size: $size) {
         content {
@@ -150,7 +175,6 @@ export const GET_COMMENTS = gql`
   }
 `;
 
-// 투표 생성 뮤테이션
 export const CREATE_VOTE = gql`
   mutation CreateVote($input: CreateVoteInput!) {
     vote {
@@ -160,11 +184,29 @@ export const CREATE_VOTE = gql`
         category
         status
         totalResponses
-        finishedAt
+        finishedAt  
+        hasVoted 
+        options {
+          id
+          content
+          responseCount
+          percentage
+        }
       }
     }
   }
 `;
+
+export const AIOPTION_CREATE = gql`
+  query MyQuery($count : Int! , $title : String!) {
+    optionGenerator {
+      generateOptions(count: $count, title: $title) {
+        options
+        message
+      }
+    }
+  }
+`
 
 // 투표 참여 뮤테이션
 export const CREATE_VOTE_RESPONSE = gql`
@@ -183,7 +225,7 @@ export const CREATE_VOTE_RESPONSE = gql`
   }
 `;
 
-// 문의하기 (질문 생성으로 대체)
+// 질문생성
 export const CREATE_INQUIRY = gql`
   mutation CreateInquiry($input: CreateBoardInput!) {
     board {
@@ -197,6 +239,27 @@ export const CREATE_INQUIRY = gql`
   }
 `;
 
+//질문
+export const CREATE_QUESTION = gql`
+  mutation CreateQuestion($title: String!, $content: String!) {
+    board {
+      createQuestion(input: {title: $title, content: $content}) {
+        title
+        content
+      }
+    }
+  }
+`;
+
+export const REPORT_BOARD = gql`
+  mutation ReportBoard($boardId: ID!, $detail: String!, $reason: String!) {
+    board {
+      reportBoard(boardId: $boardId, detail: $detail, reason: $reason)
+    }
+  }
+`;
+
+
 // 댓글 생성
 export const CREATE_COMMENT = gql`
   mutation CreateComment($input: CreateCommentInput!) {
@@ -209,6 +272,26 @@ export const CREATE_COMMENT = gql`
     }
   }
 `;
+
+export  const REPORT_QUESTION = gql`
+  mutation ReportQuestion($questionId: ID!, $reason: String!) {
+    report {
+      reportQuestion(questionId: $questionId, reason: $reason){
+      success
+      message
+      }
+    }
+  }
+`;
+
+export const REPORT_COMMENT = gql`
+  mutation ReportComment($commentId: ID!, $detail: String!, $reason: String!) {
+    board {
+      reportComment(commentId: $commentId, detail: $detail, reason: $reason)
+    }
+  }
+`;
+
 
 // 북마크 관련 쿼리 및 뮤테이션
 export const TOGGLE_BOOKMARK = gql`

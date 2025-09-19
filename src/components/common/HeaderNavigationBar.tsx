@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import { useState } from 'react';
 import React from 'react';
 
 const Defaultnavs = ['전체', '학교생활', '기숙사', '유머'];
@@ -8,14 +7,15 @@ const Questionnavs = ['전체', '인기'];
 type Props = {
     type: string;
     onOptionClick?: () => void;
-    onSelect?: (label: string) => void;
+
+    activeIdx?: number;
+    setActiveIdx?: (idx: number) => void;
 };
 
-const HeaderNavigaionBar = ({ type, onOptionClick, onSelect }: Props) => {
-    const [activeIdx, setActiveIdx] = useState(0);
+const HeaderNavigaionBar = ({ type, onOptionClick, activeIdx = 0, setActiveIdx }: Props) => {
+
 
     const handleOptionClick = () => {
-
         if (onOptionClick) {
             onOptionClick();
         }
@@ -31,7 +31,8 @@ const HeaderNavigaionBar = ({ type, onOptionClick, onSelect }: Props) => {
                                 <React.Fragment key={nav}>
                                     <NavItem
                                         active={activeIdx === idx}
-                                        onClick={() => { setActiveIdx(idx); onSelect?.(Defaultnavs[idx]); }}
+                                        onClick={() => setActiveIdx && setActiveIdx(idx)}
+
                                     >
                                         {nav}
                                     </NavItem>
@@ -57,14 +58,12 @@ const HeaderNavigaionBar = ({ type, onOptionClick, onSelect }: Props) => {
             case "Question":
                 return (
                     <NavWrapper>
+                        <Navs>
                         {Questionnavs.map((nav, idx) => (
                             <React.Fragment key={nav}>
                                 <NavItem
                                     active={activeIdx === idx}
-                                    onClick={() => {
-                                        setActiveIdx(idx);
-                                        onSelect?.(Questionnavs[idx]);
-                                    }}
+                                    onClick={() => setActiveIdx && setActiveIdx(idx)}
                                 >
                                     {nav}
                                 </NavItem>
@@ -73,6 +72,7 @@ const HeaderNavigaionBar = ({ type, onOptionClick, onSelect }: Props) => {
                                 )}
                             </React.Fragment>
                         ))}
+                        </Navs>
                     </NavWrapper>
                 );
 
@@ -81,14 +81,10 @@ const HeaderNavigaionBar = ({ type, onOptionClick, onSelect }: Props) => {
         }
     };
 
-    return (
-        <>
-            {renderItems()}
-        </>
-    );
+    return <>{renderItems()}</>;
 }
 
-export default HeaderNavigaionBar
+export default HeaderNavigaionBar;
 
 const Navs = styled.div`
   display : flex;

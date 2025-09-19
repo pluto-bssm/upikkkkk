@@ -42,8 +42,8 @@ const font = {
   P23: fontGenerator(400, 11),
   P24: fontGenerator(400, 10),
 
-  H1: fontGenerator(400,15),
-  H2: fontGenerator(400,14),
+  H1: fontGenerator(500,15),
+  H2: fontGenerator(500,14),
   H3: fontGenerator(400,13),
   H4: fontGenerator(400,12),
   H5: fontGenerator(400,11),
