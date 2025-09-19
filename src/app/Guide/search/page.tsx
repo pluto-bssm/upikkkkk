@@ -6,26 +6,32 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import NavigationBar from "@/components/common/NavigationBar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { mockMainGuideData } from "@/mock/GuideComponent";
-
-// Guide 검색은 메인 가이드 mock 데이터를 사용합니다.
-const guideData = mockMainGuideData;
+import { useGuides } from "@/hooks/useGuides";
+import { Guide } from "@/types/api";
 
 const Search = () => {
-    const [searchitem, setsearchitem] = useState("");
+    const [searchitem, setSearchitem] = useState("");
+    const [filteredGuides, setFilteredGuides] = useState<Guide[]>([]);
+    const { guides, loading, error, refetch } = useGuides();
+
+    useEffect(() => {
+        if (searchitem.trim() === "") {
+            setFilteredGuides([]);
+        } else {
+            const result = guides.filter(guide => 
+                guide.title.includes(searchitem)
+            );
+            setFilteredGuides(result);
+        }
+    }, [searchitem, guides]);
 
     const handleSearchChange = (value: string) => {
-        setsearchitem(value);
+        setSearchitem(value);
     }
 
-    const filteredGuides = guideData.filter(item =>
-        item.title.includes(searchitem)
-    );
-
     const showResults = searchitem.trim() !== "";
-
     const router = useRouter();
     return (
         <SearchLayout>
@@ -37,22 +43,26 @@ const Search = () => {
             />
 
             <SearchSection>
-                {!showResults ? (
+                {loading ? (
+                    <p>로딩 중...</p>
+                ) : error ? (
+                    <p>검색 데이터를 불러오는 중 오류가 발생했어요</p>
+                ) : !showResults ? (
                     <p>검색어를 입력해주세요</p>
                 ) : filteredGuides.length > 0 ? (
                     <SearchResults>
                         <ResultSection>
                             <ResultText>결과 <ResultNumberText>{filteredGuides.length}</ResultNumberText></ResultText>
                         </ResultSection>
-                        {filteredGuides.map(item => (
-                            <GuideCard key={item.id} onClick={() => router.push('/MoreGuide')}>
-                                <GuideEmoji src={item.thumnail} alt="thumbnail" />
+                        {filteredGuides.map(guide => (
+                            <GuideCard key={guide.id} onClick={() => router.push(`/MoreGuide?guideId=${guide.id}`)}>
+                                <GuideEmoji src={guide.emoji || '📚'} alt="thumbnail" />
                                 <GuideTextWrap>
-                                    <GuideTitle>{item.title}</GuideTitle>
+                                    <GuideTitle>{guide.title}</GuideTitle>
                                     <GuideMeta>
-                                        <GuideTag>{item.category}</GuideTag>
+                                        <GuideTag>{guide.category}</GuideTag>
                                         <GuideCountIcon />
-                                        <GuideCount>{item.markcount}</GuideCount>
+                                        <GuideCount>{guide.like || 0}</GuideCount>
                                     </GuideMeta>
                                 </GuideTextWrap>
                             </GuideCard>

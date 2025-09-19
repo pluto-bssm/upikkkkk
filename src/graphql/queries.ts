@@ -150,17 +150,19 @@ export const GET_VOTES = gql`
   query GetVotes {
     vote {
       getAllVotes {
-        id
-        title
-        category
-        status
-        totalResponses
-        finishedAt
-        options {
+        content {
           id
-          content
-          responseCount
-          percentage
+          title
+          category
+          status
+          totalResponses
+          finishedAt
+          options {
+            id
+            content
+            responseCount
+            percentage
+          }
         }
       }
     }
@@ -231,12 +233,14 @@ export const GET_GUIDES = gql`
   query GetGuides {
     guide {
       getAllGuides {
-        id
-        title
-        content
-        category
-        createdAt
-        like
+        content {
+          id
+          title
+          content
+          category
+          createdAt
+          like
+        }
       }
     }
   }
@@ -332,6 +336,22 @@ query TodayVote {
       status
       title
       totalResponses
+    }
+  }
+}
+`;
+
+//재투표 뮤테이션
+export const REVOTE_MUTATION = gql`
+mutation RevoteMutation($input: CreateRevoteRequestInput!) {
+  revote {
+    createRevoteRequest(input: $input) {
+      createdAt
+      detailReason
+      guideId
+      id
+      reason
+      userId
     }
   }
 }

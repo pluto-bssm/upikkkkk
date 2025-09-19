@@ -44,12 +44,7 @@ const Main = () => {
              votes.slice(0, 3).map((vote) => (
                <VoteItemWrapper key={vote.id}>
                  <VoteBlock
-                   id={parseInt(vote.id)}
-                   title={vote.title}
-                   catogory={vote.category}
-                   views={vote.totalResponses.toString()}
-                   state={vote.status}
-                   hrefBase="/Vote"
+                   vote={vote}
                  />
                </VoteItemWrapper>
              ))

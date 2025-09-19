@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { useRouter } from "next/navigation";
-import { useAllGuides } from "@/hooks/useGuides";
+import { useGuides } from "@/hooks/useGuides";
 
 type GuideComponentProps = {
   gap?: string;
@@ -16,7 +16,7 @@ type GuideComponentProps = {
 const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가이드 제작일 기준', limit }: GuideComponentProps) => {
   const router = useRouter();
   
-  const { guides, loading, error } = useAllGuides(0, 20, sortstandard === '가이드 제작일 기준' ? 'createdAt' : 'like');
+  const { guides, loading, error } = useGuides();
   
   const filteredGuides = guides.filter((guide) => {
     if (category === '전체') return true;
@@ -64,9 +64,10 @@ const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가
   }
 
   if (error) {
+    console.error('GuideComponent Error:', error);
     return (
       <Root>
-        <ErrorText>가이드를 불러오는데 실패했습니다.</ErrorText>
+        <ErrorText>가이드를 불러오는데 실패했습니다: {error.message}</ErrorText>
       </Root>
     );
   }

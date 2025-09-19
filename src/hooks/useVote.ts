@@ -14,7 +14,9 @@ import type { Vote, CreateVoteInput, CreateVoteResponseInput } from "@/types/api
 
 interface VotesData {
   vote: {
-    getAllVotes: Vote[];
+    getAllVotes: {
+      content: Vote[];
+    };
   };
 }
 
@@ -24,7 +26,7 @@ export function useVotes() {
   });
 
   return {
-    votes: data?.vote?.getAllVotes || [],
+    votes: data?.vote?.getAllVotes?.content || [],
     loading,
     error,
     refetch,

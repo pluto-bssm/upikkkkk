@@ -22,7 +22,9 @@ interface GuidesByCategoryData {
 
 interface AllGuidesData {
   guide: {
-    getAllGuides: Guide[];
+    getAllGuides: {
+      content: Guide[];
+    };
   };
 }
 
@@ -107,7 +109,7 @@ export function useGuides(category?: string) {
 
   const guides = category
     ? byCatData?.guide?.getGuidesByCategory || []
-    : allData?.guide?.getAllGuides || [];
+    : allData?.guide?.getAllGuides?.content || [];
 
   return {
     guides,
