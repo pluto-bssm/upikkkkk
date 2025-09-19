@@ -14,9 +14,32 @@ const Guide = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortStandard, setSortStandard] = useState("가이드 제작일 기준");
+  const [activeNavIdx, setActiveNavIdx] = useState(0);
   const router = useRouter();
 
   const handleOptionClick = () => setIsModalOpen(true);
+
+  const getCategoryFromNav = (navIndex: number) => {
+    const navItems = ['전체', '학교생활', '기숙사', '유머'];
+    const selectedNav = navItems[navIndex];
+    
+    switch (selectedNav) {
+      case '학교생활':
+        return '학교생활';
+      case '기숙사':
+        return '기숙사';
+      case '유머':
+        return '유머';
+      default:
+        return '전체';
+    }
+  };
+
+  const handleNavSelect = (navIndex: number) => {
+    setActiveNavIdx(navIndex);
+    const category = getCategoryFromNav(navIndex);
+    setSelectedCategory(category);
+  };
 
   return (
     <GuidePageLayout>
@@ -38,7 +61,8 @@ const Guide = () => {
         }
         types="default"
         onOptionClick={handleOptionClick}
-        onSelect={(label: string) => setSelectedCategory(label)}
+        activeIdx={activeNavIdx}
+        setActiveIdx={handleNavSelect}
       />
 
       <MainLayout>

@@ -11,8 +11,8 @@ import RevoteComponent from "@/components/Guide/RevoteComponent";
 import DetailContent from "@/components/Guide/DetailContent";
 import React, { useState, useMemo } from "react";
 import RevoteSend from "@/components/Button/RevoteSend";
-import apolloClient from "@/lib/apollo-client";
-import { REVOTE_MUTATION } from "@/graphql/queries";
+import RevoteRequest from "@/modal/revoteRequest";
+import RevoteCancel from "@/modal/revoteCancel";
 
 const revoteReasons = [
   "가이드 내용이 부정확해요",
@@ -45,61 +45,29 @@ const Revote = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedReasonIndex, setSelectedReasonIndex] = useState<number | null>(null);
   const [detailText, setDetailText] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
   const isSendEnabled = useMemo(() => selectedReasonIndex !== null && detailText.trim().length > 0, [selectedReasonIndex, detailText]);
 
   const handleSendClick = () => {
     if (isSendEnabled) {
-      handleRequestConfirm();
+      setShowModal(true);
     }
   };
 
-  const handleRequestConfirm = async () => {
-    if (!guideId) {
-      console.error('Guide ID is missing:', { 
-        guideId, 
-        searchParams: Object.fromEntries(searchParams.entries()),
-        allParams: {
-          guideId: searchParams.get("guideId"),
-          id: searchParams.get("id"),
-          guide: searchParams.get("guide"),
-          gid: searchParams.get("gid")
-        }
-      });
-      console.log("가이드 ID를 찾을 수 없습니다. URL을 확인해주세요.");
-      return;
-    }
+  const handleRequestConfirm = () => {
+    console.log('재투표 신청이 완료되었습니다.');
+    setShowModal(false);
+    router.push('/guide');
+  };
 
-    const reasonText = selectedReasonIndex !== null ? revoteReasons[selectedReasonIndex] : "";
+  const handleBackClick = () => {
+    setShowCancelModal(true);
+  };
 
-    try {
-      setIsSubmitting(true);
-      console.log('Sending revote request:', {
-        guideId,
-        reason: reasonText,
-        detailReason: detailText,
-      });
-      
-      const result = await apolloClient.mutate({
-        mutation: REVOTE_MUTATION,
-        variables: {
-          input: {
-            guideId: String(guideId),
-            reason: reasonText,
-            detailReason: detailText,
-          },
-        },
-      });
-      
-      console.log('Revote request result:', result);
-      console.log("재투표 신청이 완료되었습니다.");
-      router.push('/MoreGuide');
-    } catch (error) {
-      console.error('Revote request error:', error);
-      const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류';
-      console.error(`요청 중 오류가 발생했어요: ${errorMessage}`);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleCancelConfirm = () => {
+    setShowCancelModal(false);
+    router.back();
   };
 
 
@@ -111,7 +79,7 @@ const Revote = () => {
             src="/svg/Back.svg"
             width={20}
             height={50}
-            onClick={() => router.back()}
+            onClick={handleBackClick}
           />
         } 
         RightItem={<HeaderItemsBox type={'revote'} />}
@@ -143,6 +111,20 @@ const Revote = () => {
             </RevoteSend>
         </SendBar>
       </RevoteLayout>
+
+      {showModal && (
+        <RevoteRequest 
+          onClose={() => setShowModal(false)}
+          onConfirm={handleRequestConfirm}
+        />
+      )}
+
+      {showCancelModal && (
+        <RevoteCancel 
+          onClose={() => setShowCancelModal(false)}
+          onConfirm={handleCancelConfirm}
+        />
+      )}
 
     <NavigationBar />
     </GuidePageLayout>

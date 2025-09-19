@@ -9,9 +9,6 @@ import font from "@/packages/design-system/src/font";
 import { useRouter, useSearchParams } from "next/navigation";
 import ChartComponent from "@/components/Guide/ChartComponent";
 import { useMoreGuide } from "@/hooks/useMoreGuide";
-import { useQuery } from '@apollo/client/react';
-import { GET_VOTE_BY_ID } from '@/graphql/queries';
-import { Vote } from '@/types/api';
 
 const MoreGuide = () => {
   const router = useRouter();
@@ -25,20 +22,6 @@ const MoreGuide = () => {
     guide,
     loading,
     error
-  });
-
-  const { data: voteData, loading: voteLoading, error: voteError } = useQuery<{ vote: { getVoteById: Vote } }>(GET_VOTE_BY_ID, {
-    variables: { id: guide?.voteId || '' },
-    skip: !guide?.voteId || !guide,
-  });
-  
-  const vote = voteData?.vote?.getVoteById;
-  
-  console.log('Vote Debug:', {
-    voteId: guide?.voteId,
-    vote,
-    voteLoading,
-    voteError
   });
   
   if (loading) {
@@ -99,22 +82,6 @@ const MoreGuide = () => {
     );
   }
 
-  const chartData = vote?.options?.map((option: any, index: number) => ({
-    label: option.content,
-    value: option.responseCount || 0,
-    color: ['#FF3B3B', '#FF6D38', '#FFBE3C'][index % 3]
-  })) || [
-    { label: "옵션 1", value: 30, color: '#FF3B3B' },
-    { label: "옵션 2", value: 40, color: '#FF6D38' },
-    { label: "옵션 3", value: 30, color: '#FFBE3C' }
-  ];
-
-  console.log('Chart Data Debug:', {
-    vote,
-    voteOptions: vote?.options,
-    chartData,
-    isUsingDefaultData: !vote?.options || vote.options.length === 0
-  });
 
   return (
     <GuidePageLayout>
@@ -145,16 +112,10 @@ const MoreGuide = () => {
       <VoteResult>
         <VoteCheck className="sancheon">투표 결과 확인하기</VoteCheck>
         <VoteSection>
-          <VoteTitle>{vote?.title || '투표 제목'}</VoteTitle>
-          <Participate>전체 참여자 수 {vote?.totalResponses || guide.revoteCount || 0}명</Participate>
+          <VoteTitle>투표 제목</VoteTitle>
+          <Participate>전체 참여자 수 {guide.revoteCount || 0}명</Participate>
           <ChartArea>
-            {voteLoading ? (
-              <div style={{ textAlign: 'center', padding: '20px' }}>
-                투표 데이터를 불러오는 중...
-              </div>
-            ) : (
-              <ChartComponent data={chartData} />
-            )}
+            <ChartComponent />
           </ChartArea>
         </VoteSection>
       </VoteResult>
@@ -290,10 +251,13 @@ const VoteSection = styled.section`
 `;
 
 const VoteTitle = styled.div`
-  height: 33px;
+  min-height: 33px;
   color: ${color.black};
   text-align: center;
   font-family: ${font.D1};
+  word-wrap: break-word;
+  line-height: 1.2;
+  padding: 0 10px;
 `;
 
 const Participate = styled.div`
