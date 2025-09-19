@@ -4,6 +4,7 @@ import font from "@/packages/design-system/src/font";
 import { Vote } from "@/types/api";
 import { useRouter } from "next/navigation";
 import { format, isPast, differenceInDays } from "date-fns";
+import Image from 'next/image';
 
 type Props = {
     vote: Vote;
@@ -24,11 +25,11 @@ const VoteBlock = ({ vote }: Props) => {
 
         switch (vote.category) {
             case "학교생활":
-                return <img src="/svg/School.svg" alt="school" width={35} height={35} />;
+                return <Image src="/svg/School.svg" alt="school" width={35} height={35} />;
             case "유머":
-                return <img src="/svg/Humors.svg" alt="humor" width={35} height={35} />;
+                return <Image src="/svg/Humors.svg" alt="humor" width={35} height={35} />;
             case "기숙사":
-                return <img src="/svg/Domitorys.svg" alt="dormitory" width={35} height={35} />;
+                return <Image src="/svg/Domitorys.svg" alt="dormitory" width={35} height={35} />;
             default:
                 return null;
         }
@@ -57,7 +58,7 @@ const VoteBlock = ({ vote }: Props) => {
                         <Infomations>
                             <Catogorys>{vote.category}</Catogorys>
                             <ViewBlock>
-                                <img src="/svg/Views.svg" height={14} width={14} />
+                                <Image src="/svg/Views.svg" height={14} width={14} alt="조회수" />
                                 <Views>{vote.totalResponses}</Views>
                             </ViewBlock>
                         </Infomations>

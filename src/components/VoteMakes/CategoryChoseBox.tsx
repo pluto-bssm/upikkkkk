@@ -1,6 +1,7 @@
 import React from "react";
 
 import styled from '@emotion/styled'
+import Image from 'next/image';
 
 
 
@@ -20,7 +21,7 @@ export default function CategoryChoseBox({ category, isOpen, setIsOpen }: Props)
 
                 <BoxDiv onClick={() => setIsOpen && setIsOpen(!isOpen)}>
                     <CategoryP>{category}</CategoryP>
-                    <img src="svg/UnderBar.svg" alt="underbar" />
+                    <Image src="/svg/UnderBar.svg" alt="underbar" width={16} height={16} />
                 </BoxDiv>
 
                 <div>

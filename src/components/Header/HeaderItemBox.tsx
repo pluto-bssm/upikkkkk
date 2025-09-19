@@ -3,6 +3,7 @@ import font from "@/packages/design-system/src/font"
 import HeaderInputs from "@/packages/ui/src/Inputs/Headerinputs";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import Image from 'next/image';
 
 export type HeaderType = 
   | 'main' 
@@ -49,8 +50,8 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
       case 'Main':
         return (
           <>
-            <img key="bell" src="/svg/Bell.svg" alt="알림" width={24} height={24} />
-            <img key="user" src="/svg/User.svg" alt="사용자" width={24} height={24} />
+            <Image key="bell" src="/svg/Bell.svg" alt="알림" width={24} height={24} />
+            <Image key="user" src="/svg/User.svg" alt="사용자" width={24} height={24} />
           </>
         );
 
@@ -58,20 +59,20 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
       case 'main':
         return (
           <>
-            <img key="bell" src="/svg/Bell.svg" alt="알림" width={24} height={24} />
-            <img key="search" src="/svg/Search.svg" alt="검색" width={24} height={24} onClick={() => {router.push(`${path}/search`)}} />
-            <img key="user" src="/svg/User.svg" alt="사용자" width={24} height={24} onClick={() => {router.push(`/my`)}}  />
+            <Image key="bell" src="/svg/Bell.svg" alt="알림" width={24} height={24} />
+            <Image key="search" src="/svg/Search.svg" alt="검색" width={24} height={24} onClick={() => {router.push(`${path}/search`)}} style={{ cursor: 'pointer' }} />
+            <Image key="user" src="/svg/User.svg" alt="사용자" width={24} height={24} onClick={() => {router.push(`/my`)}} style={{ cursor: 'pointer' }} />
           </>
         );
       
       case 'guide':
         return (
-          <img key="bookmark" src="/svg/Bookmark.svg" alt="북마크" width={24} height={24} />
+          <Image key="bookmark" src="/svg/Bookmark.svg" alt="북마크" width={24} height={24} />
         );  
 
       case 'votemake':
         return (
-          <img key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} />
+          <Image key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} />
         );
       
       case 'searchguide':
@@ -96,15 +97,15 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
       case 'reportguide':
         return (
           <>
-            <img key="report" src="/svg/Report.svg" alt="리포트" width={24} height={24} />
-            <img key="bookmark" src="/svg/Bookmark.svg" alt="북마크" width={24} height={24} />
+            <Image key="report" src="/svg/Report.svg" alt="리포트" width={24} height={24} />
+            <Image key="bookmark" src="/svg/Bookmark.svg" alt="북마크" width={24} height={24} />
           </>
         );
 
         case 'reportQuestion':
         return (
           <>
-            <img key="report" src="/svg/Report.svg" alt="리포트" width={24} height={24} onClick={() => router.push(`${path}/reportquestion`)}/>
+            <Image key="report" src="/svg/Report.svg" alt="리포트" width={24} height={24} onClick={() => router.push(`${path}/reportquestion`)} style={{ cursor: 'pointer' }}/>
             
           </>
         );
@@ -120,7 +121,7 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
 
       return (
         <>
-          <img 
+          <Image 
             key="report" 
             src="/svg/Report.svg" 
             alt="리포트" 
@@ -138,9 +139,9 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
         
         return (
           <>
-           <img key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} onClick={() => router.back()}
+           <Image key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} onClick={() => router.back()}
               style={{ cursor: 'pointer' }}/>
-           <img key="options" src="/svg/Options.svg" alt="설정" width={24} height={24} />
+           <Image key="options" src="/svg/Options.svg" alt="설정" width={24} height={24} />
           </>
         ); 
 

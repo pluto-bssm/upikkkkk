@@ -3,6 +3,7 @@
 import styled from '@emotion/styled'
 import color from '@/packages/design-system/src/color';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 
 
@@ -14,10 +15,10 @@ const NavigationBar = () => {
   return (
     <NavigationPageLayout>
       <NavigationItem>
-        <img src='/svg/Home.svg' width={40} height={40} onClick={() => { router.push("/main") }} />
-        <img src='/svg/Vote.svg' width={40} height={40} onClick={() => { router.push("/vote") }} />
-        <img src='/svg/Guide.svg' width={40} height={40} onClick={() => { router.push("/guide") }} />
-        <img src='/svg/Dashboard.svg' width={40} height={40} onClick={() => { router.push("/dashboard") }} />
+        <Image src='/svg/Home.svg' alt="홈" width={40} height={40} onClick={() => { router.push("/main") }} style={{ cursor: 'pointer' }} />
+        <Image src='/svg/Vote.svg' alt="투표" width={40} height={40} onClick={() => { router.push("/vote") }} style={{ cursor: 'pointer' }} />
+        <Image src='/svg/Guide.svg' alt="가이드" width={40} height={40} onClick={() => { router.push("/guide") }} style={{ cursor: 'pointer' }} />
+        <Image src='/svg/Dashboard.svg' alt="대시보드" width={40} height={40} onClick={() => { router.push("/dashboard") }} style={{ cursor: 'pointer' }} />
       </NavigationItem>
     </NavigationPageLayout>
   );

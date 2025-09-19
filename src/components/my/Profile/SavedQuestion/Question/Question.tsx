@@ -4,6 +4,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import Image from 'next/image';
 
 const bookmarkImg =
   "/svg/placeholder.svg"
@@ -26,7 +27,7 @@ const Question = (): React.ReactElement => {
             <span className="author">{q.author}</span>
             <span className="date">{q.date}</span>
             <span className="bm">
-              <img src={bookmarkImg} alt="bookmark" />
+              <Image src={bookmarkImg} alt="bookmark" width={18} height={18} />
               <span className="cnt">{q.bookmark}</span>
             </span>
           </Meta>
