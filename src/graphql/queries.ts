@@ -135,7 +135,7 @@ export const GET_QUESTIONS = gql`
 export const GET_QUESTION_BY_ID = gql`
   query GetQuestionById($id: ID!) {
     board {
-      getQuestionDetail(id: $id) {
+      getQuestionDetail(boardId: $id) {
         id
         title
         content
@@ -151,7 +151,7 @@ export const GET_QUESTION_BY_ID = gql`
 
 // 댓글 가져오기
 export const GET_COMMENTS = gql`
-  query GetComments($boardId: ID!, $page: Int, $size: Int) {
+  query GetComments($boardId: ID!, $page: Int!, $size: Int!) {
     board {
       getComments(boardId: $boardId, page: $page, size: $size) {
         content {
@@ -225,7 +225,7 @@ export const CREATE_VOTE_RESPONSE = gql`
   }
 `;
 
-// 문의하기 (질문 생성으로 대체)
+// 질문생성
 export const CREATE_INQUIRY = gql`
   mutation CreateInquiry($input: CreateBoardInput!) {
     board {
@@ -239,6 +239,27 @@ export const CREATE_INQUIRY = gql`
   }
 `;
 
+//질문
+export const CREATE_QUESTION = gql`
+  mutation CreateQuestion($title: String!, $content: String!) {
+    board {
+      createQuestion(input: {title: $title, content: $content}) {
+        title
+        content
+      }
+    }
+  }
+`;
+
+export const REPORT_BOARD = gql`
+  mutation ReportBoard($boardId: ID!, $detail: String!, $reason: String!) {
+    board {
+      reportBoard(boardId: $boardId, detail: $detail, reason: $reason)
+    }
+  }
+`;
+
+
 // 댓글 생성
 export const CREATE_COMMENT = gql`
   mutation CreateComment($input: CreateCommentInput!) {
@@ -251,6 +272,26 @@ export const CREATE_COMMENT = gql`
     }
   }
 `;
+
+export  const REPORT_QUESTION = gql`
+  mutation ReportQuestion($questionId: ID!, $reason: String!) {
+    report {
+      reportQuestion(questionId: $questionId, reason: $reason){
+      success
+      message
+      }
+    }
+  }
+`;
+
+export const REPORT_COMMENT = gql`
+  mutation ReportComment($commentId: ID!, $detail: String!, $reason: String!) {
+    board {
+      reportComment(commentId: $commentId, detail: $detail, reason: $reason)
+    }
+  }
+`;
+
 
 // 북마크 관련 쿼리 및 뮤테이션
 export const TOGGLE_BOOKMARK = gql`

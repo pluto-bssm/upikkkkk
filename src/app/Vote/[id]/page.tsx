@@ -20,7 +20,6 @@ const DoVote = () => {
 
   const labels = ['A','B','C','D','E'];
 
-  // ✅ 훅으로 투표 데이터 가져오기
   const { vote, loading, error } = useVoteById(id);
   const { createResponse, loading: responseLoading } = useVoteResponse();
 

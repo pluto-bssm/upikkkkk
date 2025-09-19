@@ -12,7 +12,7 @@ import { Question } from "@/types/api";
 import font from "@/packages/design-system/src/font";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-
+import DashMake from "@/components/Dashboard/DashboardMake";
 
 const QuestionPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -105,45 +105,59 @@ if (activeIdx === 1) {
             </EmptyText>
           </EmptyContainer>
         ) : (
-          filteredQuestions.map((question: Question) => {
-  const GoDetails = () => {
-    router.push(`${path}/${question.id}`);
-  };
 
-  return (
-    <QuestionItem key={question.id} onClick={GoDetails}>
-      <QuestionContent>
-        <QuestionTitle>{question.title}</QuestionTitle>
-        <QuestionMeta>
-          <UserInfo>
-            <AuthorInfo>{question.userName}</AuthorInfo>
-          </UserInfo>
-          <MetaInfo>
-            <span>{formatDate(question.createdAt)}</span>
-            <ViewIcon>
-              <Boookmarkimg src="/svg/Bookmark.svg" height={12} width={12} />
-            </ViewIcon>
-            <span>{question.bookmarkCount}</span>
-          </MetaInfo>
-        </QuestionMeta>
-      </QuestionContent>
-      <CommentCount>
-        <Comment>{question.commentCount}</Comment>
-        <CommentLabel>댓글</CommentLabel>
-      </CommentCount>
-    </QuestionItem>
-  );
-})
+          filteredQuestions.map((question: Question) => {
+            const GoDetails = () => {
+              router.push(`${path}/${question.id}`);
+            };
+
+            return (
+              <QuestionItem key={question.id} onClick={GoDetails}>
+                <QuestionContent>
+                  <QuestionTitle>{question.title}</QuestionTitle>
+                  <QuestionMeta>
+                    <UserInfo>
+                      <AuthorInfo>{question.userName}</AuthorInfo>
+                    </UserInfo>
+                    <MetaInfo>
+                      <span>{formatDate(question.createdAt)}</span>
+                    </MetaInfo>
+                  </QuestionMeta>
+                </QuestionContent>
+                <CommentCount>
+                  <Comment>{question.commentCount}</Comment>
+                  <CommentLabel>댓글</CommentLabel>
+                </CommentCount>
+              </QuestionItem>
+            );
+          })
 
         )}
+      
       </QuestionListSection>
 
       <NavigationBar />
+      <QuestionButtonWrapper>
+         <DashMake />
+      </QuestionButtonWrapper>
+
     </QuestionLayout>
   );
 };
 
 export default QuestionPage;
+
+const QuestionButtonWrapper = styled.div`
+  max-width : 600px;
+  width : 100%;
+  position : fixed;
+  bottom : 70px;
+  display : flex;
+  justify-content : end;
+  padding : 0px 24px;
+  z-index : 1000;
+`
+
 
 const Boookmarkimg = styled.img`
   filter: invert(84%) sepia(1%) saturate(170%) hue-rotate(317deg) brightness(87%) contrast(85%);

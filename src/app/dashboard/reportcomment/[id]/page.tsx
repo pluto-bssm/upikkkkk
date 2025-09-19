@@ -2,14 +2,14 @@
 
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import ReportCancel from "@/components/Modal/ReportCancel";
-import { useRouter, useParams } from "next/navigation";
 import CompleteVote from "@/components/Modal/Complete";
-import { useReportQuestion } from '@/hooks/useQuestions';
+import { useReportComment } from "@/hooks/useQuestions";
 
 interface ReasonOptionProps {
     selected: boolean;
@@ -19,35 +19,37 @@ interface SubmitButtonProps {
     disabled: boolean;
 }
 
-const Report = () => {
+const ReportComment = () => {
     const [selectedReason, setSelectedReason] = useState('');
     const [detailContent, setDetailContent] = useState('');
     const [modalopen, setmodalopen] = useState(false);
     const [completemodal, setCompleteModal] = useState(false);
-    const [questionId, setQuestionId] = useState<string>('');
 
     const router = useRouter();
     const params = useParams();
-    const { reportQuestion, loading: reportLoading } = useReportQuestion();
+    const commentId = params?.id as string; // URL에서 댓글 ID 가져오기
 
-    // URL 경로에서 questionId 가져오기
+    const { reportComment, loading: isSubmitting } = useReportComment();
+
+    // commentId가 없으면 홈으로 리다이렉트
     useEffect(() => {
-        if (params.id) {
-            setQuestionId(params.id as string);
+        if (!commentId) {
+            alert('신고할 댓글 정보가 없습니다.');
+            router.replace('/');
         }
-    }, [params]);
-
-    const CompleteReport = () => {
-        router.replace("/")
-    }
+    }, [commentId, router]);
 
     const reportReasons = [
         '유해한 내용을 포함하고 있어요',
         '명예훼손 또는 저작권이 침해되었어요',
         '욕설/생명경시/혐오 표현이 사용되었어요',
-        '질문이 아니에요',
+        '질문과 관련 없는 내용이에요',
         '기타'
     ];
+
+    const CompleteReport = () => {
+        router.replace("/");
+    };
 
     const handleReasonSelect = (reason: string) => {
         setSelectedReason(reason);
@@ -62,37 +64,56 @@ const Report = () => {
             alert('상세 내용을 입력해주세요.');
             return;
         }
-        if (!questionId) {
-            alert('질문 정보가 없습니다.');
+        if (!commentId) {
+            alert('신고할 댓글 정보가 없습니다.');
             return;
         }
 
-        try {
-            const reportReason = `${selectedReason}\n\n상세 내용: ${detailContent.trim()}`;
-            
-            const result = await reportQuestion(questionId, reportReason);
-            
-            if (result) {
-                setCompleteModal(true);
-                console.log(result)
-            } else {
-                alert('신고 처리에 실패했습니다.');
-            }
-        } catch (error) {
-            console.error('신고 실패:', error);
-            alert('신고 처리 중 오류가 발생했습니다.');
+        console.log('댓글 신고 데이터:', {
+            commentId,
+            reason: selectedReason,
+            detail: detailContent
+        });
+
+        const result = await reportComment(commentId, selectedReason, detailContent);
+        
+        if (result.success) {
+            setCompleteModal(true);
+        } else {
+            alert(result.error || '댓글 신고 접수에 실패했습니다.');
         }
     };
+
+    const handleBack = () => {
+        if (selectedReason || detailContent.trim()) {
+            setmodalopen(true);
+        } else {
+            router.back();
+        }
+    };
+
+    const isFormValid = selectedReason && detailContent.trim() && !isSubmitting && commentId;
+
+    // commentId가 없으면 로딩 표시
+    if (!commentId) {
+        return (
+            <ReportLayout>
+                <LoadingContainer>
+                    <div>로딩 중...</div>
+                </LoadingContainer>
+            </ReportLayout>
+        );
+    }
 
     return (
         <ReportLayout>
             <Header
                 LeftItem={
-                    <img
+                    <BackButton
                         src="/svg/Back.svg"
                         width={20}
                         height={50}
-                        onClick={() => { setmodalopen(true) }}
+                        onClick={handleBack}
                     />
                 }
                 CenterItem={
@@ -104,7 +125,7 @@ const Report = () => {
             <ReportContent>
                 <ReportSection>
                     <SectionTitle>신고할 내용</SectionTitle>
-                    <PostTitle>게시판 글 신고하기</PostTitle>
+                    <PostTitle>게시판 댓글 신고하기</PostTitle>
                 </ReportSection>
 
                 <ReportSection>
@@ -117,12 +138,14 @@ const Report = () => {
                                 key={index}
                                 selected={selectedReason === reason}
                                 onClick={() => handleReasonSelect(reason)}
+                                disabled={isSubmitting}
                             >
                                 {reason}
                             </ReasonOption>
                         ))}
                     </ReasonList>
                 </ReportSection>
+
                 <ReportContentSection>
                     <ReportSection>
                         <SectionLabel>
@@ -133,35 +156,46 @@ const Report = () => {
                             value={detailContent}
                             onChange={(e) => setDetailContent(e.target.value)}
                             maxLength={500}
+                            disabled={isSubmitting}
                         />
-                        <CharacterCount>500자 이내로 입력해주세요</CharacterCount>
+                        <CharacterCount>
+                            {detailContent.length}/500자 이내로 입력해주세요
+                        </CharacterCount>
                     </ReportSection>
 
                     <SubmitButton
                         onClick={handleSubmit}
-                        disabled={!selectedReason || !detailContent.trim() || reportLoading}
+                        disabled={!isFormValid}
                     >
-                        {reportLoading ? '신고 처리 중...' : '신고 접수하기'}
+                        {isSubmitting ? '신고 접수 중...' : '신고 접수하기'}
                     </SubmitButton>
                 </ReportContentSection>
             </ReportContent>
 
-            {modalopen && <ReportCancel isOpen={modalopen} setIsOpen={setmodalopen} />}
-            {completemodal && <CompleteVote 
-                text1="신고가" 
-                text2="으로 접수됐어요" 
-                text3="성공적" 
-                subtext="지속적으로 정상적인 게시글을 신고하는 경우
-제재의 대상이 될 수 있어요" 
-                img="/svg/CompleteVote.svg" 
-                onfunciton={CompleteReport} 
-            />}
+            {modalopen && (
+                <ReportCancel 
+                    isOpen={modalopen} 
+                    setIsOpen={setmodalopen} 
+                />
+            )}
+            
+            {completemodal && (
+                <CompleteVote 
+                    text1="댓글 신고가" 
+                    text2="으로 접수됐어요" 
+                    text3="성공적" 
+                    subtext="지속적으로 정상적인 댓글을 신고하는 경우 제재의 대상이 될 수 있어요" 
+                    img="/svg/CompleteVote.svg" 
+                    onfunciton={CompleteReport} 
+                />
+            )}
         </ReportLayout>
     )
 }
 
-export default Report;
+export default ReportComment;
 
+// 스타일 컴포넌트들
 const ReportLayout = styled.div`
     max-width: 600px;
     width: 100%;
@@ -169,8 +203,26 @@ const ReportLayout = styled.div`
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items : center;
-    padding-bottom : 30px;
+    align-items: center;
+    padding-bottom: 30px;
+`;
+
+const LoadingContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 16px;
+    color: #666;
+`;
+
+const BackButton = styled.img`
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    
+    &:hover {
+        opacity: 0.7;
+    }
 `;
 
 const ReportContent = styled.div`
@@ -179,7 +231,7 @@ const ReportContent = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin-top : 100px;
+    margin-top: 100px;
 `;
 
 const ReportSection = styled.div`
@@ -200,6 +252,17 @@ const PostTitle = styled.h1`
     font-weight: 700;
     color: #000;
     margin: 0;
+`;
+
+const CommentIdInfo = styled.p`
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+    font-family: monospace;
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
 `;
 
 const SectionLabel = styled.label`
@@ -223,7 +286,7 @@ const ReasonList = styled.div`
 `;
 
 const ReportContentSection = styled.div`
-    margin-top:30px;
+    margin-top: 30px;
 `;
 
 const ReasonOption = styled.button<ReasonOptionProps>`
@@ -236,10 +299,16 @@ const ReasonOption = styled.button<ReasonOptionProps>`
     text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    outline : none;
+    outline: none;
 
-    &:hover {
+    &:hover:not(:disabled) {
         border-color: #FF8A00;
+        background-color: #FFF5E6;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
     }
 `;
 
@@ -252,31 +321,52 @@ const DetailTextarea = styled.textarea`
     line-height: 1.5;
     resize: none;
     font-family: inherit;
-    outline : none;
-    background-color : ${color.white};
+    outline: none;
+    background-color: ${color.white};
+    color: ${color.black};
+
     &::placeholder {
         color: #999;
     }
-    color : ${color.black};
+
+    &:focus {
+        border-color: #FF8A00;
+        outline: none;
+    }
+
+    &:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+    }
 `;
 
 const CharacterCount = styled.p`
     ${font.H3};
     color: #999;
-    text-align: left;
+    text-align: right;
     margin: 0;
+    font-size: 12px;
 `;
 
 const SubmitButton = styled.button<SubmitButtonProps>`
-    margin-top : 40px;
+    margin-top: 40px;
     width: 100%;
     padding: 20px;
     background: ${props => props.disabled ? color.gray200 : color.primary};
-    color: ${props => props.disabled ? '#FFF' : '#fff'};
+    color: ${props => props.disabled ? '#999' : '#fff'};
     border: none;
     border-radius: 40px;
     font-size: 20px;
     font-weight: 600;
     cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
     transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+        background: #e67700;
+        transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
 `;

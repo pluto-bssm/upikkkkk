@@ -87,7 +87,7 @@ const Text = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   color: #011627;
   white-space: pre-line;
