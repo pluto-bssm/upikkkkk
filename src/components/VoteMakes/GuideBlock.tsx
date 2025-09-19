@@ -7,7 +7,7 @@ type Props = {
   title: string,
   catogory: string,
   count: number,
-  id: number
+  id: string
 }
 
 const GuideBlock = ({ title, catogory, count, id }: Props) => {
@@ -23,6 +23,7 @@ const GuideBlock = ({ title, catogory, count, id }: Props) => {
         return null;
     }
   }
+
 
   const Router = useRouter();
   const path = usePathname();
@@ -78,7 +79,7 @@ const VoteBlocks = styled.div`
 `
 
 const Title = styled.p`
-  ${font.D4};
+  ${font.H1};
 `
 
 const Infomations = styled.div`

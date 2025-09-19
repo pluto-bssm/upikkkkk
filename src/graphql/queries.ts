@@ -1,18 +1,20 @@
 import { gql } from '@apollo/client';
 
 export const GET_CURRENT_USER = gql`
-query MyQuery {
-  iam {
-    getCurrentUser {
-      email
-      id
-      role
-      name
-      username
+  query MyQuery {
+    iam {
+      getCurrentUser {
+        email
+        id
+        role
+        name
+        username
+      }
     }
   }
-}`;
+`;
 
+/* ===================== 북마크 ===================== */
 export const GET_BOOKMARKED_GUIDES = gql`
   query GetBookmarkedGuides {
     bookmark {
@@ -50,12 +52,14 @@ export const TOGGLE_BOOKMARK = gql`
   }
 `;
 
+/* ===================== 투표 ===================== */
 export const GET_ALL_VOTES = gql`
   query GetAllVotes {
     vote {
       getAllVotes {
         id
         title
+        hasVoted
         category
         status
         totalResponses
@@ -142,6 +146,41 @@ export const VOTE_ON_OPTION = gql`
   }
 `;
 
+export const GET_VOTES = gql`
+  query GetVotes {
+    vote {
+      getAllVotes {
+        id
+        title
+        category
+        status
+        totalResponses
+        finishedAt
+        options {
+          id
+          content
+          responseCount
+          percentage
+        }
+      }
+    }
+  }
+`;
+
+export const CREATE_VOTE_RESPONSE = gql`
+  mutation CreateVoteResponse($input: CreateVoteResponseInput!) {
+    vote {
+      createVoteResponse(input: $input) {
+        id
+        voteId
+        optionId
+        createdAt
+      }
+    }
+  }
+`;
+
+/* ===================== 가이드 ===================== */
 export const GET_ALL_GUIDES = gql`
   query GetAllGuides {
     guide {
@@ -187,6 +226,7 @@ export const GET_GUIDES_BY_CATEGORY = gql`
   }
 `;
 
+/* feat#8에서 추가된 alias 성격의 쿼리 (동일 스키마 사용) */
 export const GET_GUIDES = gql`
   query GetGuides {
     guide {
@@ -202,6 +242,7 @@ export const GET_GUIDES = gql`
   }
 `;
 
+/* ===================== 질문/게시판 ===================== */
 export const GET_QUESTIONS = gql`
   query GetQuestions {
     board {
@@ -267,68 +308,6 @@ export const CREATE_INQUIRY = gql`
         id
         title
         content
-        createdAt
-      }
-    }
-  }
-`;
-
-export const GET_VOTES = gql`
-  query GetVotes {
-    vote {
-      getAllVotes {
-        id
-        title
-        category
-        status
-        totalResponses
-        finishedAt
-        options {
-          id
-          content
-          responseCount
-          percentage
-        }
-      }
-    }
-  }
-`;
-
-export const CREATE_VOTE_RESPONSE = gql`
-  mutation CreateVoteResponse($input: CreateVoteResponseInput!) {
-    vote {
-      createVoteResponse(input: $input) {
-        id
-        voteId
-        optionId
-        createdAt
-      }
-    }
-  }
-`;
-
-export const GET_SAVED_GUIDES = gql`
-  query GetSavedGuides {
-    bookmark {
-      getBookmarkedGuides {
-        id
-        title
-        content
-        category
-        createdAt
-        like
-      }
-    }
-  }
-`;
-
-export const GET_SAVED_QUESTIONS = gql`
-  query GetSavedQuestions {
-    bookmark {
-      getBookmarks {
-        id
-        userId
-        guideId
         createdAt
       }
     }

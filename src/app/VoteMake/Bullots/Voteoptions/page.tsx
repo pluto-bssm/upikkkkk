@@ -10,12 +10,11 @@ import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import TwoOptionsModal from "@/components/Modal/TwoOptionsModal";
 import AILoadingModal from "@/components/Modal/LoadingModal";
 import CompleteVote from "@/components/Modal/Complete";
+import { useAiOptionCreate } from "@/hooks/useVote";
+import { useVoteStore } from "@/app/stores/useVoteStore";
 
-export default
-  function OptionsPage() {
-
+export default function OptionsPage() {
   const router = useRouter();
-
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -25,12 +24,16 @@ export default
   const [aiUsageCount, setAiUsageCount] = useState(0);
   const [isClient, setIsClient] = useState(false);
 
+  const { title, ballots, setBallots } = useVoteStore();
+
+  // AI 옵션 생성 훅 (ballots 길이와 title을 전달)
+  const { options, loading, refetch } = useAiOptionCreate(ballots.length, title);
+
   useEffect(() => {
     setIsClient(true);
     const savedCount = sessionStorage.getItem('aiUsageCount');
     if (savedCount) {
       setAiUsageCount(parseInt(savedCount));
-
     }
   }, []);
 
@@ -38,34 +41,45 @@ export default
     if (isClient) {
       sessionStorage.setItem('aiUsageCount', aiUsageCount.toString());
     }
-  }, [aiUsageCount]);
+  }, [aiUsageCount, isClient]);
 
   const CompleteAi = () => {
     router.back();
-  }
+  };
 
   const MaxAi = () => {
     setWarnOpen(false);
-  }
+  };
 
-  const handleUseAI = () => {
+  const handleUseAI = async () => {
     if (aiUsageCount >= 3) {
       setWarnOpen(true);
-
-    }
-    else {
+    } else {
       setIsAiOpen(true);
-      setTimeout(() => {
-        setIsAiOpen(false);
-        setIsCompleteOpen(true);
-        setAiUsageCount(prev => prev + 1);
-      }, 5000);
-    }
 
-  }
+      try {
+ 
+        const result = await refetch({ count: ballots.length, title });
+
+        const aiOptions = result.data?.optionGenerator?.generateOptions?.options || [];
+        if (aiOptions.length > 0) {
+          setBallots(aiOptions);
+        }
+
+        setTimeout(() => {
+          setIsAiOpen(false);
+          setIsCompleteOpen(true);
+          setAiUsageCount(prev => prev + 1);
+        }, 3000);
+      } catch (err) {
+        console.error("AI 옵션 생성 실패:", err);
+        setIsAiOpen(false);
+      }
+    }
+  };
+
   return (
     <OptionsLayout>
-
       <Header
         LeftItem={
           <img
@@ -80,25 +94,12 @@ export default
       />
 
       <OptionsSection>
-        <OptionItemWrapper onClick={() => setIsOpen(true)}>
-          <OptionContent>
-            <OptionHeaderRow>
-              <OptionTitleText>투표 종료 조건</OptionTitleText>
-            </OptionHeaderRow>
-
-            <OptionActionRow>
-              <OptionSubtitleText>투표 종료 조건 설정하기</OptionSubtitleText>
-              <img src="/svg/Nexts.svg" alt="next" width={20} height={20} />
-            </OptionActionRow>
-          </OptionContent>
-        </OptionItemWrapper>
 
         <OptionItemWrapper onClick={() => setIsOpenModal(true)}>
           <OptionContent>
             <OptionHeaderRow>
               <OptionTitleText>선지 작성하기</OptionTitleText>
             </OptionHeaderRow>
-
             <OptionActionRow>
               <OptionSubtitleText>AI 자동 선지 추천 기능 사용하기</OptionSubtitleText>
               <img src="/svg/Nexts.svg" alt="next" width={20} height={20} />
@@ -112,25 +113,49 @@ export default
           setIsOpen={setIsOpenModal}
           icon="exclamation"
           title="AI 선지 추천 기능 사용하기"
-          subtitle={`투포를 제작할 때 선지 작성에 어려움을 겪는 경우\n이 기능을 사용하여 AI가 선지를 작성하도록 할 수 있습니다.`}
+          subtitle={`투표를 제작할 때 선지 작성에 어려움을 겪는 경우\n이 기능을 사용하여 AI가 선지를 작성하도록 할 수 있습니다.`}
           primaryButtonText={`사용하기 ${aiUsageCount}/3`}
           secondaryButtonText="뒤로가기"
           onPrimaryClick={() => handleUseAI()}
           onSecondaryClick={() => setIsOpenModal(false)}
         />
 
-
-        {isAiOpen && <AILoadingModal title="AI가 선지를 작성하는 중..." des="AI가 선지를 작성하는데 약 1분정도의 시간이 소요됩니다." />}
-        {isCompleteOpen && <CompleteVote isOpen={isCompleteOpen} setIsOpen={setIsCompleteOpen} text1="AI가 선지 작성을" text2="했어요!" text3="완료" subtext="선지가 마음에 들지 않는다면 
-          최대 2회까지 선지를 재생성을 할 수 있습니다." img="/svg/Completevote.svg" onfunciton={CompleteAi} />}
-        {isWarnOpen && <CompleteVote isOpen={isWarnOpen} setIsOpen={setWarnOpen} text1={`오늘은 더 이상 AI 선지추천\n기능을`} text2="할 수 없어요" text3="이용" subtext={`AI 선지 추천 기능은 하루에 3번만 사용할 수 있고,\n사용 기능 횟수는 매일밤 12시에 초기화 돼요.`}
-          img="/svg/Bad.svg" onfunciton={MaxAi} />}
+        {isAiOpen && (
+          <AILoadingModal
+            title="AI가 선지를 작성하는 중..."
+            des="AI가 선지를 작성하는데 약 1분정도의 시간이 소요됩니다."
+          />
+        )}
+        {isCompleteOpen && (
+          <CompleteVote
+            isOpen={isCompleteOpen}
+            setIsOpen={setIsCompleteOpen}
+            text1="AI가 선지 작성을"
+            text2="했어요!"
+            text3="완료"
+            subtext="선지가 마음에 들지 않는다면 최대 2회까지 선지를 재생성을 할 수 있습니다."
+            img="/svg/Completevote.svg"
+            onfunciton={CompleteAi}
+          />
+        )}
+        {isWarnOpen && (
+          <CompleteVote
+            isOpen={isWarnOpen}
+            setIsOpen={setWarnOpen}
+            text1={`오늘은 더 이상 AI 선지추천\n기능을`}
+            text2="할 수 없어요"
+            text3="이용"
+            subtext={`AI 선지 추천 기능은 하루에 3번만 사용할 수 있고,\n사용 기능 횟수는 매일밤 12시에 초기화 돼요.`}
+            img="/svg/Bad.svg"
+            onfunciton={MaxAi}
+          />
+        )}
       </OptionsSection>
-
     </OptionsLayout>
   );
 }
 
+// styled-components 동일
 const OptionsLayout = styled.div`
   max-width: 600px;
   width : 100%;
@@ -190,4 +215,3 @@ const OptionSubtitleText = styled.p`
   font-weight : 600;
   cursor : pointer;
 `
-

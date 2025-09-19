@@ -7,94 +7,215 @@ import color from "@/packages/design-system/src/color";
 import NavigationBar from "@/components/common/NavigationBar";
 import VoteMakeButton from "@/components/Vote/VoteMakeButton";
 import VoteBlock from "@/components/Vote/VoteBlock";
+import VoteSort from "@/components/Modal/VoteSort";
+import { useState } from "react";
 import { useVotes } from "@/hooks/useVote";
 
+const categories = ['전체', '학교생활', '기숙사', '유머'];
+
 const VotePage = () => {
-    const { votes, loading, error } = useVotes();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
+  const [activeIdx, setActiveIdx] = useState(0);
 
+  const { votes, loading, error, refetch } = useVotes();
+
+  const handleOptionClick = () => setIsModalOpen(true);
+
+  let filteredVotes =
+    activeIdx === 0 ? votes : votes.filter((vote) => vote.category === categories[activeIdx]);
+
+  // 이미 참여한 투표는 숨김
+  filteredVotes = filteredVotes.filter((vote) => !vote.hasVoted);
+
+  // 정렬
+  filteredVotes = [...filteredVotes].sort((a, b) => {
+    switch (sortStandard) {
+      case "투표 제작일 기준": {
+        // finishedAt 기준에서 7일 빼서 제작일처럼 사용하던 기존 로직 유지
+        const dateA = new Date(a.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
+        const dateB = new Date(b.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
+        return dateB - dateA;
+      }
+      case "투표 종료일 기준":
+        return new Date(a.finishedAt).getTime() - new Date(b.finishedAt).getTime();
+      case "투표 참여율 기준": {
+        const sumA = a.options?.reduce((s, o) => s + (o.responseCount || 0), 0) || 1;
+        const sumB = b.options?.reduce((s, o) => s + (o.responseCount || 0), 0) || 1;
+        const participationA = a.totalResponses / sumA;
+        const participationB = b.totalResponses / sumB;
+        return participationB - participationA;
+      }
+      default:
+        return 0;
+    }
+  });
+
+  if (loading) {
     return (
-        <VotePageLayout>
-            <Header 
-                LeftItem={
-                    <img src="/svg/Logo.svg" width={50} height={50} alt="Logo" />
-                } 
-                RightItem={<HeaderItemsBox type={"main"}/>}
-                types={"default"} 
-            />
-            <VoteButton>
-                <VoteMakeButton />
-            </VoteButton>
-            
-            <VoteContent>
-                {loading ? (
-                    <LoadingMessage>투표를 불러오는 중...</LoadingMessage>
-                ) : error ? (
-                    <ErrorMessage>투표를 불러오는데 문제가 발생했습니다</ErrorMessage>
-                ) : votes.length === 0 ? (
-                    <EmptyMessage>등록된 투표가 없습니다</EmptyMessage>
-                ) : (
-                    votes.map((vote) => (
-                        <VoteBlock key={vote.id} vote={vote} />
-                    ))
-                )}
-            </VoteContent>
+      <VoteLayout>
+        <Header
+          LeftItem={<img src="/svg/Logo.svg" width={50} height={50} alt="Logo" />}
+          RightItem={<HeaderItemsBox type={"main"} />}
+          types={"default"}
+          onOptionClick={handleOptionClick}
+          activeIdx={activeIdx}
+          setActiveIdx={setActiveIdx}
+        />
+        <LoadingContainer>
+          <LoadingText>투표 목록을 불러오는 중...</LoadingText>
+        </LoadingContainer>
+        <NavigationBar />
+      </VoteLayout>
+    );
+  }
 
-            <NavigationBar />
-        </VotePageLayout>
-    )
-}
+  if (error) {
+    return (
+      <VoteLayout>
+        <Header
+          LeftItem={<img src="/svg/Logo.svg" width={50} height={50} alt="Logo" />}
+          RightItem={<HeaderItemsBox type={"main"} />}
+          types={"default"}
+          onOptionClick={handleOptionClick}
+          activeIdx={activeIdx}
+          setActiveIdx={setActiveIdx}
+        />
+        <ErrorContainer>
+          <ErrorText>투표 목록을 불러오는데 실패했습니다.</ErrorText>
+          <RetryButton onClick={() => refetch()}>다시 시도</RetryButton>
+        </ErrorContainer>
+        <VoteMakeButtonWrapper>
+          <VoteMakeButton />
+        </VoteMakeButtonWrapper>
+        <NavigationBar />
+      </VoteLayout>
+    );
+  }
+
+  return (
+    <VoteLayout>
+      <Header
+        LeftItem={<img src="/svg/Logo.svg" width={50} height={50} alt="Logo" />}
+        RightItem={<HeaderItemsBox type={"main"} />}
+        types={"default"}
+        onOptionClick={handleOptionClick}
+        activeIdx={activeIdx}
+        setActiveIdx={setActiveIdx}
+      />
+
+      <VoteListSection>
+        {filteredVotes.length === 0 ? (
+          <EmptyContainer>
+            <EmptyText>해당 카테고리의 투표가 없습니다.</EmptyText>
+          </EmptyContainer>
+        ) : (
+          filteredVotes.map((vote) => <VoteBlock key={vote.id} vote={vote} />)
+        )}
+      </VoteListSection>
+
+      <VoteMakeButtonWrapper>
+        <VoteMakeButton />
+      </VoteMakeButtonWrapper>
+
+      <NavigationBar />
+
+      <VoteSort
+        sortstandard={sortStandard}
+        setsortstandard={setSortStandard}
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+      />
+    </VoteLayout>
+  );
+};
 
 export default VotePage;
 
-const VotePageLayout = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 600px;
-    width: 100%;
-    min-height: 100vh;
-    background-color: ${color.white};
-    margin: 0 auto;
-`
+const VoteMakeButtonWrapper = styled.div`
+  max-width: 600px;
+  width: 100%;
+  position: fixed;
+  bottom: 70px;
+  display: flex;
+  justify-content: end;
+  padding: 0px 24px;
+  z-index: 1000;
+`;
 
-const VoteButton = styled.div`
-    max-width: 600px;
-    width: 100%;
-    position: fixed;
-    bottom: 70px;
-    display: flex;
-    justify-content: end;
-    padding: 0px 24px;
-    z-index: 1000;
-`
+const VoteListSection = styled.div`
+  margin-top: 100px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 100px;
+`;
 
-const VoteContent = styled.div`
-    padding: 100px 0 80px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 90%;
-    gap: 16px;
-`
+const VoteLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: ${color.white};
+`;
 
-const LoadingMessage = styled.div`
-    color: ${color.gray500};
-    font-size: 16px;
-    margin-top: 40px;
-    text-align: center;
-`
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100%;
+`;
 
-const ErrorMessage = styled.div`
-    color: ${color.accent};
-    font-size: 16px;
-    margin-top: 40px;
-    text-align: center;
-`
+const LoadingText = styled.p`
+  font-size: 16px;
+  color: ${color.gray600};
+`;
 
-const EmptyMessage = styled.div`
-    color: ${color.gray500};
-    font-size: 16px;
-    margin-top: 40px;
-    text-align: center;
-`
+const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 100%;
+  gap: 16px;
+`;
+
+const ErrorText = styled.p`
+  font-size: 16px;
+  color: #ff0000ff;
+  text-align: center;
+`;
+
+const RetryButton = styled.button`
+  padding: 8px 16px;
+  background-color: ${color.primary};
+  color: ${color.white};
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const EmptyContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  margin-top: 130px;
+`;
+
+const EmptyText = styled.p`
+  font-size: 16px;
+  color: ${color.gray500};
+  text-align: center;
+`;

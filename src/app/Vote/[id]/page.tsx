@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from "react";
 import styled from "@emotion/styled";
@@ -7,31 +7,46 @@ import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import VoteOption from "@/components/Vote/VoteOption";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation"
+import { useRouter, usePathname, useParams } from "next/navigation";
+import { useVoteById, useVoteResponse } from "@/hooks/useVote";
 
 const DoVote = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
-  const voteOptions = [
-    { label: 'A', text: '선지선지1' },
-    { label: 'B', text: '선지선지1' },
-    { label: 'C', text: '선지선지1' },
-    { label: 'D', text: '선지선지1' },
-    { label: 'E', text: '선지선지' }
-  ];
-
+  const params = useParams();
+  const id = params.id as string;
 
   const router = useRouter();
   const path = usePathname();
-  const handleVoteSubmit = () => {
+
+  const labels = ['A','B','C','D','E'];
+
+  const { vote, loading, error } = useVoteById(id);
+  const { createResponse, loading: responseLoading } = useVoteResponse();
+
+  const handleVoteSubmit = async () => {
     if (!selectedOption) {
-      alert('선택지를 선택해주세요.');
+      alert("선택지를 선택해주세요.");
+      return;
+    }if (!vote) {
       return;
     }
-    router.push(`${path}/tailvote`)
+    
 
+    try {
+      await createResponse({
+        voteId: vote.id,
+        optionId: selectedOption,
+      });
+      router.push(`${path}/tailvote`);
+    } catch (err) {
+      console.error(err);
+      alert("투표 참여 중 오류가 발생했습니다.");
+    }
   };
+
+  if (loading) return <p>투표 정보를 불러오는 중...</p>;
+  if (error) return <p>투표 정보 불러오기 실패: {error.message}</p>;
+  if (!vote) return <p>투표를 찾을 수 없습니다.</p>;
 
   return (
     <DoVoteLayout>
@@ -41,51 +56,54 @@ const DoVote = () => {
             src="/svg/Back.svg"
             width={20}
             height={50}
-            onClick={() => { router.back() }}
+            onClick={() => router.back()}
           />
         }
-        RightItem={
-          <HeaderItemsBox
-            type={'reportvote'}
-          />
-        }
+        RightItem={<HeaderItemsBox type={"reportvote"} />}
         types="Nones"
       />
+
       <DoVoteContainer>
         <ContentWrapper>
           <TextWrapper>
             <Title>투표하기</Title>
-            <Question>투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문</Question>
-            <Description>부적절한 투표는 위에 있는 신고버튼을 이용해 신고해주세요</Description>
+            <Question>{vote.title}</Question>
+            <Description>
+              부적절한 투표는 위에 있는 신고버튼을 이용해 신고해주세요
+            </Description>
           </TextWrapper>
 
           <OptionsWrapper>
-            {voteOptions.map((option) => (
+            {vote?.options?.map((option: any ,idx: number) => (
               <VoteOption
-                key={option.label}
-                label={option.label}
-                text={option.text}
-                isSelected={selectedOption === option.label}
+                key={option.id}
+                label={labels[idx] ?? ''}
+                text={option.content}
+                isSelected={selectedOption === option.id}
                 onClick={() =>
-                  setSelectedOption(prev =>
-                    prev === option.label ? null : option.label
+                  setSelectedOption((prev) =>
+                    prev === option.id ? null : option.id
                   )
                 }
               />
             ))}
           </OptionsWrapper>
 
-          <SubmitButton onClick={handleVoteSubmit} disabled={!selectedOption}>
-            투표 완료하기
+          <SubmitButton
+            onClick={handleVoteSubmit}
+            disabled={!selectedOption || responseLoading}
+          >
+            {responseLoading ? "투표 중..." : "투표 완료하기"}
           </SubmitButton>
         </ContentWrapper>
       </DoVoteContainer>
     </DoVoteLayout>
   );
-}
+};
 
 export default DoVote;
 
+// styled-components (기존과 동일)
 const DoVoteLayout = styled.div`
   max-width: 600px;
   width: 100%;
@@ -146,15 +164,17 @@ const SubmitButton = styled.button<{ disabled: boolean }>`
   padding: 20px;
   border-radius: 30px;
   border: none;
-  background-color: ${props => props.disabled ? '#D1D5DB' : `${color.primary}`};
+  background-color: ${(props) =>
+    props.disabled ? "#D1D5DB" : `${color.primary}`};
   color: ${color.white};
   font-size: 20px;
   font-weight: 600;
-  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   transition: background-color 0.2s ease;
   margin-top: 60px;
 
   &:hover {
-    background-color: ${props => props.disabled ? '#D1D5DB' : `${color.primary}`};
+    background-color: ${(props) =>
+      props.disabled ? "#D1D5DB" : `${color.primary}`};
   }
 `;

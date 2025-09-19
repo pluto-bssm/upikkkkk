@@ -12,40 +12,74 @@ import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import MakeCancel from "@/components/Modal/MakeCancel";
 import LoadingModal from "@/components/Modal/LoadingModal";
+import Complete from "@/components/Modal/Complete";
+import { useSearchSimilarGuides } from "@/hooks/useGuides";
+import { useGuideStore } from "@/app/stores/useGuideStore";
+import { z } from "zod";
+import Filter from "badwords-ko";
+
+const filter = new Filter();
 
 export default function BallotEditPage() {
+  const cleanTextSchema = z.string().refine((val) => !filter.isProfane(val), {
+    message: "욕설이 포함되어 있습니다."
+  });
+
   const lis = ["A", "B", "C", "D", "E"];
   const maxPossibleBallots = lis.length;
   const router = useRouter();
+  const path = usePathname();
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenSubmitModal, setIsOpenSubmitModal] = useState(false);
   const [LikeguideModal, setLikeguideModal] = useState(false);
+  const [isProfaneModal, setIsProfaneModal] = useState(false);
 
   const { title, setTitle, ballots, setBallots } = useVoteStore();
-  const path = usePathname();
+  const { setSimilarGuides } = useGuideStore();
 
-  const handleSubmit = () => {
+  const { refetch } = useSearchSimilarGuides(undefined);
 
+  const CloseModal = () =>{
+    setIsProfaneModal(false);
+  }
 
+  const handleSubmit = async () => {
+  const allInputs = [title, ...ballots];
+  const hasProfane = allInputs.some((text) => filter.isProfane(text));
 
-    setIsOpenSubmitModal(true);
+  setIsOpenSubmitModal(true);
 
-
+  if (hasProfane) {
     setTimeout(() => {
       setIsOpenSubmitModal(false);
-      setLikeguideModal(true);
+      setIsProfaneModal(true);
     }, 1000);
+    return;
+  }
 
+  try {
+    const result = await refetch({ title });
+    const similarGuides = result.data?.keywordGuide?.searchSimilarByTitle || [];
 
+    if (similarGuides.length > 0) {
+      setSimilarGuides(similarGuides);
+      setLikeguideModal(true);
+    } else {
+      setLikeguideModal(false);
+    }
+  } catch (err) {
+    console.error("유사 가이드 검색 실패:", err);
+    setLikeguideModal(false);
+    router.push(`${path}/nextstep`);
+  } finally {
+    setIsOpenSubmitModal(false);
     setTimeout(() => {
       setLikeguideModal(false);
-    }, 4000);
-    setTimeout(() => {
       router.push(`${path}/likeguide`);
-    }, 3000);
-
-  };
+    }, 1000);
+  }
+};
 
 
   const handleAddBallot = () => {
@@ -66,12 +100,7 @@ export default function BallotEditPage() {
     <BallotEditLayout>
       <Header
         LeftItem={
-          <img
-            src="/svg/Back.svg"
-            width={20}
-            height={50}
-            onClick={() => router.back()}
-          />
+          <img src="/svg/Back.svg" width={20} height={50} onClick={() => router.back()} />
         }
         RightItem={
           <HeaderItemsBox
@@ -119,9 +148,9 @@ export default function BallotEditPage() {
         </ActionButtonWrapper>
       </BallotEditContainer>
 
-      {isOpenMakemodal ? (
+      {isOpenMakemodal && (
         <MakeCancel setIsOpen={setIsOpenMakemodal} isOpen={isOpenMakemodal} />
-      ) : null}
+      )}
 
       {isOpenSubmitModal && (
         <LoadingModal
@@ -136,6 +165,11 @@ export default function BallotEditPage() {
           des="유사한 내용의 가이드가 있다면, 기다리지 않아도 돼요."
         />
       )}
+
+      {isProfaneModal&& (
+        <Complete text1="투표 내용을" text2="해주세요" text3="수정" subtext="질문 또는 선지에 욕설/ 상대를 비방하는 내용이 담긴 투표는
+제작할 수 없어요. 내용을 수정해주세요." img="/svg/Bad.svg" onfunciton={CloseModal}/>
+      )}
     </BallotEditLayout>
   );
 }
@@ -145,12 +179,12 @@ const BallotEditLayout = styled.div`
   width : 100%;
   background-color : ${color.white};
   height : 100vh;
-`
+`;
 
 const ActionButtonWrapper = styled.div`
   width : 90%;
   margin-top: 50px;
-`
+`;
 
 const BallotEditContainer = styled.div`
   display: flex;
@@ -169,7 +203,7 @@ const BallotListForm = styled.div`
   width : 90%;
   gap : 10px;
   margin-top : 30px;
-`
+`;
 
 const AddBallotButton = styled.div`
   cursor: pointer;

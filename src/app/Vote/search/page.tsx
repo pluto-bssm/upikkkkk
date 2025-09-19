@@ -9,87 +9,82 @@ import VoteMakeButton from "@/components/Vote/VoteMakeButton";
 import NavigationBar from "@/components/common/NavigationBar";
 import React, { useState } from "react";
 import VoteBlock from "@/components/Vote/VoteBlock";
+import { useVotes } from "@/hooks/useVote"; 
+import { useEffect } from "react";
+import { Vote } from "@/types/api";
 import { useRouter } from "next/navigation";
 
-const voteData = [
-    {
-        id: 1,
-        title: "투표제목",
-        category: "학교생활",
-        views: "16",
-        state: "2025-08-31에 마감되는 투표"
-    },
-    {
-        id: 2,
-        title: "투표제목",
-        category: "기숙사",
-        views: "16",
-        state: "2025-08-31에 마감되는 투표"
-    },
-    {
-        id: 3,
-        title: "투표제목",
-        category: "유머",
-        views: "20",
-        state: "2025-08-31에 마감되는 투표"
-    }
-];
-
 const Search = () => {
-    const [searchitem, setsearchitem] = useState("");
+  const [searchitem, setSearchitem] = useState("");
+  const [filteredVotes, setFilteredVotes] = useState<Vote[]>([]); 
+  const { votes, loading, error, refetch } = useVotes();
 
-    const handleSearchChange = (value: string) => {
-        setsearchitem(value);
-    }
+  useEffect(() => {
+  if (searchitem.trim() === "") {
+    setFilteredVotes([]);
+  } else {
+    const currentDate = new Date();
+    const result = votes.filter(vote => {
+      const matchesSearch = vote.title.includes(searchitem);
+      const finishedDate = new Date(vote.finishedAt);
+      const isNotExpired = finishedDate > currentDate; // 마감일이 현재보다 미래인 경우만
+      
+      return matchesSearch && isNotExpired;
+    });
+    setFilteredVotes(result);
+  }
+}, [searchitem, votes]);
 
-    const filteredVotes = voteData.filter(vote =>
-        vote.title.includes(searchitem)
-    );
 
-    const showResults = searchitem.trim() !== "";
+  const handleSearchChange = (value: string) => {
+    setSearchitem(value);
+  };
 
-    const router = useRouter();
-    return (
-        <SearchLayout>
-            <Header
-                LeftItem={<img src="/svg/Back2.svg" width={20} height={50} onClick={() => { router.back() }} />}
-                CenterItem={<HeaderInputs placeholders="원하는 투표 검색하기" value={searchitem} onChange={handleSearchChange} />}
-                RightItem={<></>}
-                types=""
-            />
+  const showResults = searchitem.trim() !== "";
+  const router = useRouter();
 
-            <SearchSection>
-                {!showResults ? (
-                    <p>검색어를 입력해주세요</p>
-                ) : filteredVotes.length > 0 ? (
-                    <SearchResults>
-                        <ResultSection>
-                            <ResultText>결과 <ResultNumberText>{filteredVotes.length}</ResultNumberText></ResultText>
-                        </ResultSection>
-                        {filteredVotes.map(vote => (
-                            <VoteBlock
-                                key={vote.id}
-                                id={vote.id}
-                                title={vote.title}
-                                catogory={vote.category}
-                                views={vote.views}
-                                state={vote.state}
-                            />
-                        ))}
-                    </SearchResults>
-                ) : (
-                    <p>검색 결과가 없어요</p>
-                )}
-            </SearchSection>
+  return (
+    <SearchLayout>
+      <Header
+        LeftItem={<img src="/svg/Back2.svg" width={20} height={50} onClick={() => router.back()} />}
+        CenterItem={<HeaderInputs placeholders="원하는 투표 검색하기" value={searchitem} onChange={handleSearchChange} />}
+        RightItem={<></>}
+        types=""
+      />
 
-            <VoteButton>
-                <VoteMakeButton />
-            </VoteButton>
+      <SearchSection>
+        {loading ? (
+          <p>로딩 중...</p>
+        ) : error ? (
+          <p>검색 데이터를 불러오는 중 오류가 발생했어요</p>
+        ) : !showResults ? (
+          <p>검색어를 입력해주세요</p>
+        ) : filteredVotes.length > 0 ? (
+          <SearchResults>
+            <ResultSection>
+              <ResultText>결과 <ResultNumberText>{filteredVotes.length}</ResultNumberText></ResultText>
+            </ResultSection>
+            {filteredVotes.map(vote => (
+              <VoteBlock
+                    key={vote.id}
+                    vote={vote}
+                        />
+            ))}
+          </SearchResults>
+        ) : (
+          <p>검색 결과가 없어요</p>
+        )}
+      </SearchSection>
 
-            <NavigationBar />
-        </SearchLayout>
-    )
+      <VoteButton>
+        <VoteMakeButton />
+      </VoteButton>
+
+      <NavigationBar />
+    </SearchLayout>
+  )
 }
+
 const ResultText = styled.p`
     ${font.H1}
 `
@@ -113,7 +108,7 @@ const SearchSection = styled.div`
 `
 
 const SearchResults = styled.div`
-    width: 100%;
+    width: 90%;
     display: flex;
     justify-content : center;
     align-items : center;

@@ -1,0 +1,28 @@
+export const mockMainGuideData = [{
+    id:1,
+    title: "학교생활 잘하는 가이드",
+    thumnail: "/svg/School.svg",
+    category: "학교생활",
+    markcount: 30,
+    looked:123,
+    date: "2025-05-22",
+  },
+  {
+    id:2,
+    title: "급식 줄 서는 가이드",
+    thumnail: "/svg/Humors.svg",
+    category: "유머",
+    markcount: 11,
+    looked:12323,
+    date: "2025-01-22",
+  },
+  { 
+    id:3,
+    title: "방과후 가이드",
+    thumnail: "/svg/Domitorys.svg",
+    category: "기숙사",
+    markcount: 15,
+    looked:1323,
+    date: "2025-02-22",
+  },
+  ];

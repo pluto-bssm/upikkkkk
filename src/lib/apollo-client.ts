@@ -25,8 +25,6 @@ const httpLink = createHttpLink({
 const authLink = setContext((_, { headers }) => {
   const token = getAccessToken();
 
-  console.log('🔑 Apollo Client - 토큰 헤더 추가:', token ? '토큰 있음' : '토큰 없음');
-
   return {
     headers: {
       ...headers,

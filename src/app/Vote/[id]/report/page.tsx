@@ -1,15 +1,15 @@
 'use client'
 
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import ReportCancel from "@/components/Modal/ReportCancel";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import CompleteVote from "@/components/Modal/Complete";
-
+import { useReportQuestion } from '@/hooks/useQuestions';
 
 interface ReasonOptionProps {
     selected: boolean;
@@ -22,22 +22,30 @@ interface SubmitButtonProps {
 const Report = () => {
     const [selectedReason, setSelectedReason] = useState('');
     const [detailContent, setDetailContent] = useState('');
-
     const [modalopen, setmodalopen] = useState(false);
-
     const [completemodal, setCompleteModal] = useState(false);
+    const [questionId, setQuestionId] = useState<string>('');
 
     const router = useRouter();
+    const params = useParams();
+    const { reportQuestion, loading: reportLoading } = useReportQuestion();
+
+    // URL 경로에서 questionId 가져오기
+    useEffect(() => {
+        if (params.id) {
+            setQuestionId(params.id as string);
+        }
+    }, [params]);
 
     const CompleteReport = () => {
         router.replace("/")
     }
 
-
     const reportReasons = [
         '유해한 내용을 포함하고 있어요',
         '명예훼손 또는 저작권이 침해되었어요',
-        '욕설/생명경시/현혹 표현이 사용되었어요',
+        '욕설/생명경시/혐오 표현이 사용되었어요',
+        '질문이 아니에요',
         '기타'
     ];
 
@@ -45,7 +53,7 @@ const Report = () => {
         setSelectedReason(reason);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!selectedReason) {
             alert('신고 사유를 선택해주세요.');
             return;
@@ -54,7 +62,26 @@ const Report = () => {
             alert('상세 내용을 입력해주세요.');
             return;
         }
-        setCompleteModal(true);
+        if (!questionId) {
+            alert('질문 정보가 없습니다.');
+            return;
+        }
+
+        try {
+            const reportReason = `${selectedReason}\n\n상세 내용: ${detailContent.trim()}`;
+            
+            const result = await reportQuestion(questionId, reportReason);
+            
+            if (result) {
+                setCompleteModal(true);
+                console.log(result)
+            } else {
+                alert('신고 처리에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('신고 실패:', error);
+            alert('신고 처리 중 오류가 발생했습니다.');
+        }
     };
 
     return (
@@ -102,7 +129,7 @@ const Report = () => {
                             상세 내용 <RequiredMark>*</RequiredMark>
                         </SectionLabel>
                         <DetailTextarea
-                            placeholder="신고 사유에 대해서 더 자세히 설명해주세요"
+                            placeholder="신고 사유를 더 자세히 작성해주세요"
                             value={detailContent}
                             onChange={(e) => setDetailContent(e.target.value)}
                             maxLength={500}
@@ -112,16 +139,23 @@ const Report = () => {
 
                     <SubmitButton
                         onClick={handleSubmit}
-                        disabled={!selectedReason || !detailContent.trim()}
+                        disabled={!selectedReason || !detailContent.trim() || reportLoading}
                     >
-                        신고 접수하기
+                        {reportLoading ? '신고 처리 중...' : '신고 접수하기'}
                     </SubmitButton>
                 </ReportContentSection>
             </ReportContent>
 
             {modalopen && <ReportCancel isOpen={modalopen} setIsOpen={setmodalopen} />}
-            {completemodal && <CompleteVote text1="신고가" text2="으로 접수됐어요" text3="성공적" subtext="지속적으로 정상적인 투표를 신고하는 경우
-제재의 대상이 될 수 있어요" img="/svg/CompleteVote.svg" onfunciton={CompleteReport} />}
+            {completemodal && <CompleteVote 
+                text1="신고가" 
+                text2="으로 접수됐어요" 
+                text3="성공적" 
+                subtext="지속적으로 정상적인 게시글을 신고하는 경우
+제재의 대상이 될 수 있어요" 
+                img="/svg/CompleteVote.svg" 
+                onfunciton={CompleteReport} 
+            />}
         </ReportLayout>
     )
 }
@@ -146,7 +180,6 @@ const ReportContent = styled.div`
     flex-direction: column;
     gap: 20px;
     margin-top : 100px;
-
 `;
 
 const ReportSection = styled.div`

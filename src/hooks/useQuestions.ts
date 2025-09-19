@@ -1,112 +1,118 @@
 "use client";
 
-import { useQuery, useMutation } from '@apollo/client/react';
-import { GET_QUESTIONS, GET_QUESTION_BY_ID, GET_COMMENTS, CREATE_COMMENT } from '@/graphql/queries';
-import { Question, Comment, Page, CreateCommentInput } from '@/types/api';
+import { useQuery, useMutation } from "@apollo/client/react";
+import {
+  GET_QUESTIONS,        // feat#8: board.getAllPosts
+  GET_QUESTION_BY_ID,   // feat#8: board.getPostById(id)
+  GET_COMMENTS,         // feat#8: board.getComments(postId)
+  CREATE_COMMENT,       // feat#8: board.createComment(input)
+} from "@/graphql/queries";
+import type { Question, Comment, CreateCommentInput } from "@/types/api";
 
-interface QuestionsData {
+/* ========================= Questions ========================= */
+
+interface QuestionsDataFeat8 {
   board: {
-    getQuestionList: Page<Question>;
-  }
-}
-
-export function useQuestions(page: number = 0, size: number = 10) {
-  const { data, loading, error, refetch } = useQuery<QuestionsData>(
-    GET_QUESTIONS,
-    {
-      variables: { page, size },
-      fetchPolicy: 'network-only'
-    }
-  );
-
-  return {
-    questions: data?.board?.getQuestionList?.content || [],
-    totalElements: data?.board?.getQuestionList?.totalElements || 0,
-    totalPages: data?.board?.getQuestionList?.totalPages || 0,
-    loading,
-    error,
-    refetch
+    getAllPosts: Question[];
   };
 }
 
-interface QuestionByIdData {
+export function useQuestions() {
+  const { data, loading, error, refetch } = useQuery<QuestionsDataFeat8>(
+    GET_QUESTIONS,
+    { fetchPolicy: "network-only" }
+  );
+
+  return {
+    questions: data?.board?.getAllPosts || [],
+    loading,
+    error,
+    refetch,
+  };
+}
+
+/* ========================= Question Detail ========================= */
+
+interface QuestionByIdDataFeat8 {
   board: {
-    getQuestionDetail: Question;
-  }
+    getPostById: Question;
+  };
 }
 
 export function useQuestionById(id: string) {
-  const { data, loading, error } = useQuery<QuestionByIdData>(
+  const { data, loading, error, refetch } = useQuery<QuestionByIdDataFeat8>(
     GET_QUESTION_BY_ID,
     {
       variables: { id },
-      fetchPolicy: 'network-only'
+      fetchPolicy: "cache-first",
+      skip: !id,
     }
   );
 
   return {
-    question: data?.board?.getQuestionDetail,
-    loading,
-    error
-  };
-}
-
-interface CommentsData {
-  board: {
-    getComments: Page<Comment>;
-  }
-}
-
-export function useComments(boardId: string, page: number = 0, size: number = 10) {
-  const { data, loading, error, refetch } = useQuery<CommentsData>(
-    GET_COMMENTS,
-    {
-      variables: { boardId, page, size },
-      fetchPolicy: 'network-only'
-    }
-  );
-
-  return {
-    comments: data?.board?.getComments?.content || [],
-    totalElements: data?.board?.getComments?.totalElements || 0,
-    totalPages: data?.board?.getComments?.totalPages || 0,
+    question: data?.board?.getPostById,
     loading,
     error,
-    refetch
+    refetch,
   };
 }
 
-interface CreateCommentData {
+/* ========================= Comments ========================= */
+
+interface CommentsDataFeat8 {
+  board: {
+    getComments: Comment[];
+  };
+}
+
+export function useComments(postId: string) {
+  const { data, loading, error, refetch } = useQuery<CommentsDataFeat8>(
+    GET_COMMENTS,
+    {
+      variables: { postId },
+      fetchPolicy: "cache-first",
+      skip: !postId,
+    }
+  );
+
+  return {
+    comments: data?.board?.getComments || [],
+    loading,
+    error,
+    refetch,
+  };
+}
+
+/* ========================= Create Comment ========================= */
+
+interface CreateCommentDataFeat8 {
   board: {
     createComment: Comment;
-  }
+  };
 }
 
 export function useCreateComment() {
-  const [createCommentMutation, { loading, error }] = useMutation<CreateCommentData, { input: CreateCommentInput }>(
-    CREATE_COMMENT
-  );
+  const [createCommentMutation, { loading, error }] = useMutation<
+    CreateCommentDataFeat8,
+    { input: CreateCommentInput }
+  >(CREATE_COMMENT);
 
   const createComment = async (input: CreateCommentInput) => {
-    try {
-      const result = await createCommentMutation({
-        variables: { input },
-        refetchQueries: [
-          {
-            query: GET_COMMENTS,
-            variables: { boardId: input.boardId, page: 0, size: 10 }
-          }
-        ]
-      });
-      return result.data?.board?.createComment;
-    } catch (err) {
-      throw err;
-    }
+    const result = await createCommentMutation({
+      variables: { input },
+      refetchQueries: [
+        {
+          query: GET_COMMENTS,
+          variables: { postId: input.postId }, // feat#8: 페이지네이션 없음
+        },
+      ],
+    });
+    return result.data?.board?.createComment;
   };
 
   return {
     createComment,
     loading,
-    error
+    error,
   };
 }

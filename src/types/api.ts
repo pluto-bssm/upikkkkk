@@ -14,6 +14,7 @@ export interface VoteOption {
 }
 
 export interface Vote {
+
   id: string;
   title: string;
   category: string;
@@ -35,6 +36,22 @@ export interface Guide {
   like?: number;
   likeCount?: number;
   revoteCount?: number;
+}
+
+export interface SimilarGuide {
+  id: string;
+  title: string;
+  content: string;
+  category: string;
+  createdAt: string;
+  guideType: string;
+  keyword: string;
+  likeCount: number;
+  revoteCount: number;
+  userEmail?: string | null;
+  userId?: string | null;
+  userName?: string | null;
+  userProfileImage?: string | null;
 }
 
 export interface Comment {
@@ -61,6 +78,28 @@ export interface Question {
   isBookmarked?: boolean;
 }
 
+export interface QuestionsResponse {
+  data: {
+    board: {
+      getQuestionList: {
+        content: Question[];
+        totalElements: number;
+        totalPages: number;
+        __typename: string;
+      };
+      __typename: string;
+    };
+    __typename: string;
+  };
+}
+
+export interface UseQuestionsReturn {
+  questions: QuestionsResponse | null;
+  loading: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
 export interface Page<T> {
   content: T[];
   totalElements: number;
@@ -85,8 +124,7 @@ export interface AIQuota {
 export interface CreateVoteInput {
   title: string;
   category: string;
-  options: { content: string }[];
-  finishedAt: string;
+  options: string[];
 }
 
 export interface CreateVoteResponseInput {
