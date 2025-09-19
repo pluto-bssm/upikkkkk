@@ -9,40 +9,10 @@ import VoteMakeButton from "@/components/Vote/VoteMakeButton";
 import VoteBlock from "@/components/Vote/VoteBlock";
 import VoteSort from "@/components/Modal/VoteSort";
 import { useState } from "react";
-<<<<<<< HEAD
 import { useVotes } from "@/hooks/useVote";
 
 const categories = ['전체', '학교생활', '기숙사', '유머'];
-=======
-import { Vote } from "@/types/api";
 
-const voteData: Vote[] = [
-    {
-        id: "1",
-        title: "투표제목",
-        category: "학교생활",
-        totalResponses: 16,
-        finishedAt: "2025-08-31T23:59:59Z",
-        status: "ACTIVE"
-    },
-    {
-        id: "2",
-        title: "투표제목",
-        category: "기숙사",
-        totalResponses: 16,
-        finishedAt: "2025-08-31T23:59:59Z",
-        status: "ACTIVE"
-    },
-    {
-        id: "3",
-        title: "투표제목",
-        category: "유머",
-        totalResponses: 20,
-        finishedAt: "2025-08-31T23:59:59Z",
-        status: "ACTIVE"
-    }
-];
->>>>>>> main
 
 const VotePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,7 +87,7 @@ const VotePage = () => {
           <RetryButton onClick={() => refetch()}>다시 시도</RetryButton>
         </ErrorContainer>
 
-<<<<<<< HEAD
+
         <VoteMakeButtonWrapper>
           <VoteMakeButton />
         </VoteMakeButtonWrapper>
@@ -125,17 +95,6 @@ const VotePage = () => {
       </VoteLayout>
     );
   }
-=======
-            <VoteListSection>
-                {voteData.map((vote) => (
-                    <VoteBlock
-                        key={vote.id}
-                        vote={vote}
-                    />
-                ))}
-            </VoteListSection>
->>>>>>> main
-
   return (
     <VoteLayout>
       <Header
@@ -194,11 +153,10 @@ const VoteListSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding-bottom: 100px; /* NavigationBar 공간 확보 */
+  padding-bottom: 100px;
 `
 
 const VoteLayout = styled.div`
-<<<<<<< HEAD
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -265,13 +223,4 @@ const EmptyText = styled.p`
   color: ${color.gray500};
   text-align: center;
 `
-=======
-    display :flex;
-    flex-direction : column;
-    align-items : center;
-    max-width : 600px;
-    width : 100%;
-    min-height: 100vh;
-    background-color : ${color.white};
-`
->>>>>>> main
+

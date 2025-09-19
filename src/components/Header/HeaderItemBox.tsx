@@ -49,7 +49,7 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
         return (
           <>
             <img key="bell" src="svg/Bell.svg" alt="알림" width={24} height={24} />
-            <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24} />
+            <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24}  onClick={() => router.push(`${path}/search`)}/>
             <img key="user" src="svg/User.svg" alt="사용자" width={24} height={24} />
           </>
         );
@@ -103,8 +103,11 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
       case 'reportvote':
         return (
           <>
-            <img key="report" src="svg/Report.svg" alt="리포트" width={24} height={24} />
-            <img key="bookmark" src="svg/Bookmark.svg" alt="북마크" width={24} height={24} />
+            <img key="report" src="/svg/Report.svg" alt="리포트" width={24} height={24} onClick={() => {
+          // tailvote를 제거하고 report를 추가
+          const targetPath = path.replace('/tailvote', '') + '/report';
+          router.push(targetPath);
+        }}  />
           </>
         );
       

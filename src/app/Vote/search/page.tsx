@@ -20,15 +20,21 @@ const Search = () => {
   const { votes, loading, error, refetch } = useVotes();
 
   useEffect(() => {
-    if (searchitem.trim() === "") {
-      setFilteredVotes([]);
-    } else {
-      const result = votes.filter(vote =>
-        vote.title.includes(searchitem)
-      );
-      setFilteredVotes(result);
-    }
-  }, [searchitem]);
+  if (searchitem.trim() === "") {
+    setFilteredVotes([]);
+  } else {
+    const currentDate = new Date();
+    const result = votes.filter(vote => {
+      const matchesSearch = vote.title.includes(searchitem);
+      const finishedDate = new Date(vote.finishedAt);
+      const isNotExpired = finishedDate > currentDate; // 마감일이 현재보다 미래인 경우만
+      
+      return matchesSearch && isNotExpired;
+    });
+    setFilteredVotes(result);
+  }
+}, [searchitem, votes]);
+
 
   const handleSearchChange = (value: string) => {
     setSearchitem(value);

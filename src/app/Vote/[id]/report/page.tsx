@@ -104,7 +104,7 @@ const Report = () => {
             <ReportContent>
                 <ReportSection>
                     <SectionTitle>신고할 내용</SectionTitle>
-                    <PostTitle>게시판 글 신고하기</PostTitle>
+                    <PostTitle>투표 신고하기</PostTitle>
                 </ReportSection>
 
                 <ReportSection>
