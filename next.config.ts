@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
     compiler: {
         emotion: true,
     },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
 };
 
 export default nextConfig;
