@@ -22,7 +22,7 @@ export type HeaderType =
   | 'writeQuestion'
   | 'responseVote'
   | 'reports'
-
+  | 'Main'
   | 'reportguide'
   | 'reportQuestion'
 
@@ -45,6 +45,16 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
   const router = useRouter();
   const renderItems = () => {
     switch (type) {
+
+      case 'Main':
+        return (
+          <>
+            <img key="bell" src="svg/Bell.svg" alt="알림" width={24} height={24} />
+            <img key="user" src="svg/User.svg" alt="사용자" width={24} height={24} />
+          </>
+        );
+
+
       case 'main':
         return (
           <>
@@ -112,8 +122,8 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
       case 'bollot':
         return (
           <>
-           <img key="close" src="svg/Close.svg" alt="닫기" width={24} height={24} />
-           <img key="options" src="svg/Options.svg" alt="설정" width={24} height={24} />
+           <img key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} />
+           <img key="options" src="/svg/Options.svg" alt="설정" width={24} height={24} />
           </>
         ); 
 

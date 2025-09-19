@@ -9,8 +9,11 @@ import font from '@/packages/design-system/src/font'
 import RecoVote from '@/components/Main/RecoVote'
 import GuideComponent from '@/components/Main/GuideComponent'
 import VoteBlock from '@/components/Vote/VoteBlock'
+import { useVotes } from '@/hooks/useVote'
 
 const Main = () => {
+  const { votes, loading, error } = useVotes();
+
   return (
     <MainPageLayout>
       <Header LeftItem={
@@ -27,34 +30,36 @@ const Main = () => {
           <Book />
           <SectionTitle>인기 가이드</SectionTitle>
         </SectionHeader>
-        <GuideComponent/>
+        <GuideComponent sortstandard={'많이 저장한 가이드 기준'}/>
         <SectionHeader>
           <VoteMain />
           <SectionTitle>인기 투표</SectionTitle>
         </SectionHeader>
         <VoteListSection>
-          {[
-            { id: 1, title: '투표제목', category: '학교생활', views: '16', state: '2025-08-31에 마감되는 투표' },
-            { id: 2, title: '투표제목', category: '기숙사', views: '16', state: '2025-08-31에 마감되는 투표' },
-            { id: 3, title: '투표제목', category: '유머', views: '20', state: '2025-08-31에 마감되는 투표' }
-          ].map((vote) => (
-            <VoteItemWrapper key={vote.id}>
-              <VoteBlock
-                id={vote.id}
-                title={vote.title}
-                catogory={vote.category}
-                views={vote.views}
-                state={vote.state}
-                hrefBase={"/Vote"}
-              />
-            </VoteItemWrapper>
-          ))}
+          {loading ? (
+            <LoadingText>투표를 불러오는 중...</LoadingText>
+          ) : error ? (
+            <ErrorText>투표를 불러오는데 실패했습니다.</ErrorText>
+          ) : votes.length > 0 ? (
+             votes.slice(0, 3).map((vote) => (
+               <VoteItemWrapper key={vote.id}>
+                {votes.map((vote) => (
+                  <VoteBlock 
+                    key={vote.id} 
+                    vote={vote} 
+                  />
+                ))}
+               </VoteItemWrapper>
+             ))
+          ) : (
+            <NoDataText>등록된 투표가 없습니다.</NoDataText>
+          )}
         </VoteListSection>
         <SectionHeader>
           <Book />
           <SectionTitle>오늘의 가이드</SectionTitle>
         </SectionHeader>
-        <GuideComponent/>
+        <GuideComponent sortstandard={'가이드 제작일 빠른순'}/>
       <NavigationBar />
     </MainPageLayout>
   );
@@ -119,4 +124,28 @@ const VoteItemWrapper = styled.div`
   flex: 0 0 100%;
   width: 100%;
   scroll-snap-align: start;
+`;
+
+const LoadingText = styled.div`
+  color: ${color.gray500};
+  font-family: ${font.P1};
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+`;
+
+const ErrorText = styled.div`
+  color: ${color.accent};
+  font-family: ${font.P1};
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+`;
+
+const NoDataText = styled.div`
+  color: ${color.gray400};
+  font-family: ${font.P1};
+  text-align: center;
+  padding: 20px;
+  width: 100%;
 `;
