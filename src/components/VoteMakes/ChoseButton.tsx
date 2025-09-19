@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { useRouter } from "next/navigation";
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 export default function ChoseButton() {
 
@@ -12,7 +13,7 @@ export default function ChoseButton() {
   return (
     <ButtonDiv>
       <Button onClick={() => router.push(`${path}/bullots`)}>
-        <img src="svg/Plus.svg" alt="plus" />
+        <Image src="/svg/Plus.svg" alt="plus" width={24} height={24} />
         <p>투표 제작하기</p>
       </Button>
     </ButtonDiv>

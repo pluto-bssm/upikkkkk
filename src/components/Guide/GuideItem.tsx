@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import { Guide as GuideType } from "@/types/api";
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
 interface GuideItemProps {
   guide: GuideType;
@@ -25,7 +26,7 @@ const GuideItem = ({ guide }: GuideItemProps) => {
       </GuideContent>
       <GuideFooter>
         <GuideLikes>
-          <img src="/svg/Bookmark.svg" width={16} height={16} alt="좋아요" />
+          <Image src="/svg/Bookmark.svg" width={16} height={16} alt="좋아요" />
           <span>{guide.like || 0}</span>
         </GuideLikes>
         <GuideDate>

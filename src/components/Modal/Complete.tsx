@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useRouter } from 'next/navigation';
 import color from '@/packages/design-system/src/color';
 import font from '@/packages/design-system/src/font';
+import Image from 'next/image';
 
 type CompleteVoteProps = React.ComponentProps<typeof motion.div> & {
   isOpen?: boolean;
@@ -29,7 +30,7 @@ export default function CompleteVote({ setIsOpen, text1, text2, text3, subtext, 
         transition={{ type: "spring", duration: 0.3 }}
       >
         <IconWrapper>
-          <img src={img} />
+          <Image src={img || ''} alt="완료 아이콘" width={100} height={100} />
         </IconWrapper>
 
         <Text>

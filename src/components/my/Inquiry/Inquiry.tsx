@@ -4,6 +4,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import Image from 'next/image';
 
 type InquiryProps = {
   imgSrc?: string;
@@ -25,7 +26,7 @@ const Inquiry = ({
   return (
     <Card data-node-id="392:6229">
       <Thumb>
-        <img src={imgSrc} alt={title} />
+        <Image src={imgSrc} alt={title} width={64} height={64} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       </Thumb>
 
       <Body>

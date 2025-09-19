@@ -10,6 +10,7 @@ import RecoVote from '@/components/Main/RecoVote'
 import GuideComponent from '@/components/Main/GuideComponent'
 import VoteBlock from '@/components/Vote/VoteBlock'
 import { useVotes } from '@/hooks/useVote'
+import Image from 'next/image'
 
 const Main = () => {
   const { votes, loading, error } = useVotes();
@@ -17,8 +18,9 @@ const Main = () => {
   return (
     <MainPageLayout>
       <Header LeftItem={
-        <img
+        <Image
         src="/svg/Logo.svg"
+        alt="로고"
         width={50}
         height={50}
          />

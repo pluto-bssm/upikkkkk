@@ -8,6 +8,7 @@ import NavigationBar from "@/components/common/NavigationBar";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import VoteSort from "@/components/Modal/VoteSort";
+import Image from 'next/image';
 
 const Guide = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
@@ -20,11 +21,11 @@ const Guide = () => {
   return (
     <GuidePageLayout>
       <Header
-        LeftItem={<img src="/svg/Logo.svg" width={50} height={50} alt="Logo" />}
+        LeftItem={<Image src="/svg/Logo.svg" width={50} height={50} alt="Logo" />}
         RightItem={
           <div style={{ display: "flex", flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center" }}>
-            <img src="/svg/Bell.svg" alt="알림" width={24} height={24} />
-            <img
+            <Image src="/svg/Bell.svg" alt="알림" width={24} height={24} />
+            <Image
               src="/svg/Search.svg"
               alt="검색"
               width={24}
@@ -32,7 +33,7 @@ const Guide = () => {
               onClick={() => router.push("/guide/search")}
               style={{ cursor: "pointer" }}
             />
-            <img src="/svg/User.svg" alt="사용자" width={24} height={24} />
+            <Image src="/svg/User.svg" alt="사용자" width={24} height={24} />
           </div>
         }
         types="default"

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react';
+import Image from 'next/image';
 
 const Defaultnavs = ['전체', '학교생활', '기숙사', '유머'];
 const Questionnavs = ['전체', '인기'];
@@ -37,16 +38,18 @@ const HeaderNavigaionBar = ({ type, onOptionClick, activeIdx = 0, setActiveIdx }
                                         {nav}
                                     </NavItem>
                                     {idx < Defaultnavs.length - 1 && (
-                                        <img src="svg/Divider.svg" alt="Divider" width={2} height={20} key={`divider-${idx}`} />
+                                        <Image src="/svg/Divider.svg" alt="Divider" width={2} height={20} key={`divider-${idx}`} />
                                     )}
                                 </React.Fragment>
                             ))}
                         </Navs>
 
                         <OptionButton onClick={handleOptionClick}>
-                            <img
-                                src="svg/Navoption.svg"
+                            <Image
+                                src="/svg/Navoption.svg"
                                 alt="옵션"
+                                width={24}
+                                height={24}
                             />
                         </OptionButton>
                     </NavWrapper>
@@ -68,7 +71,7 @@ const HeaderNavigaionBar = ({ type, onOptionClick, activeIdx = 0, setActiveIdx }
                                     {nav}
                                 </NavItem>
                                 {idx < Questionnavs.length - 1 && (
-                                    <img src="svg/Divider.svg" alt="Divider" width={2} height={20} key={`divider-${idx}`} />
+                                    <Image src="/svg/Divider.svg" alt="Divider" width={2} height={20} key={`divider-${idx}`} />
                                 )}
                             </React.Fragment>
                         ))}

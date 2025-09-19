@@ -4,6 +4,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+import Image from 'next/image';
 
 const img = "/svg/placeholder.svg"
 
@@ -13,7 +14,7 @@ const ProfileInfo = (): React.ReactElement => {
       <StyledHeader data-node-id="316:3969">
         <div className="inner">
           <div className="title">계정 정보</div>
-          <img src={img} alt="frame" />
+          <Image src={img} alt="frame" width={24} height={24} />
         </div>
       </StyledHeader>
 

@@ -3,6 +3,7 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import Image from 'next/image';
 type Props = {
   title: string,
   catogory: string,
@@ -14,11 +15,11 @@ const GuideBlock = ({ title, catogory, count, id }: Props) => {
   const renderImage = () => {
     switch (catogory) {
       case "학교생활":
-        return <img src="/svg/School.svg" alt="food" width={35} height={35} />;
+        return <Image src="/svg/School.svg" alt="food" width={35} height={35} />;
       case "유머":
-        return <img src="/svg/Humors.svg" alt="travel" width={35} height={35} />;
+        return <Image src="/svg/Humors.svg" alt="travel" width={35} height={35} />;
       case "기숙사":
-        return <img src="/svg/Domitorys.svg" alt="tech" width={35} height={35} />;
+        return <Image src="/svg/Domitorys.svg" alt="tech" width={35} height={35} />;
       default:
         return null;
     }
@@ -38,7 +39,7 @@ const GuideBlock = ({ title, catogory, count, id }: Props) => {
             <Infomations>
               <Catogorys>{catogory}</Catogorys>
               <ViewBlock>
-                <img src="/svg/Bookmark.svg" height={12} width={12} />
+                <Image src="/svg/Bookmark.svg" height={12} width={12} alt="북마크" />
                 <Views> {count}</Views>
               </ViewBlock>
 

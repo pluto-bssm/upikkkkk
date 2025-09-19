@@ -10,6 +10,7 @@ import VoteBlock from "@/components/Vote/VoteBlock";
 import VoteSort from "@/components/Modal/VoteSort";
 import { useState } from "react";
 import { useVotes } from "@/hooks/useVote";
+import Image from 'next/image';
 
 const categories = ['전체', '학교생활', '기숙사', '유머'];
 
@@ -57,7 +58,7 @@ const VotePage = () => {
 
       <VoteLayout>
         <Header
-          LeftItem={<img src="/svg/Logo.svg" width={50} height={50} />}
+          LeftItem={<Image src="/svg/Logo.svg" alt="로고" width={50} height={50} />}
           RightItem={<HeaderItemsBox type={"main"} />}
           types={"default"}
           onOptionClick={handleOptionClick}
@@ -76,7 +77,7 @@ const VotePage = () => {
     return (
       <VoteLayout>
         <Header
-          LeftItem={<img src="/svg/Logo.svg" width={50} height={50} />}
+          LeftItem={<Image src="/svg/Logo.svg" alt="로고" width={50} height={50} />}
           RightItem={<HeaderItemsBox type={"main"} />}
           types={"default"}
           onOptionClick={handleOptionClick}
