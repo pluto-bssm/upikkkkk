@@ -135,7 +135,6 @@ const VotePage = () => {
 
 export default VotePage;
 
-// styled-components
 const VoteMakeButtonWrapper = styled.div`
   max-width : 600px;
   width : 100%;

@@ -113,7 +113,7 @@ export const SEARCH_SIMILAR_GUIDES = gql`
 
 // 질문 관련 쿼리
 export const GET_QUESTIONS = gql`
-  query GetQuestions($page: Int, $size: Int) {
+  query GetQuestions($page: Int!, $size: Int!) {
     board {
       getQuestionList(page: $page, size: $size) {
         content {

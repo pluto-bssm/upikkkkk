@@ -57,6 +57,7 @@ const HeaderNavigaionBar = ({ type, onOptionClick, activeIdx = 0, setActiveIdx }
             case "Question":
                 return (
                     <NavWrapper>
+                        <Navs>
                         {Questionnavs.map((nav, idx) => (
                             <React.Fragment key={nav}>
                                 <NavItem
@@ -70,6 +71,7 @@ const HeaderNavigaionBar = ({ type, onOptionClick, activeIdx = 0, setActiveIdx }
                                 )}
                             </React.Fragment>
                         ))}
+                        </Navs>
                     </NavWrapper>
                 );
 

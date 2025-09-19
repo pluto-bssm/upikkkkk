@@ -82,6 +82,31 @@ export interface Question {
   isBookmarked?: boolean;
 }
 
+// types/api.ts 파일 생성
+export interface QuestionsResponse {
+  data: {
+    board: {
+      getQuestionList: {
+        content: Question[];
+        totalElements: number;
+        totalPages: number;
+        __typename: string;
+      };
+      __typename: string;
+    };
+    __typename: string;
+  };
+}
+
+export interface UseQuestionsReturn {
+  questions: QuestionsResponse | null;
+  loading: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
+
+
 // 페이지네이션 관련 타입
 export interface Page<T> {
   content: T[];
