@@ -1,9 +1,16 @@
 "use client";
 import React from "react";
 import styled from "@emotion/styled";
-import { mockRevoteeData } from "@/mock/RevoteComponent";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
+
+const revoteReasons = [
+  "유해한 내용을 포함하고 있어요",
+  "명예훼손 또는 저작권이 침해되었어요", 
+  "욕설/생명경시/혐오 표현이 사용되었어요",
+  "가이드의 내용이 현재 학교생활과 달라요",
+  "기타"
+];
 
 interface RevoteComponentProps {
   selectedIndex: number | null;
@@ -15,7 +22,7 @@ const RevoteComponent = ({ selectedIndex, onSelect }: RevoteComponentProps) => {
   return (
     <Section>
         <SectionBody>
-        {mockRevoteeData.map((text, idx) => (
+        {revoteReasons.map((text, idx) => (
             <GuideCard key={idx}
             isSelected={selectedIndex === idx}
             onClick={()=>onSelect(idx)}>

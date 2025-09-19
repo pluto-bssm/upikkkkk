@@ -253,10 +253,43 @@ query GetAllGuides($page: Int, $size: Int, $sortBy: String) {
 }
 `;
 
+export const GUIDE_BY_ID = gql`
+query GuideById($id: ID!) {
+  guideById(id: $id) {
+    category
+    content
+    createdAt
+    guideType
+    id
+    likeCount
+    revoteCount
+    title
+    voteId
+  }
+}
+`;
+
+//재투표 뮤테이션
+export const REVOTE_MUTATION = gql`
+mutation RevoteMutation($input: CreateRevoteRequestInput!) {
+  revote {
+    createRevoteRequest(input: $input) {
+      createdAt
+      detailReason
+      guideId
+      id
+      reason
+      userId
+    }
+  }
+}
+`;
+
+//오늘의 투표
 export const TODAY_VOTE = gql`
 query TodayVote {
   vote {
-    getTodayVote {
+    getLeastPopularOpenVote {
       category
       finishedAt
       hasVoted
@@ -271,22 +304,6 @@ query TodayVote {
       title
       totalResponses
     }
-  }
-}
-`;
-
-export const GUIDE_BY_ID = gql`
-query GuideById($id: ID!) {
-  guideById(id: $id) {
-    category
-    content
-    createdAt
-    guideType
-    id
-    likeCount
-    revoteCount
-    title
-    voteId
   }
 }
 `;

@@ -16,16 +16,13 @@ type GuideComponentProps = {
 const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가이드 제작일 기준', limit }: GuideComponentProps) => {
   const router = useRouter();
   
-  // API에서 가이드 데이터 가져오기
   const { guides, loading, error } = useAllGuides(0, 20, sortstandard === '가이드 제작일 기준' ? 'createdAt' : 'like');
   
-  // 카테고리 필터링
   const filteredGuides = guides.filter((guide) => {
     if (category === '전체') return true;
     return guide.category === category;
   });
 
-  // 정렬
   const sorted = [...filteredGuides].sort((a, b) => {
     if (sortstandard === '가이드 제작일 기준') {
       const timeA = new Date(a.createdAt).getTime();
@@ -43,10 +40,8 @@ const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가
     return 0;
   });
 
-  // 제한 적용
   const limitedGuides = typeof limit === 'number' ? sorted.slice(0, limit) : sorted;
 
-  // 카테고리별 썸네일 이미지 가져오기
   const getThumbnailByCategory = (category: string) => {
     switch (category) {
       case '유머':
@@ -60,7 +55,6 @@ const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가
     }
   };
 
-  // 로딩 상태 처리
   if (loading) {
     return (
       <Root>
@@ -69,7 +63,6 @@ const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가
     );
   }
 
-  // 에러 상태 처리
   if (error) {
     return (
       <Root>

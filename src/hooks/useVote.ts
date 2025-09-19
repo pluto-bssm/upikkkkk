@@ -10,7 +10,6 @@ interface VotesData {
   }
 }
 
-// 모든 투표 목록을 가져오는 훅
 export function useVotes() {
   const { data, loading, error, refetch } = useQuery<VotesData>(GET_VOTES, {
     fetchPolicy: 'network-only'
@@ -30,7 +29,6 @@ interface VoteByIdData {
   }
 }
 
-// 특정 ID의 투표 정보를 가져오는 훅
 export function useVoteById(id: string) {
   const { data, loading, error } = useQuery<VoteByIdData>(GET_VOTE_BY_ID, {
     variables: { id },
@@ -50,7 +48,6 @@ interface CreateVoteData {
   }
 }
 
-// 투표 생성 훅
 export function useCreateVote() {
   const [createVoteMutation, { loading, error }] = useMutation<CreateVoteData, { input: CreateVoteInput }>(CREATE_VOTE);
   
@@ -88,7 +85,6 @@ interface VoteResponseData {
   }
 }
 
-// 투표 참여 훅
 export function useVoteResponse() {
   const [createResponseMutation, { loading, error }] = useMutation<VoteResponseData, { input: CreateVoteResponseInput }>(CREATE_VOTE_RESPONSE);
   
@@ -120,7 +116,7 @@ export function useVoteResponse() {
 
 interface TodayVoteData {
   vote: {
-    getTodayVote: Vote
+    getLeastPopularOpenVote: Vote
   }
 }
 
@@ -130,7 +126,7 @@ export function useTodayVote() {
   });
 
   return {
-    vote: data?.vote?.getTodayVote,
+    vote: data?.vote?.getLeastPopularOpenVote,
     loading,
     error,
     refetch

@@ -8,22 +8,83 @@ import VoteOption from "@/components/Vote/VoteOption";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation"
+import { usePathname } from "next/navigation";
+import { useVoteById } from "@/hooks/useVote";
 
-const DoVote = () => {
+const DoVote = ({ params }: { params: { id: string } }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
-  const voteOptions = [
-    { label: 'A', text: '선지선지1' },
-    { label: 'B', text: '선지선지1' },
-    { label: 'C', text: '선지선지1' },
-    { label: 'D', text: '선지선지1' },
-    { label: 'E', text: '선지선지' }
-  ];
-
+  const { vote, loading, error } = useVoteById(params.id);
 
   const router = useRouter();
   const path = usePathname();
+
+  if (loading) {
+    return (
+      <DoVoteLayout>
+        <Header
+          LeftItem={
+            <img
+              src="/svg/Back.svg"
+              width={20}
+              height={50}
+              onClick={() => { router.back() }}
+            />
+          }
+          RightItem={
+            <HeaderItemsBox
+              type={'reportvote'}
+            />
+          }
+          types="Nones"
+        />
+        <DoVoteContainer>
+          <ContentWrapper>
+            <TextWrapper>
+              <Title>투표하기</Title>
+              <Question>투표를 불러오는 중...</Question>
+            </TextWrapper>
+          </ContentWrapper>
+        </DoVoteContainer>
+      </DoVoteLayout>
+    );
+  }
+
+  if (error || !vote) {
+    return (
+      <DoVoteLayout>
+        <Header
+          LeftItem={
+            <img
+              src="/svg/Back.svg"
+              width={20}
+              height={50}
+              onClick={() => { router.back() }}
+            />
+          }
+          RightItem={
+            <HeaderItemsBox
+              type={'reportvote'}
+            />
+          }
+          types="Nones"
+        />
+        <DoVoteContainer>
+          <ContentWrapper>
+            <TextWrapper>
+              <Title>투표하기</Title>
+              <Question>투표를 불러올 수 없습니다.</Question>
+            </TextWrapper>
+          </ContentWrapper>
+        </DoVoteContainer>
+      </DoVoteLayout>
+    );
+  }
+
+  const voteOptions = vote.options?.map((option, index) => ({
+    label: String.fromCharCode(65 + index), // A, B, C, D, E...
+    text: option.content,
+    id: option.id
+  })) || [];
   const handleVoteSubmit = () => {
     if (!selectedOption) {
       alert('선택지를 선택해주세요.');
@@ -55,7 +116,7 @@ const DoVote = () => {
         <ContentWrapper>
           <TextWrapper>
             <Title>투표하기</Title>
-            <Question>투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문투표 질문</Question>
+            <Question>{vote.title}</Question>
             <Description>부적절한 투표는 위에 있는 신고버튼을 이용해 신고해주세요</Description>
           </TextWrapper>
 

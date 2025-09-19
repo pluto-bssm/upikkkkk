@@ -20,23 +20,20 @@ const MoreGuide = () => {
   
   const { guide, loading, error } = useMoreGuide(guideId || '');
   
-  // 디버깅을 위한 콘솔 로그
   console.log('MoreGuide Debug:', {
     guideId,
     guide,
     loading,
     error
   });
-  
-  // 가이드에 연결된 투표 데이터 가져오기
+
   const { data: voteData, loading: voteLoading, error: voteError } = useQuery<{ vote: { getVoteById: Vote } }>(GET_VOTE_BY_ID, {
     variables: { id: guide?.voteId || '' },
-    skip: !guide?.voteId,
+    skip: !guide?.voteId || !guide,
   });
   
   const vote = voteData?.vote?.getVoteById;
   
-  // 투표 데이터 디버깅
   console.log('Vote Debug:', {
     voteId: guide?.voteId,
     vote,
@@ -69,7 +66,6 @@ const MoreGuide = () => {
     );
   }
 
-  // 에러 상태 처리
   if (error || !guide) {
     return (
       <GuidePageLayout>
@@ -103,7 +99,6 @@ const MoreGuide = () => {
     );
   }
 
-  // 투표 데이터를 차트 데이터로 변환
   const chartData = vote?.options?.map((option: any, index: number) => ({
     label: option.content,
     value: option.responseCount || 0,
@@ -113,6 +108,13 @@ const MoreGuide = () => {
     { label: "옵션 2", value: 40, color: '#FF6D38' },
     { label: "옵션 3", value: 30, color: '#FFBE3C' }
   ];
+
+  console.log('Chart Data Debug:', {
+    vote,
+    voteOptions: vote?.options,
+    chartData,
+    isUsingDefaultData: !vote?.options || vote.options.length === 0
+  });
 
   return (
     <GuidePageLayout>
@@ -146,7 +148,13 @@ const MoreGuide = () => {
           <VoteTitle>{vote?.title || '투표 제목'}</VoteTitle>
           <Participate>전체 참여자 수 {vote?.totalResponses || guide.revoteCount || 0}명</Participate>
           <ChartArea>
-            <ChartComponent data={chartData} />
+            {voteLoading ? (
+              <div style={{ textAlign: 'center', padding: '20px' }}>
+                투표 데이터를 불러오는 중...
+              </div>
+            ) : (
+              <ChartComponent data={chartData} />
+            )}
           </ChartArea>
         </VoteSection>
       </VoteResult>

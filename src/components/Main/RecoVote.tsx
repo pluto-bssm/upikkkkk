@@ -4,9 +4,17 @@ import styled from '@emotion/styled'
 import color from '@/packages/design-system/src/color'
 import font from '@/packages/design-system/src/font'
 import { useTodayVote } from '@/hooks/useVote'
+import { useRouter } from 'next/navigation'
 
 const RecoVote = () => {
   const { vote, loading, error } = useTodayVote();
+  const router = useRouter();
+
+  const handleVoteClick = () => {
+    if (vote?.id) {
+      router.push(`/Vote/${vote.id}`);
+    }
+  };
 
   if (loading) {
     return (
@@ -53,7 +61,7 @@ const RecoVote = () => {
   const secondOption = options[1] || firstOption;
 
   return (
-    <RecoCard>
+    <RecoCard onClick={handleVoteClick}>
         <RecoInner>
           <RecoHeader>
             <RecoSubTitle>오늘의 추천 투표는?</RecoSubTitle>

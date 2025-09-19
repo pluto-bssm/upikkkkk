@@ -11,67 +11,97 @@ import RevoteComponent from "@/components/Guide/RevoteComponent";
 import DetailContent from "@/components/Guide/DetailContent";
 import React, { useState, useMemo } from "react";
 import RevoteSend from "@/components/Button/RevoteSend";
-import RevoteRequest from "@/modal/revoteRequest";
-import RevoteCancel from "@/modal/revoteCancel";
 import apolloClient from "@/lib/apollo-client";
-import { CREATE_REVOTE } from "@/graphql/queries";
-import { mockRevoteeData } from "@/mock/RevoteComponent";
+import { REVOTE_MUTATION } from "@/graphql/queries";
+
+const revoteReasons = [
+  "가이드 내용이 부정확해요",
+  "가이드가 이해하기 어려워요", 
+  "더 나은 대안이 있어요",
+  "가이드가 현실적이지 않아요",
+  "기타"
+];
 
 const Revote = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const guideId = searchParams.get("guideId");
+  const guideId = searchParams.get("guideId") || 
+                  searchParams.get("id") || 
+                  searchParams.get("guide") ||
+                  searchParams.get("gid");
+  
+  console.log('Revote Debug:', {
+    guideId,
+    searchParams: Object.fromEntries(searchParams.entries()),
+    currentUrl: typeof window !== 'undefined' ? window.location.href : 'SSR',
+    allParams: {
+      guideId: searchParams.get("guideId"),
+      id: searchParams.get("id"),
+      guide: searchParams.get("guide"),
+      gid: searchParams.get("gid")
+    }
+  });
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedReasonIndex, setSelectedReasonIndex] = useState<number | null>(null);
   const [detailText, setDetailText] = useState("");
-  const [showRequestModal, setShowRequestModal] = useState(false);
-  const [showCancelModal, setShowCancelModal] = useState(false);
   const isSendEnabled = useMemo(() => selectedReasonIndex !== null && detailText.trim().length > 0, [selectedReasonIndex, detailText]);
 
   const handleSendClick = () => {
     if (isSendEnabled) {
-      setShowRequestModal(true);
+      handleRequestConfirm();
     }
   };
 
   const handleRequestConfirm = async () => {
     if (!guideId) {
-      alert("가이드 ID가 없어요. 이전 페이지로 돌아가 다시 시도해 주세요.");
+      console.error('Guide ID is missing:', { 
+        guideId, 
+        searchParams: Object.fromEntries(searchParams.entries()),
+        allParams: {
+          guideId: searchParams.get("guideId"),
+          id: searchParams.get("id"),
+          guide: searchParams.get("guide"),
+          gid: searchParams.get("gid")
+        }
+      });
+      console.log("가이드 ID를 찾을 수 없습니다. URL을 확인해주세요.");
       return;
     }
 
-    const reasonText = selectedReasonIndex !== null ? mockRevoteeData[selectedReasonIndex] : "";
+    const reasonText = selectedReasonIndex !== null ? revoteReasons[selectedReasonIndex] : "";
 
     try {
       setIsSubmitting(true);
-      await apolloClient.mutate({
-        mutation: CREATE_REVOTE,
+      console.log('Sending revote request:', {
+        guideId,
+        reason: reasonText,
+        detailReason: detailText,
+      });
+      
+      const result = await apolloClient.mutate({
+        mutation: REVOTE_MUTATION,
         variables: {
           input: {
-            guideId,
+            guideId: String(guideId),
             reason: reasonText,
             detailReason: detailText,
           },
         },
       });
-      setShowRequestModal(false);
-      setShowCancelModal(true);
-    } catch (_) {
-      alert("요청 중 오류가 발생했어요. 잠시 후 다시 시도해 주세요.");
+      
+      console.log('Revote request result:', result);
+      console.log("재투표 신청이 완료되었습니다.");
+      router.push('/MoreGuide');
+    } catch (error) {
+      console.error('Revote request error:', error);
+      const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류';
+      console.error(`요청 중 오류가 발생했어요: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleCancelConfirm = () => {
-    setShowCancelModal(false);
-    router.push('/MoreGuide');
-  };
-
-  const handleCancelCancel = () => {
-    setShowCancelModal(false);
-    router.push('/Revote');
-  };
 
   return (
     <GuidePageLayout>
@@ -115,18 +145,6 @@ const Revote = () => {
       </RevoteLayout>
 
     <NavigationBar />
-    {showRequestModal && (
-      <RevoteRequest 
-        onClose={() => setShowRequestModal(false)} 
-        onConfirm={handleRequestConfirm}
-      />
-    )}
-    {showCancelModal && (
-      <RevoteCancel 
-        onClose={() => setShowCancelModal(false)}
-        onConfirm={handleCancelConfirm}
-      />
-    )}
     </GuidePageLayout>
   );
 }
