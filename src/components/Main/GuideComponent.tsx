@@ -5,18 +5,25 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 import { useRouter } from "next/navigation";
 import { useAllGuides } from "@/hooks/useGuides";
+import { Guide } from "@/types/api";
 
 type GuideComponentProps = {
   gap?: string;
   category?: string;
   sortstandard?: string;
   limit?: number;
+  guides?: Guide[]; 
 };
 
-const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가이드 제작일 기준', limit }: GuideComponentProps) => {
+const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가이드 제작일 기준', limit, guides: externalGuides }: GuideComponentProps) => {
   const router = useRouter();
   
-  const { guides, loading, error } = useAllGuides(0, 20, sortstandard === '가이드 제작일 기준' ? 'createdAt' : 'like');
+  const { guides: apiGuides, loading, error } = useAllGuides(0, 20, sortstandard === '가이드 제작일 기준' ? 'createdAt' : 'like');
+  const guides = externalGuides || apiGuides;
+  
+  // externalGuides가 있으면 로딩과 에러 상태를 무시
+  const isLoading = externalGuides ? false : loading;
+  const hasError = externalGuides ? false : !!error;
   
   const filteredGuides = guides.filter((guide) => {
     if (category === '전체') return true;
@@ -55,7 +62,7 @@ const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Root>
         <LoadingText>가이드를 불러오는 중...</LoadingText>
@@ -63,7 +70,7 @@ const GuideComponent = ({ gap = "10px", category = '전체', sortstandard = '가
     );
   }
 
-  if (error) {
+  if (hasError) {
     return (
       <Root>
         <ErrorText>가이드를 불러오는데 실패했습니다.</ErrorText>

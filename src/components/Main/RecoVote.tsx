@@ -11,8 +11,12 @@ const RecoVote = () => {
   const router = useRouter();
 
   const handleVoteClick = () => {
+    console.log('RecoVote clicked:', { vote, voteId: vote?.id });
     if (vote?.id) {
-      router.push(`/Vote/${vote.id}`);
+      console.log('Navigating to:', `/vote/${vote.id}`);
+      router.push(`/vote/${vote.id}`);
+    } else {
+      console.log('No vote ID available');
     }
   };
 
