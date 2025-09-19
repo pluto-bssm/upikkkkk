@@ -13,7 +13,6 @@ import { useVotes } from "@/hooks/useVote";
 
 const categories = ['전체', '학교생활', '기숙사', '유머'];
 
-
 const VotePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sortStandard, setSortStandard] = useState("투표 제작일 기준");
@@ -21,32 +20,32 @@ const VotePage = () => {
 
   const { votes, loading, error, refetch } = useVotes();
 
-  const handleOptionClick = () => {
-    setIsModalOpen(true);
-  };
+  const handleOptionClick = () => setIsModalOpen(true);
 
-  
   let filteredVotes =
-    activeIdx === 0
-      ? votes
-      : votes.filter((vote) => vote.category === categories[activeIdx]);
+    activeIdx === 0 ? votes : votes.filter((vote) => vote.category === categories[activeIdx]);
 
+  // 이미 참여한 투표는 숨김
+  filteredVotes = filteredVotes.filter((vote) => !vote.hasVoted);
 
-  filteredVotes = filteredVotes.filter(vote => !vote.hasVoted);
-
-
+  // 정렬
   filteredVotes = [...filteredVotes].sort((a, b) => {
     switch (sortStandard) {
-      case "투표 제작일 기준":
+      case "투표 제작일 기준": {
+        // finishedAt 기준에서 7일 빼서 제작일처럼 사용하던 기존 로직 유지
         const dateA = new Date(a.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
         const dateB = new Date(b.finishedAt).getTime() - 7 * 24 * 60 * 60 * 1000;
         return dateB - dateA;
+      }
       case "투표 종료일 기준":
         return new Date(a.finishedAt).getTime() - new Date(b.finishedAt).getTime();
-      case "투표 참여율 기준":
-        const participationA = a.totalResponses / (a.options?.reduce((sum, o) => sum + (o.responseCount || 0), 0) || 1);
-        const participationB = b.totalResponses / (b.options?.reduce((sum, o) => sum + (o.responseCount || 0), 0) || 1);
+      case "투표 참여율 기준": {
+        const sumA = a.options?.reduce((s, o) => s + (o.responseCount || 0), 0) || 1;
+        const sumB = b.options?.reduce((s, o) => s + (o.responseCount || 0), 0) || 1;
+        const participationA = a.totalResponses / sumA;
+        const participationB = b.totalResponses / sumB;
         return participationB - participationA;
+      }
       default:
         return 0;
     }
@@ -56,7 +55,7 @@ const VotePage = () => {
     return (
       <VoteLayout>
         <Header
-          LeftItem={<img src="/svg/Logo.svg" width={50} height={50} />}
+          LeftItem={<img src="/svg/Logo.svg" width={50} height={50} alt="Logo" />}
           RightItem={<HeaderItemsBox type={"main"} />}
           types={"default"}
           onOptionClick={handleOptionClick}
@@ -75,7 +74,7 @@ const VotePage = () => {
     return (
       <VoteLayout>
         <Header
-          LeftItem={<img src="/svg/Logo.svg" width={50} height={50} />}
+          LeftItem={<img src="/svg/Logo.svg" width={50} height={50} alt="Logo" />}
           RightItem={<HeaderItemsBox type={"main"} />}
           types={"default"}
           onOptionClick={handleOptionClick}
@@ -86,8 +85,6 @@ const VotePage = () => {
           <ErrorText>투표 목록을 불러오는데 실패했습니다.</ErrorText>
           <RetryButton onClick={() => refetch()}>다시 시도</RetryButton>
         </ErrorContainer>
-
-
         <VoteMakeButtonWrapper>
           <VoteMakeButton />
         </VoteMakeButtonWrapper>
@@ -95,10 +92,11 @@ const VotePage = () => {
       </VoteLayout>
     );
   }
+
   return (
     <VoteLayout>
       <Header
-        LeftItem={<img src="/svg/Logo.svg" width={50} height={50} />}
+        LeftItem={<img src="/svg/Logo.svg" width={50} height={50} alt="Logo" />}
         RightItem={<HeaderItemsBox type={"main"} />}
         types={"default"}
         onOptionClick={handleOptionClick}
@@ -112,9 +110,7 @@ const VotePage = () => {
             <EmptyText>해당 카테고리의 투표가 없습니다.</EmptyText>
           </EmptyContainer>
         ) : (
-          filteredVotes.map((vote) => (
-            <VoteBlock key={vote.id} vote={vote} />
-          ))
+          filteredVotes.map((vote) => <VoteBlock key={vote.id} vote={vote} />)
         )}
       </VoteListSection>
 
@@ -137,15 +133,15 @@ const VotePage = () => {
 export default VotePage;
 
 const VoteMakeButtonWrapper = styled.div`
-  max-width : 600px;
-  width : 100%;
-  position : fixed;
-  bottom : 70px;
-  display : flex;
-  justify-content : end;
-  padding : 0px 24px;
-  z-index : 1000;
-`
+  max-width: 600px;
+  width: 100%;
+  position: fixed;
+  bottom: 70px;
+  display: flex;
+  justify-content: end;
+  padding: 0px 24px;
+  z-index: 1000;
+`;
 
 const VoteListSection = styled.div`
   margin-top: 100px;
@@ -154,7 +150,7 @@ const VoteListSection = styled.div`
   flex-direction: column;
   gap: 16px;
   padding-bottom: 100px;
-`
+`;
 
 const VoteLayout = styled.div`
   display: flex;
@@ -164,7 +160,7 @@ const VoteLayout = styled.div`
   width: 100%;
   min-height: 100vh;
   background-color: ${color.white};
-`
+`;
 
 const LoadingContainer = styled.div`
   display: flex;
@@ -172,12 +168,12 @@ const LoadingContainer = styled.div`
   align-items: center;
   height: 100px;
   width: 100%;
-`
+`;
 
 const LoadingText = styled.p`
   font-size: 16px;
   color: ${color.gray600};
-`
+`;
 
 const ErrorContainer = styled.div`
   display: flex;
@@ -187,13 +183,13 @@ const ErrorContainer = styled.div`
   height: 200px;
   width: 100%;
   gap: 16px;
-`
+`;
 
 const ErrorText = styled.p`
   font-size: 16px;
   color: #ff0000ff;
   text-align: center;
-`
+`;
 
 const RetryButton = styled.button`
   padding: 8px 16px;
@@ -203,11 +199,11 @@ const RetryButton = styled.button`
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
-  
+
   &:hover {
     opacity: 0.8;
   }
-`
+`;
 
 const EmptyContainer = styled.div`
   display: flex;
@@ -215,12 +211,11 @@ const EmptyContainer = styled.div`
   align-items: center;
   height: 100vh;
   width: 100%;
-  margin-top : 130px;
-`
+  margin-top: 130px;
+`;
 
 const EmptyText = styled.p`
   font-size: 16px;
   color: ${color.gray500};
   text-align: center;
-`
-
+`;

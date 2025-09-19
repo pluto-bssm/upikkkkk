@@ -29,7 +29,6 @@ const SuccessModal = ({ visible, message = "완료되었습니다.", onClose }: 
 
 export default SuccessModal;
 
-/* Styled */
 const Backdrop = styled.div`
   position: fixed;
   inset: 0;

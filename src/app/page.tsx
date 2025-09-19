@@ -9,6 +9,6 @@ export default function Home() {
   useEffect(() => {
     router.push('/Main')
   }, [router])
-  
-  return null;
+
+  return null
 }

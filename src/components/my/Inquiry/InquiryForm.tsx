@@ -8,6 +8,8 @@ import TypeButton from "./TypeButton";
 import InputField from "./InputField";
 import Checkbox from "./Checkbox";
 import SuccessModal from "./SuccessModal/SuccessModal";
+import { useInquiry } from "@/hooks/useInquiry";
+import { useUser } from "@/hooks/useUser";
 
 const InquiryForm = () => {
   const [inquiryType, setInquiryType] = useState<string>("");
@@ -16,20 +18,44 @@ const InquiryForm = () => {
   const [email, setEmail] = useState<string>("");
   const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string>("");
+  
+  const { submitInquiry, loading } = useInquiry();
+  const { user } = useUser();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!inquiryType || !title || !content || !email || !agreeTerms) {
+      setSubmitError("모든 필수 항목을 입력해주세요.");
       return;
     }
 
-    console.log({
-      inquiryType,
-      title,
-      content,
-      email,
-      agreeTerms
-    });
-    setShowSuccessModal(true);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setSubmitError("올바른 이메일 형식을 입력해주세요.");
+      return;
+    }
+
+    setSubmitError("");
+    
+    try {
+      const result = await submitInquiry({
+        title,
+        content,
+        type: inquiryType,
+        email,
+        userName: user?.name || '익명 사용자'
+      });
+      
+      if (result.success) {
+        setShowSuccessModal(true);
+        handleReset();
+      } else {
+        throw new Error(result.error || '문의 전송에 실패했습니다.');
+      }
+      
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : '문의 전송에 실패했습니다.');
+    }
   };
 
   const handleReset = () => {
@@ -118,9 +144,20 @@ const InquiryForm = () => {
           </TermsDescription>
         </AgreementSection>
 
+        {submitError && (
+          <ErrorMessage>{submitError}</ErrorMessage>
+        )}
+
         <ButtonGroup>
-          <ResetButton onClick={handleReset}>다시 작성</ResetButton>
-          <SubmitButton onClick={handleSubmit}>제출하기</SubmitButton>
+          <ResetButton onClick={handleReset} disabled={loading}>
+            다시 작성
+          </ResetButton>
+          <SubmitButton 
+            onClick={handleSubmit} 
+            disabled={loading || !inquiryType || !title || !content || !email || !agreeTerms}
+          >
+            {loading ? "전송 중..." : "제출하기"}
+          </SubmitButton>
         </ButtonGroup>
       </Container>
 
@@ -217,10 +254,27 @@ const SubmitButton = styled.button`
   font-weight: 700;
   cursor: pointer;
   
-  &:hover {
+  &:disabled {
+    background-color: ${color.gray300};
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  &:hover:not(:disabled) {
     background-color: ${color.primary};
     opacity: 0.9;
   }
+`;
+
+const ErrorMessage = styled.div`
+  background-color: #fee;
+  border: 1px solid #fcc;
+  color: #d33;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  ${font.H4}
+  text-align: center;
 `;
 
 export default InquiryForm;

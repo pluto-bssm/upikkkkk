@@ -8,22 +8,26 @@ import { getAccessToken } from './auth-utils';
 const errorLink = onError(({ graphQLErrors, networkError, operation, forward }: any) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }: any) => {
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      );
     });
   }
   
   if (networkError) {
+    
     if (networkError.statusCode === 500) {
     }
   }
 });
 
 const httpLink = createHttpLink({
-  uri: 'https://realupik-659794985248.asia-northeast3.run.app/graphql',
+  uri: 'https:
   credentials: 'include'
 });
 
 const authLink = setContext((_, { headers }) => {
   const token = getAccessToken();
+
 
   return {
     headers: {
@@ -43,6 +47,9 @@ const apolloClient = new ApolloClient({
     },
     query: {
       fetchPolicy: 'network-only',
+      errorPolicy: 'all',
+    },
+    mutate: {
       errorPolicy: 'all',
     },
   },

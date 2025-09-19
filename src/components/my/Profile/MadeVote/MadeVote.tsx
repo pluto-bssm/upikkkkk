@@ -14,7 +14,7 @@ type MadeVoteProps = {
 };
 
 const MadeVote = ({
-  imgSrc = "http://localhost:3845/assets/placeholder-383-7250.svg",
+  imgSrc = "/svg/placeholder.svg",
   title = "타이틀 텍스트",
   subtitle = "보조 설명 또는 서브타이틀",
   author = "작성자명",

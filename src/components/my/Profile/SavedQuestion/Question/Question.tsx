@@ -6,7 +6,7 @@ import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
 
 const bookmarkImg =
-  "http://localhost:3845/assets/2a44e45d7be5132d081bed4da59d5c9d7b1889ca.svg";
+  "/svg/placeholder.svg"
 
 type Q = {
   title: string;
@@ -17,15 +17,6 @@ type Q = {
 };
 
 const Question = (): React.ReactElement => {
-  const q: Q = {
-    title:
-      "게시판 질문제목 게시판 질문제목 게시판 질문제목 게시판 질문제목 게시판",
-    author: "박댁댁",
-    date: "2025-08-31 21:31",
-    bookmark: 16,
-    comments: 10,
-  };
-
   return (
     <Wrap>
       <Row>

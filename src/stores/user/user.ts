@@ -14,12 +14,7 @@ interface UserStore {
 }
 
 export const useUser = create<UserStore>((set) => ({
-  user: {
-    name: '박가은',
-    studentId: '2108',
-    status: '재학생',
-    email: 'fake_bsm_email@bssm.hs.kr',
-  },
+  user: null,
   setUser: (user) => set({ user }),
   clearUser: () => set({ user: null }),
 }));

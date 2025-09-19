@@ -29,6 +29,4 @@ const MyPageHeader = ({ title, backLink, headerType }: MyPageHeaderProps) => {
   );
 };
 
-// 스타일 컴포넌트들은 Header 컴포넌트로 대체되었으므로 제거
-
 export default MyPageHeader;
