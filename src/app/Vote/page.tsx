@@ -275,5 +275,6 @@ const EmptyContainer = styled.div`
 const EmptyText = styled.p`
   font-size: 16px;
   color: ${color.gray500};
+  
   text-align: center;
 `
