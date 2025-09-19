@@ -51,25 +51,10 @@ const MyQuestionHistoryPage = () => {
           </BackButton>
         }
         CenterItem={<Title>질문 게시판 글 작성 내역</Title>}
-        types="saveGuide"
+        types="revote"
       />
       
       <ContentContainer>
-        <TabContainer>
-          <TabButton 
-            isActive={activeTab === 'all'} 
-            onClick={() => setActiveTab('all')}
-          >
-            전체
-          </TabButton>
-          <TabButton 
-            isActive={activeTab === 'recent'} 
-            onClick={() => setActiveTab('recent')}
-          >
-            최신
-          </TabButton>
-        </TabContainer>
-        
         <QuestionList questions={questions.map(q => ({
           id: q.id,
           title: q.title,

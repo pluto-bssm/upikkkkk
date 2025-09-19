@@ -50,7 +50,7 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
           <>
             <img key="bell" src="svg/Bell.svg" alt="알림" width={24} height={24} />
             <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24}  onClick={() => router.push(`${path}/search`)}/>
-            <img key="user" src="svg/User.svg" alt="사용자" width={24} height={24} />
+            <img key="user" src="svg/User.svg" alt="사용자" width={24} height={24} onClick={() => router.push(`http://localhost:3000/my`)}/>
           </>
         );
       
