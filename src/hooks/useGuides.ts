@@ -9,8 +9,9 @@ import {
   TOGGLE_BOOKMARK,
   GET_GUIDES_BY_CATEGORY,
   GET_ALL_GUIDES,
+  SEARCH_SIMILAR_GUIDES
 } from "@/graphql/queries";
-import type { Guide } from "@/types/api";
+import type { Guide,SimilarGuide } from "@/types/api";
 
 /* ====================== Types ====================== */
 
@@ -37,6 +38,37 @@ interface AllGuidesPaginationData {
   };
 }
 
+
+interface SearchSimilarGuidesData {
+  keywordGuide: {
+    searchSimilarByTitle: SimilarGuide[];
+  };
+}
+
+  interface SearchSimilarGuidesVars {
+    title: string;
+  }
+
+export function useSearchSimilarGuides(title?: string) {
+  const { data, loading, error, refetch } = useQuery<SearchSimilarGuidesData, SearchSimilarGuidesVars>(
+    SEARCH_SIMILAR_GUIDES,
+    {
+      variables: { title: title || "" },
+      skip: !title, 
+      fetchPolicy: "network-only",
+    }
+
+    
+  );
+
+  return {
+    data,
+    loading,
+    error,
+    refetch,
+  };
+}
+
 // 모든 가이드를 가져오는 훅 (페이지네이션 지원)
 export function useAllGuides(page: number = 0, size: number = 10, sortBy?: string) {
   const { data, loading, error, refetch } = useQuery<AllGuidesPaginationData>(
@@ -46,6 +78,7 @@ export function useAllGuides(page: number = 0, size: number = 10, sortBy?: strin
       fetchPolicy: 'network-only'
     }
   );
+  
 
   return {
     guides: data?.getAllGuides?.content || [],

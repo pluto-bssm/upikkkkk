@@ -3,25 +3,75 @@
 import styled from '@emotion/styled'
 import color from '@/packages/design-system/src/color'
 import font from '@/packages/design-system/src/font'
+import { useTodayVote } from '@/hooks/useVote'
+import { useRouter } from 'next/navigation'
 
 const RecoVote = () => {
-  const mockVoteData = {
-    question: "이중에 뭐가 더 싫어?",
-    options: ["최병준쌤과 헬스 4시간", "규봉쌤과 수학 4시간"]
+  const { vote, loading, error } = useTodayVote();
+  const router = useRouter();
+
+  const handleVoteClick = () => {
+    if (vote?.id) {
+      router.push(`/Vote/${vote.id}`);
+    }
   };
 
-  return (
-    <RecoCard>
+  if (loading) {
+    return (
+      <RecoCard>
         <RecoInner>
           <RecoHeader>
             <RecoSubTitle>오늘의 추천 투표는?</RecoSubTitle>
             <RecoTitleRow>
-              <RecoTitle>{mockVoteData.question}</RecoTitle>
+              <RecoTitle>투표를 불러오는 중...</RecoTitle>
             </RecoTitleRow>
             <RecoOptionsRow>
-              <RecoOption>{mockVoteData.options[0]}</RecoOption>
+              <RecoOption>로딩 중...</RecoOption>
               <RecoVS>VS</RecoVS>
-              <RecoOption>{mockVoteData.options[1]}</RecoOption>
+              <RecoOption>로딩 중...</RecoOption>
+            </RecoOptionsRow>
+          </RecoHeader>
+        </RecoInner>
+      </RecoCard>
+    );
+  }
+
+  if (error || !vote) {
+    return (
+      <RecoCard>
+        <RecoInner>
+          <RecoHeader>
+            <RecoSubTitle>오늘의 추천 투표는?</RecoSubTitle>
+            <RecoTitleRow>
+              <RecoTitle>투표를 불러올 수 없습니다.</RecoTitle>
+            </RecoTitleRow>
+            <RecoOptionsRow>
+              <RecoOption>오류 발생</RecoOption>
+              <RecoVS>VS</RecoVS>
+              <RecoOption>오류 발생</RecoOption>
+            </RecoOptionsRow>
+          </RecoHeader>
+        </RecoInner>
+      </RecoCard>
+    );
+  }
+
+  const options = vote.options || [];
+  const firstOption = options[0] || { content: "옵션 없음", id: "", responseCount: 0, percentage: 0 };
+  const secondOption = options[1] || firstOption;
+
+  return (
+    <RecoCard onClick={handleVoteClick}>
+        <RecoInner>
+          <RecoHeader>
+            <RecoSubTitle>오늘의 추천 투표는?</RecoSubTitle>
+            <RecoTitleRow>
+              <RecoTitle>{vote.title}</RecoTitle>
+            </RecoTitleRow>
+            <RecoOptionsRow>
+              <RecoOption>{firstOption.content}</RecoOption>
+              <RecoVS>VS</RecoVS>
+              <RecoOption>{secondOption.content}</RecoOption>
             </RecoOptionsRow>
           </RecoHeader>
         </RecoInner>

@@ -49,8 +49,8 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
       case 'Main':
         return (
           <>
-            <img key="bell" src="svg/Bell.svg" alt="알림" width={24} height={24} />
-            <img key="user" src="svg/User.svg" alt="사용자" width={24} height={24} />
+            <img key="bell" src="/svg/Bell.svg" alt="알림" width={24} height={24} />
+            <img key="user" src="/svg/User.svg" alt="사용자" width={24} height={24} />
           </>
         );
 
@@ -58,20 +58,20 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
       case 'main':
         return (
           <>
-            <img key="bell" src="svg/Bell.svg" alt="알림" width={24} height={24} />
-            <img key="search" src="svg/Search.svg" alt="검색" width={24} height={24} />
-            <img key="user" src="svg/User.svg" alt="사용자" width={24} height={24} />
+            <img key="bell" src="/svg/Bell.svg" alt="알림" width={24} height={24} />
+            <img key="search" src="/svg/Search.svg" alt="검색" width={24} height={24} onClick={() => {router.push(`${path}/search`)}} />
+            <img key="user" src="/svg/User.svg" alt="사용자" width={24} height={24} onClick={() => {router.push(`/my`)}}  />
           </>
         );
       
       case 'guide':
         return (
-          <img key="bookmark" src="svg/Bookmark.svg" alt="북마크" width={24} height={24} />
+          <img key="bookmark" src="/svg/Bookmark.svg" alt="북마크" width={24} height={24} />
         );  
 
       case 'votemake':
         return (
-          <img key="close" src="svg/Close.svg" alt="닫기" width={24} height={24} />
+          <img key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} />
         );
       
       case 'searchguide':
@@ -110,19 +110,36 @@ const HeaderItemsBox = ({ type, setIsOpen, isopen ,  questionId, isBookmarked = 
         );
         //<img key="bookmark" src={isBookmarked ? "/svg/Bookmarkcheck.svg" : "/svg/Bookmark.svg"}  alt="북마크" width={24} height={24} />
 
-      case 'reportvote':
-        return (
-          <>
-            <img key="report" src="svg/Report.svg" alt="리포트" width={24} height={24} />
-            <img key="bookmark" src="svg/Bookmark.svg" alt="북마크" width={24} height={24} />
-          </>
-        );
+    case 'reportvote':
+      const handleReportClick = () => {
+        const targetPath = path.endsWith('/tailvote') 
+          ? path.replace('/tailvote', '/report')
+          : `${path}/report`;
+        router.push(targetPath);
+      };
+
+      return (
+        <>
+          <img 
+            key="report" 
+            src="/svg/Report.svg" 
+            alt="리포트" 
+            width={24} 
+            height={24} 
+            onClick={handleReportClick}
+            style={{ cursor: 'pointer' }}
+          />
+        </>
+      );
+
       
       
       case 'bollot':
+        
         return (
           <>
-           <img key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} />
+           <img key="close" src="/svg/Close.svg" alt="닫기" width={24} height={24} onClick={() => router.back()}
+              style={{ cursor: 'pointer' }}/>
            <img key="options" src="/svg/Options.svg" alt="설정" width={24} height={24} />
           </>
         ); 

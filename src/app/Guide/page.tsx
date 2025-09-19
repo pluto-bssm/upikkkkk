@@ -29,7 +29,7 @@ const Guide = () => {
               alt="검색"
               width={24}
               height={24}
-              onClick={() => router.push("/Guide/search")}
+              onClick={() => router.push("/guide/search")}
               style={{ cursor: "pointer" }}
             />
             <img src="/svg/User.svg" alt="사용자" width={24} height={24} />

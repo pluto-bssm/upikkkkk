@@ -16,14 +16,14 @@ const MyPage = ({ auth, className, children }: P) => {
     return (
         <>
         <MainPageLayout>
-                    <Header LeftItem={
+        <Header LeftItem={
         <img
         src="/svg/Logo.svg"
         width={50}
         height={50}
          />
       } 
-        RightItem={<HeaderItemsBox type={'main'} />}
+        RightItem={<HeaderItemsBox type={'Main'} />}
         types='None'/>
             <Profile/>
         </MainPageLayout>

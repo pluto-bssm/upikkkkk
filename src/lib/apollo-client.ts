@@ -3,23 +3,8 @@
 import { ApolloClient, InMemoryCache, HttpLink, from, createHttpLink } from '@apollo/client';
 import { onError } from "@apollo/client/link/error";
 import { setContext } from '@apollo/client/link/context';
-<<<<<<< HEAD
 
-
-const JWT_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJuYW1lIjoiZ29vZ2xlXzExMDkzMjU1MzgwNzUzNDkzMDE4MSIsInJvbGUiOiJST0xFX05PQlNNIiwiaWF0IjoxNzU4MTc1ODAyLCJleHAiOjE4NDgxNzU4MDJ9.ubTLTvrChlYy_8T-wECquoSDo-PP5FjFgNNXtN1fZMk';
-
-
-const authLink = setContext((_, { headers }) => {
-  return {
-    headers: {
-      ...headers,
-      Authorization: `Bearer ${JWT_TOKEN}`,
-      'Content-Type': 'application/json',
-    }
-  };
-});
-
-
+// 에러 처리 링크
 const errorLink = onError(({ graphQLErrors, networkError }: any) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }: any) =>
@@ -30,36 +15,26 @@ const errorLink = onError(({ graphQLErrors, networkError }: any) => {
   if (networkError) console.error(`[Network error]: ${networkError}`);
 });
 
-
-const httpLink = new HttpLink({
-=======
-import { getAccessToken } from './auth-utils';
-
-const errorLink = onError(({ graphQLErrors, networkError, operation, forward }: any) => {
-  if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, locations, path }: any) => {
-    });
+// Authorization 헤더 추가 링크
+const authLink = setContext((_, { headers }) => {
+  // 토큰을 localStorage에서 가져오거나 환경변수에서 가져오기
+  let token = "";
+  
+  if (typeof window !== 'undefined') {
+    // 클라이언트 사이드에서 localStorage에서 토큰 가져오기
+    token = localStorage.getItem('authToken') || "";
   }
   
-  if (networkError) {
-    if (networkError.statusCode === 500) {
-    }
+  // 환경변수에서 토큰 가져오기 (서버 사이드)
+  if (!token) {
+    token = process.env.NEXT_PUBLIC_AUTH_TOKEN || "";
   }
-});
-
-const httpLink = createHttpLink({
->>>>>>> 44f42c43caf8282f3baee88c45a640a0a88629df
-  uri: 'https://realupik-659794985248.asia-northeast3.run.app/graphql',
-  credentials: 'include'
-});
-
-<<<<<<< HEAD
-=======
-const authLink = setContext((_, { headers }) => {
-  const token = getAccessToken();
-
-  console.log('🔑 Apollo Client - 토큰 헤더 추가:', token ? '토큰 있음' : '토큰 없음');
-
+  
+  // 하드코딩된 토큰 (개발용)
+  if (!token) {
+    token = "eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJuYW1lIjoiZ29vZ2xlXzEwNTAwNzE3NTc1NzM1ODk1MTE4NCIsInJvbGUiOiJST0xFX0JTTSIsImlhdCI6MTc1ODE3ODk0MSwiZXhwIjoxODQ4MTc4OTQxfQ.x-6ExSnj63bl7_8-XmXlp6DswnQJWv8bdAzJAujGqEg";
+  }
+  
   return {
     headers: {
       ...headers,
@@ -67,7 +42,12 @@ const authLink = setContext((_, { headers }) => {
     }
   }
 });
->>>>>>> 44f42c43caf8282f3baee88c45a640a0a88629df
+
+const httpLink = new HttpLink({
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'https://realupik-659794985248.asia-northeast3.run.app/graphql',
+  credentials: 'include'
+});
+
 
 const apolloClient = new ApolloClient({
   link: from([errorLink, authLink, httpLink]),

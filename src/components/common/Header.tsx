@@ -13,7 +13,7 @@ type Props = {
   types: string;
   onOptionClick?: () => void;
 
-  // ✅ 추가된 props
+  onSelect?: (label: string) => void;
   activeIdx?: number;
   setActiveIdx?: (idx: number) => void;
 };

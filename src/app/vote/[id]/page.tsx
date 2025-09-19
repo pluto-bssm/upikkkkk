@@ -1,20 +1,21 @@
 'use client';
 
-import { useState } from "react";
+import { useState, use } from "react"; // use 추가
 import styled from "@emotion/styled";
 import Header from "@/components/common/Header";
 import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import VoteOption from "@/components/Vote/VoteOption";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { useRouter, usePathname, useParams } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; // useParams 제거
 import { useVoteById, useVoteResponse } from "@/hooks/useVote";
 
-const DoVote = () => {
+const DoVote = ({ params }: { params: Promise<{ id: string }> }) => { // Promise 타입으로 변경
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const params = useParams();
-  const id = params.id as string;
-
+  
+  // React.use()로 params unwrap
+  const { id } = use(params);
+  
   const router = useRouter();
   const path = usePathname();
 
@@ -23,15 +24,16 @@ const DoVote = () => {
   const { vote, loading, error } = useVoteById(id);
   const { createResponse, loading: responseLoading } = useVoteResponse();
 
+  // 나머지 코드는 동일...
   const handleVoteSubmit = async () => {
     if (!selectedOption) {
       alert("선택지를 선택해주세요.");
       return;
-    }if (!vote) {
+    }
+    if (!vote) {
       return;
     }
     
-
     try {
       await createResponse({
         voteId: vote.id,
@@ -74,7 +76,7 @@ const DoVote = () => {
           </TextWrapper>
 
           <OptionsWrapper>
-            {vote?.options?.map((option: any ,idx: number) => (
+            {vote?.options?.map((option: any, idx: number) => (
               <VoteOption
                 key={option.id}
                 label={labels[idx] ?? ''}
@@ -102,6 +104,9 @@ const DoVote = () => {
 };
 
 export default DoVote;
+
+
+
 
 // styled-components (기존과 동일)
 const DoVoteLayout = styled.div`

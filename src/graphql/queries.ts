@@ -149,28 +149,6 @@ export const CREATE_VOTE_RESPONSE = gql`
   }
 `;
 
-export const TODAY_VOTE = gql`
-  query TodayVote {
-    vote {
-      getLeastPopularOpenVote {
-        category
-        finishedAt
-        hasVoted
-        id
-        options {
-          content
-          id
-          percentage
-          responseCount
-        }
-        status
-        title
-        totalResponses
-      }
-    }
-  }
-`;
-
 export const AIOPTION_CREATE = gql`
   query GenerateOptions($count: Int!, $title: String!) {
     optionGenerator {
@@ -183,21 +161,6 @@ export const AIOPTION_CREATE = gql`
 `;
 
 /* ===================== 가이드 관련 ===================== */
-export const GET_ALL_GUIDES = gql`
-  query GetAllGuides {
-    guide {
-      getAllGuides {
-        id
-        title
-        content
-        category
-        createdAt
-        like
-      }
-    }
-  }
-`;
-
 export const GET_GUIDES = gql`
   query GetGuides {
     guide {
@@ -230,18 +193,16 @@ export const GET_GUIDES_BY_CATEGORY = gql`
 
 export const GET_GUIDE_BY_ID = gql`
   query GetGuideById($id: ID!) {
-    guide {
-      getGuideById(id: $id) {
-        id
-        title
-        content
-        createdAt
-        category
-        like
-        guideType
-        likeCount
-        revoteCount
-      }
+    guideById(id: $id) {
+      id
+      title
+      content
+      createdAt
+      category
+      guideType
+      likeCount
+      revoteCount
+      voteId
     }
   }
 `;
@@ -397,21 +358,6 @@ export const REPORT_COMMENT = gql`
 `;
 
 /* ===================== 북마크 관련 ===================== */
-export const GET_BOOKMARKED_GUIDES = gql`
-  query GetBookmarkedGuides {
-    bookmark {
-      getBookmarkedGuides {
-        category
-        content
-        createdAt
-        id
-        like
-        title
-        voteId
-      }
-    }
-  }
-`;
 
 export const GET_BOOKMARKS = gql`
   query GetBookmarks {
@@ -433,3 +379,94 @@ export const TOGGLE_BOOKMARK = gql`
     }
   }
 `;
+
+export const GET_BOOKMARKED_GUIDES = gql`
+  query GetBookmarkedGuides {
+    bookmark {
+      getBookmarkedGuides {
+        id
+        title
+        content
+        createdAt
+      }
+    }
+  }
+`;
+
+//모든 가읻드
+export const GET_ALL_GUIDES = gql`
+query GetAllGuides($page: Int, $size: Int, $sortBy: String) {
+  getAllGuides(page: $page, size: $size, sortBy: $sortBy) {
+    content {
+      category
+      content
+      createdAt
+      id
+      like
+      title
+      voteId
+    }
+    hasNext
+    pageNumber
+    size
+    totalElements
+    totalPages
+  }
+}
+`;
+
+export const GUIDE_BY_ID = gql`
+query GuideById($id: ID!) {
+  guideById(id: $id) {
+    category
+    content
+    createdAt
+    guideType
+    id
+    likeCount
+    revoteCount
+    title
+    voteId
+  }
+}
+`;
+
+//재투표 뮤테이션
+export const REVOTE_MUTATION = gql`
+mutation RevoteMutation($input: CreateRevoteRequestInput!) {
+  revote {
+    createRevoteRequest(input: $input) {
+      createdAt
+      detailReason
+      guideId
+      id
+      reason
+      userId
+    }
+  }
+}
+`;
+
+//오늘의 투표
+export const TODAY_VOTE = gql`
+query TodayVote {
+  vote {
+    getLeastPopularOpenVote {
+      category
+      finishedAt
+      hasVoted
+      id
+      options {
+        content
+        id
+        percentage
+        responseCount
+      }
+      status
+      title
+      totalResponses
+    }
+  }
+}
+`;
+

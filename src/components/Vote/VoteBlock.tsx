@@ -14,7 +14,7 @@ const VoteBlock = ({ vote }: Props) => {
 
     if (!vote) return null;
 
-
+    // 마감된 투표는 렌더링하지 않음
     if (isPast(new Date(vote.finishedAt))) {
         return null;
     }
@@ -35,13 +35,13 @@ const VoteBlock = ({ vote }: Props) => {
     }
     
     const getStateText = () => {
-    const finishDate = new Date(vote.finishedAt);
-    const today = new Date();
-    const daysLeft = differenceInDays(finishDate, today); 
+        const finishDate = new Date(vote.finishedAt);
+        const today = new Date();
+        const daysLeft = differenceInDays(finishDate, today); 
 
-    return {
-        text: daysLeft <= 0 ? "마감된 투표" : `${format(finishDate, "yyyy-MM-dd")}에 마감되는 투표`,
-        isUrgent: daysLeft <= 3 && daysLeft > 0 
+        return {
+            text: `${format(finishDate, "yyyy-MM-dd")}에 마감되는 투표`,
+            isUrgent: daysLeft <= 3 && daysLeft > 0 
         };
     };
 
@@ -61,14 +61,13 @@ const VoteBlock = ({ vote }: Props) => {
                                 <Views>{vote.totalResponses}</Views>
                             </ViewBlock>
                         </Infomations>
-                       <States urgent={isUrgent}>{text}</States>
+                        <States urgent={isUrgent}>{text}</States>
                     </InfomationsBlock>
                 </InfomationsBlocks>
             </VoteBlocks>
         </VoteBlockLayout>
     );
 };
-
 
 export default VoteBlock;
 
@@ -142,6 +141,7 @@ const ViewBlock = styled.div`
 `
 
 const States = styled.p<{ urgent?: boolean }>`
-  font-size: 10px;
-  color: ${({ urgent }) => (urgent ? "red" : color.gray500)};
+    font-size: 10px;
+    color: ${({ urgent }) => (urgent ? "#ff4444" : color.gray500)};
+    font-weight: ${({ urgent }) => (urgent ? "600" : "normal")};
 `
