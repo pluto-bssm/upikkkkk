@@ -6,16 +6,22 @@ import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import RevoteComponent from "@/components/Guide/RevoteComponent";
 import DetailContent from "@/components/Guide/DetailContent";
 import React, { useState, useMemo } from "react";
 import RevoteSend from "@/components/Button/RevoteSend";
 import RevoteRequest from "@/modal/revoteRequest";
 import RevoteCancel from "@/modal/revoteCancel";
+import apolloClient from "@/lib/apollo-client";
+import { CREATE_REVOTE } from "@/graphql/queries";
+import { mockRevoteeData } from "@/mock/RevoteComponent";
 
 const Revote = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const guideId = searchParams.get("guideId");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedReasonIndex, setSelectedReasonIndex] = useState<number | null>(null);
   const [detailText, setDetailText] = useState("");
   const [showRequestModal, setShowRequestModal] = useState(false);
@@ -28,9 +34,33 @@ const Revote = () => {
     }
   };
 
-  const handleRequestConfirm = () => {
-    setShowRequestModal(false);
-    setShowCancelModal(true);
+  const handleRequestConfirm = async () => {
+    if (!guideId) {
+      alert("가이드 ID가 없어요. 이전 페이지로 돌아가 다시 시도해 주세요.");
+      return;
+    }
+
+    const reasonText = selectedReasonIndex !== null ? mockRevoteeData[selectedReasonIndex] : "";
+
+    try {
+      setIsSubmitting(true);
+      await apolloClient.mutate({
+        mutation: CREATE_REVOTE,
+        variables: {
+          input: {
+            guideId,
+            reason: reasonText,
+            detailReason: detailText,
+          },
+        },
+      });
+      setShowRequestModal(false);
+      setShowCancelModal(true);
+    } catch (_) {
+      alert("요청 중 오류가 발생했어요. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCancelConfirm = () => {
@@ -78,7 +108,9 @@ const Revote = () => {
         </Layout>
 
         <SendBar>
-            <RevoteSend disabled={!isSendEnabled} onClick={handleSendClick}>신청 보내기</RevoteSend>
+            <RevoteSend disabled={!isSendEnabled || isSubmitting} onClick={handleSendClick}>
+              {isSubmitting ? "보내는 중..." : "신청 보내기"}
+            </RevoteSend>
         </SendBar>
       </RevoteLayout>
 

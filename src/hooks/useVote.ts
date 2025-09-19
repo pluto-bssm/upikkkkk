@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery, useMutation } from '@apollo/client/react';
-import { GET_VOTES, GET_VOTE_BY_ID, CREATE_VOTE, CREATE_VOTE_RESPONSE } from '@/graphql/queries';
+import { GET_VOTES, GET_VOTE_BY_ID, CREATE_VOTE, CREATE_VOTE_RESPONSE, TODAY_VOTE } from '@/graphql/queries';
 import { Vote, CreateVoteInput, CreateVoteResponseInput } from '@/types/api';
 
 interface VotesData {
@@ -114,5 +114,25 @@ export function useVoteResponse() {
     createResponse,
     loading,
     error
+  };
+}
+
+
+interface TodayVoteData {
+  vote: {
+    getTodayVote: Vote
+  }
+}
+
+export function useTodayVote() {
+  const { data, loading, error, refetch } = useQuery<TodayVoteData>(TODAY_VOTE, {
+    fetchPolicy: 'network-only'
+  });
+
+  return {
+    vote: data?.vote?.getTodayVote,
+    loading,
+    error,
+    refetch
   };
 }

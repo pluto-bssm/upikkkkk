@@ -1,19 +1,22 @@
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import font from "@/packages/design-system/src/font";
-import { Vote } from "@/types/api";
 import { useRouter } from "next/navigation";
-import { format, isPast } from "date-fns";
 
 type Props = {
-    vote: Vote;
+    id: number;
+    title: string;
+    catogory: string;
+    views: string;
+    state: string;
+    hrefBase: string;
 }
 
-const VoteBlock = ({ vote }: Props) => {
+const VoteBlock = ({ id, title, catogory, views, state, hrefBase }: Props) => {
     const router = useRouter();
     
     const renderImage = () => {
-        switch (vote.category) {
+        switch (catogory) {
             case "학교생활":
                 return <img src="/svg/School.svg" alt="school" width={35} height={35} />;
             case "유머":
@@ -25,28 +28,21 @@ const VoteBlock = ({ vote }: Props) => {
         }
     }
     
-    const getStateText = () => {
-        if (isPast(new Date(vote.finishedAt))) {
-            return "마감된 투표";
-        }
-        return `${format(new Date(vote.finishedAt), "yyyy-MM-dd")}에 마감되는 투표`;
-    };
-    
     return (
         <VoteBlockLayout>
-            <VoteBlocks onClick={() => router.push(`/Vote/${vote.id}`)}>
+            <VoteBlocks onClick={() => router.push(`${hrefBase}/${id}`)}>
                 {renderImage()}
                 <InfomationsBlocks>
-                    <Title>{vote.title}</Title>
+                    <Title>{title}</Title>
                     <InfomationsBlock>
                         <Infomations>
-                            <Catogorys>{vote.category}</Catogorys>
+                            <Catogorys>{catogory}</Catogorys>
                             <ViewBlock>
                                 <img src="/svg/Views.svg" height={14} width={14} />
-                                <Views>{vote.totalResponses}</Views>
+                                <Views>{views}</Views>
                             </ViewBlock>
                         </Infomations>
-                        <States>{getStateText()}</States>
+                        <States>{state}</States>
                     </InfomationsBlock>
                 </InfomationsBlocks>
             </VoteBlocks>

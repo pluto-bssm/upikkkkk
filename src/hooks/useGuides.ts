@@ -1,12 +1,23 @@
 "use client";
 
 import { useQuery } from '@apollo/client/react';
-import { GET_GUIDES, GET_GUIDE_BY_ID, GET_BOOKMARKED_GUIDES, TOGGLE_BOOKMARK } from '@/graphql/queries';
+import { GET_GUIDES, GET_GUIDE_BY_ID, GET_BOOKMARKED_GUIDES, TOGGLE_BOOKMARK, GET_ALL_GUIDES } from '@/graphql/queries';
 import { Guide } from '@/types/api';
 import { useMutation } from '@apollo/client/react';
 
 interface GuidesData {
   guidesByCategory: Guide[];
+}
+
+interface AllGuidesData {
+  getAllGuides: {
+    content: Guide[];
+    hasNext: boolean;
+    pageNumber: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+  };
 }
 
 // 카테고리별 가이드를 가져오는 훅
@@ -21,6 +32,31 @@ export function useGuides(category?: string) {
 
   return {
     guides: data?.guidesByCategory || [],
+    loading,
+    error,
+    refetch
+  };
+}
+
+// 모든 가이드를 가져오는 훅 (페이지네이션 지원)
+export function useAllGuides(page: number = 0, size: number = 10, sortBy?: string) {
+  const { data, loading, error, refetch } = useQuery<AllGuidesData>(
+    GET_ALL_GUIDES,
+    {
+      variables: { page, size, sortBy },
+      fetchPolicy: 'network-only'
+    }
+  );
+
+  return {
+    guides: data?.getAllGuides?.content || [],
+    pagination: {
+      hasNext: data?.getAllGuides?.hasNext || false,
+      pageNumber: data?.getAllGuides?.pageNumber || 0,
+      size: data?.getAllGuides?.size || 10,
+      totalElements: data?.getAllGuides?.totalElements || 0,
+      totalPages: data?.getAllGuides?.totalPages || 0,
+    },
     loading,
     error,
     refetch

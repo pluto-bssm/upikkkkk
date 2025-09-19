@@ -76,5 +76,6 @@ const MainLayout = styled.div`
   width : 100%;
   min-height: 100vh;
   margin-top:15vh;
+  padding-bottom: 80px;
   background-color : ${color.white};
 `;  

@@ -5,18 +5,114 @@ import HeaderItemsBox from "@/components/Header/HeaderItemBox";
 import styled from "@emotion/styled";
 import color from "@/packages/design-system/src/color";
 import NavigationBar from "@/components/common/NavigationBar";
-import { mockMainGuideData } from "@/mock/MoreGuide";
 import font from "@/packages/design-system/src/font";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import ChartComponent from "@/components/Guide/ChartComponent";
+import { useMoreGuide } from "@/hooks/useMoreGuide";
+import { useQuery } from '@apollo/client/react';
+import { GET_VOTE_BY_ID } from '@/graphql/queries';
+import { Vote } from '@/types/api';
 
 const MoreGuide = () => {
   const router = useRouter();
-  const guide = mockMainGuideData[0];
-  const chartData = guide.option.map((opt, idx) => {
-    const palette = ['#FF3B3B', '#FF6D38', '#FFBE3C', '#7CD992', '#6BA7FF'];
-    return { label: opt.label, value: opt.percent, color: palette[idx % palette.length] };
+  const searchParams = useSearchParams();
+  const guideId = searchParams.get('id');
+  
+  const { guide, loading, error } = useMoreGuide(guideId || '');
+  
+  // 디버깅을 위한 콘솔 로그
+  console.log('MoreGuide Debug:', {
+    guideId,
+    guide,
+    loading,
+    error
   });
+  
+  // 가이드에 연결된 투표 데이터 가져오기
+  const { data: voteData, loading: voteLoading, error: voteError } = useQuery<{ vote: { getVoteById: Vote } }>(GET_VOTE_BY_ID, {
+    variables: { id: guide?.voteId || '' },
+    skip: !guide?.voteId,
+  });
+  
+  const vote = voteData?.vote?.getVoteById;
+  
+  // 투표 데이터 디버깅
+  console.log('Vote Debug:', {
+    voteId: guide?.voteId,
+    vote,
+    voteLoading,
+    voteError
+  });
+  
+  if (loading) {
+    return (
+      <GuidePageLayout>
+        <Header 
+          LeftItem={
+            <img
+              src="/svg/Back.svg"
+              width={20}
+              height={50}
+              onClick={() => router.back()}
+            />
+          } 
+          RightItem={<HeaderItemsBox type={'guide'} />}
+          types={'none'}
+        />
+        <MainLayout>
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+            로딩 중...
+          </div>
+        </MainLayout>
+        <NavigationBar />
+      </GuidePageLayout>
+    );
+  }
+
+  // 에러 상태 처리
+  if (error || !guide) {
+    return (
+      <GuidePageLayout>
+        <Header 
+          LeftItem={
+            <img
+              src="/svg/Back.svg"
+              width={20}
+              height={50}
+              onClick={() => router.back()}
+            />
+          } 
+          RightItem={<HeaderItemsBox type={'guide'} />}
+          types={'none'}
+        />
+        <MainLayout>
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+            <div>가이드를 불러올 수 없습니다.</div>
+            <div style={{ marginTop: '10px', fontSize: '12px', color: '#666' }}>
+              ID: {guideId}
+            </div>
+            {error && (
+              <div style={{ marginTop: '10px', fontSize: '12px', color: '#ff0000' }}>
+                Error: {error.message}
+              </div>
+            )}
+          </div>
+        </MainLayout>
+        <NavigationBar />
+      </GuidePageLayout>
+    );
+  }
+
+  // 투표 데이터를 차트 데이터로 변환
+  const chartData = vote?.options?.map((option: any, index: number) => ({
+    label: option.content,
+    value: option.responseCount || 0,
+    color: ['#FF3B3B', '#FF6D38', '#FFBE3C'][index % 3]
+  })) || [
+    { label: "옵션 1", value: 30, color: '#FF3B3B' },
+    { label: "옵션 2", value: 40, color: '#FF6D38' },
+    { label: "옵션 3", value: 30, color: '#FFBE3C' }
+  ];
 
   return (
     <GuidePageLayout>
@@ -36,10 +132,10 @@ const MoreGuide = () => {
       <MainLayout>
         <Layout>
         <TitleColumn>
-          <Thumb src={guide.thumnail} alt="thumbnail" />
+          <Thumb src="/svg/School.svg" alt="thumbnail" />
           <TitleTexts>
             <Title>{guide.title}</Title>
-            <Date>{guide.date}</Date>
+            <DateText>{guide.createdAt ? new Date(guide.createdAt as string).toLocaleDateString() : '날짜 없음'}</DateText>
           </TitleTexts>
           <Line />
         </TitleColumn>
@@ -47,8 +143,8 @@ const MoreGuide = () => {
       <VoteResult>
         <VoteCheck className="sancheon">투표 결과 확인하기</VoteCheck>
         <VoteSection>
-          <VoteTitle>{guide.votetitle}</VoteTitle>
-          <Participate>전체 참여자 수 {guide.participate.toLocaleString()}명</Participate>
+          <VoteTitle>{vote?.title || '투표 제목'}</VoteTitle>
+          <Participate>전체 참여자 수 {vote?.totalResponses || guide.revoteCount || 0}명</Participate>
           <ChartArea>
             <ChartComponent data={chartData} />
           </ChartArea>
@@ -128,7 +224,7 @@ const Title = styled.h1`
   ${font.D1};
 `;
 
-const Date = styled.span`
+const DateText = styled.span`
   color: ${color.gray500};
   font-family: ${font.p1};
 `;

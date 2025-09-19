@@ -37,6 +37,7 @@ export interface Guide {
   like?: number; // 일반 목록에서 사용
   likeCount?: number; // 상세 정보에서 사용
   revoteCount?: number;
+  voteId?: string; // 연결된 투표 ID
 }
 
 // 질문 및 게시판 관련 타입

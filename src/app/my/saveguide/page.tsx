@@ -83,6 +83,10 @@ const SaveGuidePage = () => {
   const handleBack = () => {
     router.back();
   };
+
+  const handleGuideClick = (guideId: number) => {
+    router.push(`/MoreGuide?guideId=${guideId}`);
+  };
   return (
     <PageContainer>
       <Header 

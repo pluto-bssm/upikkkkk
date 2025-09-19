@@ -71,17 +71,16 @@ export const GET_GUIDES = gql`
 
 export const GET_GUIDE_BY_ID = gql`
   query GetGuideById($id: ID!) {
-    guide {
-      guideById(id: $id) {
-        id
-        title
-        content
-        createdAt
-        category
-        guideType
-        likeCount
-        revoteCount
-      }
+    guideById(id: $id) {
+      id
+      title
+      content
+      createdAt
+      category
+      guideType
+      likeCount
+      revoteCount
+      voteId
     }
   }
 `;
@@ -230,4 +229,64 @@ export const GET_BOOKMARKED_GUIDES = gql`
       }
     }
   }
+`;
+
+//모든 가읻드
+export const GET_ALL_GUIDES = gql`
+query GetAllGuides($page: Int, $size: Int, $sortBy: String) {
+  getAllGuides(page: $page, size: $size, sortBy: $sortBy) {
+    content {
+      category
+      content
+      createdAt
+      id
+      like
+      title
+      voteId
+    }
+    hasNext
+    pageNumber
+    size
+    totalElements
+    totalPages
+  }
+}
+`;
+
+export const TODAY_VOTE = gql`
+query TodayVote {
+  vote {
+    getTodayVote {
+      category
+      finishedAt
+      hasVoted
+      id
+      options {
+        content
+        id
+        percentage
+        responseCount
+      }
+      status
+      title
+      totalResponses
+    }
+  }
+}
+`;
+
+export const GUIDE_BY_ID = gql`
+query GuideById($id: ID!) {
+  guideById(id: $id) {
+    category
+    content
+    createdAt
+    guideType
+    id
+    likeCount
+    revoteCount
+    title
+    voteId
+  }
+}
 `;
