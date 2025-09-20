@@ -8,6 +8,7 @@ import { getAccessToken } from './auth-utils';
 const errorLink = onError(({ graphQLErrors, networkError, operation, forward }: any) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }: any) => {
+      console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       );
     });
