@@ -309,7 +309,33 @@ export const REPORT_QUESTION = gql`
     }
   }
 `;
+export const GET_SAVED_GUIDES = gql`
+  query GetSavedGuides {
+    bookmark {
+      getBookmarkedGuides {
+        id
+        title
+        content
+        category
+        createdAt
+        like
+      }
+    }
+  }
+`;
 
+export const GET_SAVED_QUESTIONS = gql`
+  query GetSavedQuestions {
+    bookmark {
+      getBookmarks {
+        id
+        userId
+        guideId
+        createdAt
+      }
+    }
+  }
+`;
 /* ===================== 댓글 관련 ===================== */
 export const GET_COMMENTS = gql`
   query GetComments($boardId: ID!, $page: Int!, $size: Int!) {
